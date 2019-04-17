@@ -102,7 +102,7 @@ html_static_path = ['_static']
 
 blog_title = 'ykrods node'
 # blog_path = 'blog'
-blog_baseurl = 'https://ykrods.github.io/'
+blog_baseurl = 'https://www.ykrods.net/'
 blog_authors = {
     'ykrods': ('ykrods', None),
 }
