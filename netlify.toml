@@ -1,4 +1,4 @@
 [build]
-  base    = "src"
+  base    = "."
   publish = "src/_website"
-  command = "ablog build"
+  command = "cd src && ablog build"
