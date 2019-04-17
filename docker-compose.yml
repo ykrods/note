@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  ablog:
+    build: .
+    volumes:
+      - .:/work
+    working_dir: /work/src
+    ports:
+      - "8000:8000"

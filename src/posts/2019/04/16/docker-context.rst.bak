@@ -10,7 +10,7 @@
 背景
 =====
 
-開発用の環境をdockerで構築する場合、`COPY` は上位のパス ( `../` のような)を指定できない [1]_  ので、アプリのリポジトリ直下などの上位に Dockerfile を置く必要があると思っていた。
+開発用の環境などをdockerで構築する場合、`COPY` は上位のパス ( `../` のような)を指定できない [1]_  ので、アプリのリポジトリ直下などの上位に Dockerfile を置く必要があると思っていた。
 
 例えば Python のアプリならこんな感じ
 
@@ -56,7 +56,8 @@ docker-compose.yml を以下のように書く。
   services:
     webapp:
       build:
-        context: docker/webapp
+        context: .
+        dockerfile: ./docker/webapp/Dockerfile
 
 公式
 ======
