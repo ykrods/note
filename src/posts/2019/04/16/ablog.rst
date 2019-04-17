@@ -51,7 +51,7 @@ https://ablog.readthedocs.io/ の通りでOKです。
 
 みたいな規則にしています。
 
-`ablog build` で `_website`以下に html がビルドされます。
+`ablog build` で `_website` 以下に html がビルドされます。
 
 所感
 ======

@@ -1,4 +1,4 @@
 [build]
   base    = "src"
-  publish = "_website"
+  publish = "src/_website"
   command = "ablog build"
