@@ -1,0 +1,27 @@
+.. post:: 2019-04-16
+   :tags: ABlog
+   :category: blog
+   :author: ykrods
+
+============================================================
+ABlog でブログを書く
+============================================================
+
+Sphinx でブログを書きたい、というか Sphinx でドキュメントを書く練習がてらブログでも書こうということで、ちょうど良さそうな `ABlog <https://ablog.readthedocs.io/>`_ でブログを作成してみました。
+
+`Tinkerer <http://tinkerer.me/>`_ も試したのですが、こちらは今(2019/04/16)時点で Sphinx の新しいバージョンに対応してないようでした [1]_ 。
+
+まだそんなに触ってないですが、ABlog は
+
+* ディレクトリ構造の規則がない
+* post ディレクティブを書くだけで記事を作れる
+
+の特徴があり、覚えることが少なく、シンプルで使いやすい印象です。
+
+(ベースがSphinxなので表示内容やレイアウトをゴリゴリカスタマイズしたい場合は向いてないかもしれません
+
+元ソースを github で公開しているのでよろしければ参考にどうぞ `ykrods/ykrods.github.io <https://github.com/ykrods/ykrods.github.io/tree/master/_src>`_
+
+.. rubric:: Footnotes
+
+.. [1] https://github.com/vladris/tinkerer/issues/112 多分これ
