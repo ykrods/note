@@ -1,4 +1,4 @@
-.. post:: 2019-04-16
+.. post::
    :tags: Docker
    :category: 小ネタ
    :author: ykrods
