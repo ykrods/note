@@ -19,7 +19,7 @@ JWK が PEM 形式の公開鍵に変換可能なことを確認する。例と�
 RSA暗号
 --------
 
-RSA暗号は、2つの素数の積n について、n のみから2つの素数を割り出すことが困難なことを利用した暗号技術。
+RSA暗号は、2つの素数の積n について、n のみから元の2つの素数を割り出すことが困難なことを利用した暗号技術。
 
 背景の理論は省略して概要のみ記載すると
 
@@ -180,9 +180,9 @@ RSA の場合、以下のパラメータが定義されている [7]_
 実験
 ======
 
-(ここから実装タイムに入る予定だったがここまでまとめるので疲れたので別の機会に..
+ここまでの内容から alg=RS256 の JWK から n, e のデコードした数値を使えば RSA の公開鍵は作成可能なことは自明。
 
-alg=RS256 の JWK から n, e のデコードした数値を使えば RSAの公開鍵は作成可能。
+(ここから実装タイムに入る予定だったがここまでまとめるので疲れたので別の機会に..
 
 結論
 =====
@@ -195,7 +195,7 @@ alg=RS256 の JWK から n, e のデコードした数値を使えば RSAの公�
 - `RSA暗号とPEM/DERの構造 - sambaiz-net <https://www.sambaiz.net/article/135/>`_
 - `Where is the PEM file format specified? - stackoverflow <https://stackoverflow.com/questions/5355046/where-is-the-pem-file-format-specified>`_
 - `ASN.1 データ生成/解析の事始 - SOUM/misc <https://www.soum.co.jp/misc/individual/asn1/>`_
-- `整数論と代数の初歩 <http://fuee.u-fukui.ac.jp/~hirose/lectures/crypto_security/slides/01number_algebra.pdf>`_ ここだと明らかにmodは書き方(合同と二項演算)で意味違うように見えるが、ネットの記述だとなんかごっちゃになっているように見えるので書籍などで確認したい
+- `整数論と代数の初歩 <http://fuee.u-fukui.ac.jp/~hirose/lectures/crypto_security/slides/01number_algebra.pdf>`_ この資料だと明らかにmodは書き方(合同と二項演算)で意味が異なるようだが、ネットの記述だと(htmlで数式が書きにくい都合もあり) ごっちゃになっているように思える。理論的な証明の部分は書籍などで確認したい。
 
 .. rubric:: Footnotes
 
