@@ -1,5 +1,3 @@
-課題の作り方
-=============
 
 ..
   2つの素数を p, q とした時、オイラーのファイ関数を使うと、以下の式が成り立つ
@@ -22,14 +20,14 @@
 
   e < phi(n) である
 
-RSAの暗号化・複合で使うパラメータが公開鍵・秘密鍵のファイル内に含まれていることを確認します
+
+openssl コマンドでのパラメータの確認
+======================================
 
 ..
-  まず、例としてセキュリティ上役に立たないRSAの秘密鍵を作成する。
+  http://www.ntt.co.jp/news2010/1001/100108a.html の記事によると2010年時点で 768ビットで素因数分解できている。
 
-  http://www.ntt.co.jp/news2010/1001/100108a.html の記事によると2010年時点で 768ビットで素因数分解できている。ということで、それよりはるかに短い 64bit で作った鍵であれば公開しても誰も困らないだろうということで 64bit で生成する（間違っても自身が使っている秘密鍵をネット上に公開してはいけない）
-
-鍵の生成は以下の openssl コマンドを使う
+鍵の生成
 
 ::
 
@@ -54,21 +52,3 @@ RSAの暗号化・複合で使うパラメータが公開鍵・秘密鍵のフ�
   -----BEGIN PUBLIC KEY-----
   MCQwDQYJKoZIhvcNAQEBBQADEwAwEAIJANDnUK1H9nixAgMBAAE=
   -----END PUBLIC KEY-----
-
-::
-
-  $ openssl rsa -text < private64.pem
-  Private-Key: (64 bit)
-  modulus: 15053088984676071601 (0xd0e750ad47f678b1)
-  publicExponent: 65537 (0x10001)
-  privateExponent: 14986938716360882037 (0xcffc4d5bbb3d3775)
-  prime1: 4085517803 (0xf3840deb)
-  prime2: 3684499667 (0xdb9d00d3)
-  exponent1: 565166309 (0x21afc0e5)
-  exponent2: 1097304797 (0x41678add)
-  coefficient: 3317003321 (0xc5b57439)
-  writing RSA key
-  -----BEGIN RSA PRIVATE KEY-----
-  MD8CAQACCQDQ51CtR/Z4sQIDAQABAgkAz/xNW7s9N3UCBQDzhA3rAgUA250A0wIE
-  Ia/A5QIEQWeK3QIFAMW1dDk=
-  -----END RSA PRIVATE KEY-----
