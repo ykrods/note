@@ -15,7 +15,7 @@ ID Token の検証の必要性
 各仕様の記述
 ===============================
 
-OpenID Connect Core 1.0 の `3.1.3.7 ID Token Validation <https://openid.net/specs/openid-connect-core-1_0-final.html#IDTokenValidation>`_ では `
+OpenID Connect Core 1.0 の `3.1.3.7 ID Token Validation <https://openid.net/specs/openid-connect-core-1_0-final.html#IDTokenValidation>`_ では
 
 ::
 
@@ -41,14 +41,14 @@ OpenID Connect Core 1.0 の `3.1.3.7 ID Token Validation <https://openid.net/spe
 
 ※ `and using your client secret to authenticate yourself to Google,` の記述について
 
-トークンを取得するAPIである Token Endpoint に渡す ``client_secret`` を指していると思われます。 Token Endpoint に client_secret を送る仕様は OAuth2.0 ( `RFC6749 <https://tools.ietf.org/html/rfc6749#section-3.2>`_ ) で定義されているので、(OAuth2.0に乗っている) OpenID Connect の方にはわざわざ書かれていないということなんでしょうか..?
+トークンを取得するAPIである Token Endpoint に渡す ``client_secret`` のことを指していると思われます。 Token Endpoint に client_secret を送る仕様は OAuth2.0 ( `RFC6749 <https://tools.ietf.org/html/rfc6749#section-3.2>`_ ) で定義されているので、(OAuth2.0に乗っている) OpenID Connect の方にはわざわざ書かれていないということなんでしょうか..?
 
 じゃあ検証不要か？
 ====================
 
-個人的な判断でいうと、とはいえ「やらなくてもいい」であって「やらない方がいい」訳ではないので、やっとこうと思います。明らかなコストになるなら考えるんですが、そうでもないですし。仮にアプリからインターネットに出られないような構成にするとしても公開鍵を別途キャッシュしておけばいい訳ですし。
+個人的な判断でいうと、とはいえ「やらなくてもいい」であって「やらない方がいい」訳ではないので、やっとこうと思います。明らかなコストになるなら考えるんですが、そうでもないですし。
 
-ただ、何らかのSSLの脆弱性を突かれて、かつDNSまで書き換えられてる(意図しない通信相手からトークンを取得してしまう)ような状況までなってたら、公開鍵のエンドポイントも書き換えられてトークンの検証も通るようになるでは、という気がしますが。
+ただ、何らかのSSLの脆弱性を突かれて、かつDNSまで書き換えられてる(意図しない通信相手からトークンを取得してしまう)ような状況までなってたら、公開鍵のエンドポイントも書き換えられてトークンの検証も通るようになるのでは？という気がしますが。
 
 まとめ
 =======
