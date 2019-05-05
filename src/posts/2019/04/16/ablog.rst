@@ -16,6 +16,8 @@ ABlog
 
 ブログの静的ページを生成する Sphinx 拡張です。具体的には タグ・カテゴリ・最近の投稿リストなどを生成してくれます。atom フィードも作成されますが sitemap は対応してないみたいです。
 
+(一般的な静的サイトジェネレータ同様、htmlは github.io や netlify を使って公開する必要があります。
+
 使い方
 =============
 
@@ -43,13 +45,13 @@ https://ablog.readthedocs.io/ の通りでOKです。
 
   post_date_format = '%Y-%m-%d'
 
-記事のファイルの置き場所もなんでも良いですが、ファイルパスがそのまま slug になるので 私は slugをそれっぽく見せるために
+記事のファイルの置き場所もなんでも良いですが、ファイルパスがそのまま slug になるので、私はそれらしく見せるために
 
 ::
 
   posts/${%Y}/${%m}/${%d}/${title_en}.rst
 
-みたいな規則にしています。
+みたいな規則でファイルを配置しています。
 
 `ablog build` で `_website` 以下に html がビルドされます。
 
@@ -63,10 +65,10 @@ ABlog は
 
 ため覚えることが少なく、シンプルで使いやすい印象です。
 
-ベースが Sphinx なので表示内容やレイアウトをゴリゴリカスタマイズしたい場合は向いてないかもしれません。
+ベースが Sphinx なのでレイアウトをゴリゴリカスタマイズしたい場合は向いてないかもしれません（テンプレートを自分で書けばいいんでしょうがそれなりの知識を要する）。
 
 元ソースも公開するので参考になれば `ykrods/blog <https://github.com/ykrods/blog>`_
 
 .. rubric:: Footnotes
 
-.. [1] https://github.com/vladris/tinkerer/issues/112 多分これ
+.. [1] https://github.com/vladris/tinkerer/issues/112 多分これが原因
