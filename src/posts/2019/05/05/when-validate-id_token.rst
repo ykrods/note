@@ -6,7 +6,7 @@
 ID Token の検証の必要性
 ========================
 
-`以前の記事 <../pyjwt-id_token-validation/>`_ でID Token の検証をしました。これ書いた時は
+`以前の記事 <../../02/pyjwt-id_token-validation/>`_ でID Token の検証をしました。これ書いた時は
 
 「Authorization Code Flow で code と交換で取得した ID Token を検証する」
 
