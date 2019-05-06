@@ -49,7 +49,7 @@ ID Token の中身は JWT ( `RFC7519 <https://tools.ietf.org/html/rfc7519>`_ ) �
    'kid': '26fc4cd23d387cbc490f60db54a94a6dd1653998',
    'typ': 'JWT'}
 
-これらは JWS ( `RFC7515 <https://tools.ietf.org/html/rfc7515>`_ ) でヘッダパラメータとして定義されています。 ``kid`` は署名の際にどの鍵が使われたかを示すIDです(検証で必要になります)。
+``alg, kid, type`` は JWS ( `RFC7515 <https://tools.ietf.org/html/rfc7515>`_ ) でヘッダパラメータとして定義されています。 ``kid`` は署名の際にどの鍵が使われたかを示すIDです(検証で必要になります)。
 
 同様に、ペイロードもデコードしてみましょう。PyJWT では ``jwt.decode()`` 関数に ``verify=False`` をオプションとして加えると、検証なしでデコードすることができます。
 
@@ -93,7 +93,7 @@ Claim のうち、検証に関係するものをピックアップして下記�
 ID Token の検証
 ===========================
 
-前節で触れたように、 claim の情報自体は簡単に取得できます。しかし逆に考えるとヘッダ・ペイロード部は誰でも簡単に作成できるということでもあります。例えば「ネイティブアプリやSPAなどで Identity Provider から ID Token を取得し、自身のサーバサイドアプリケーションに送信する」ような場合、そのトークンが本当に期待した Identity Provider から発行されていることを検証する必要があります。
+前節で触れたように、 claim の情報自体は簡単に取得できます。しかし逆に考えるとヘッダ・ペイロード部は誰でも簡単に作成できるということでもあります。例えば「ネイティブアプリやSPAなどで外部の Identity Provider から ID Token を取得し、自身のサーバサイドアプリケーションに送信する」ような場合、そのトークンが本当に期待した Identity Provider から発行されていかどうかを検証する必要があります。
 
 ID Token の検証手順は、以下で記述されています。
 
@@ -104,7 +104,7 @@ OpenID Connect Core 1.0
 
 また `Googleのドキュメント <https://developers.google.com/identity/protocols/OpenIDConnect?hl=ja>`_ にも記載があります。
 
-Google認証の場合は以下の項目を検証すれば良いようです。
+要約すると Google 認証の場合は以下の項目を検証すれば良いようです。
 
 1. JWT の署名が正しいか確認する
 2. claim の iss が https://accounts.google.com もしくは accounts.google.com であることを確認する
@@ -114,7 +114,7 @@ Google認証の場合は以下の項目を検証すれば良いようです。
 署名の検証
 ------------
 
-署名の検証というと一般的に以下のような流れになります。
+一般的に、署名の検証というと以下のような流れになります。
 
 1. 署名者が配布している公開鍵を取得
 2. メッセージ(署名されたデータ)から公開鍵を使ってダイジェストを生成
@@ -125,7 +125,7 @@ Google認証の場合は以下の項目を検証すれば良いようです。
 公開鍵の取得
 ---------------
 
-Google のドキュメントには以下のように記載されています
+Google のドキュメントには署名について以下のように記載されています
 
     1. Verify that the ID token is properly signed by the issuer. Google-issued tokens are signed using one of the certificates found at the URI specified in the jwks_uri field of the discovery document.
 
@@ -220,7 +220,7 @@ PyJWT で Id Token を検証する
 
 想像を超えて前置きが長くなりましたが、ようやく検証に必要な情報が揃いました。最初に検証なしで ``jwt.decode()`` を使いましたが、今度は検証ありでデコードしてみましょう。
 
-検証する場合、引数には id_token, public_key の他、issuer に https://accounts.google.com, audience に CLIENT_ID を指定します。これは iss, aud の検証を PyJWT 側でやってくれているということですね [2]_ 。
+検証する場合、引数には id_token, public_key の他、issuer に ``https://accounts.google.com``, audience に ``CLIENT_ID`` を指定します。これは iss, aud の検証を PyJWT 側でやってくれているということですね [2]_ 。
 
 .. code-block:: python
 
