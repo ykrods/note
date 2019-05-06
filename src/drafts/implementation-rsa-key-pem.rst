@@ -1,3 +1,23 @@
+=========================
+JWKからPEMを作る(実装編)
+=========================
+
+asn.1 と DER
+================
+
+- PEMはbase64エンコードされたDER
+- DER: ASN.1 を符号化する形式
+- ASN.1: データ構造の記法
+
+DERの表現形式
+--------------
+
+- type-length-value形式 > 型-値の長さ-値
+- 例えば INTEGER は型の値が 0x02 なので INTEGER 15 をDERで表すと 0x02010F
+- 細かいルール
+  - BIT STRING の末尾 zero は省略される
+  - `RFC5280 <https://tools.ietf.org/html/rfc5280#appendix-B>`_
+  - INTEGER は符号ありの整数 > 正の数の場合先頭一ビットが0になっている必要がある
 
 ..
   2つの素数を p, q とした時、オイラーのファイ関数を使うと、以下の式が成り立つ
@@ -19,36 +39,3 @@
     \phi(15) = (3 - 1) * (5 - 1) = 8 = |\{1, 2, 4, 7, 8, 11, 13, 14\}|
 
   e < phi(n) である
-
-
-openssl コマンドでのパラメータの確認
-======================================
-
-..
-  http://www.ntt.co.jp/news2010/1001/100108a.html の記事によると2010年時点で 768ビットで素因数分解できている。
-
-鍵の生成
-
-::
-
-  $ openssl genrsa 64 > private64.pem
-  Generating RSA private key, 64 bit long modulus
-  .++++++++++++++++++++++++++++++++++
-  .++++++++++++++++++++++++++++++++++
-  e is 65537 (0x10001)
-  $ openssl rsa -pubout < private64.pem > public64.pem
-
-  writing RSA key
-
-鍵のパラメータオプションは以下で参照できる
-
-::
-
-  $ openssl rsa -text -pubin < public64.pem
-  Public-Key: (64 bit)
-  Modulus: 15053088984676071601 (0xd0e750ad47f678b1)
-  Exponent: 65537 (0x10001)
-  writing RSA key
-  -----BEGIN PUBLIC KEY-----
-  MCQwDQYJKoZIhvcNAQEBBQADEwAwEAIJANDnUK1H9nixAgMBAAE=
-  -----END PUBLIC KEY-----
