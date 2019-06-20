@@ -99,9 +99,12 @@ html_theme_path = [alabaster.get_path()]
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_title = 'ykrods note'
+
+
 # -- General ABlog Options ----------------------------------------------------
 
-blog_title = 'ykrods node'
+blog_title = html_title
 # blog_path = 'blog'
 blog_baseurl = 'https://www.ykrods.net/'
 blog_authors = {
