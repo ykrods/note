@@ -1,0 +1,17 @@
+{%- extends "alabaster/layout.html" %}
+
+{%- block header %}
+<div class="header">
+  <ul class="header-menu">
+    <li><a href="{{ pathto(master_doc) }}">[{{ docstitle }}]</a>
+    <li><a href="{{ pathto('about', 1) }}">ABOUT</a>
+    <li><a href="{{ pathto(ablog.archive.docname) }}">ARCHIVES</a>
+    <li><a href="{{ pathto(ablog.category.path) }}">CATEGORIES</a>
+    <li><a href="{{ pathto(ablog.tags.path) }}">TAGS</a>
+    <li><a href="https://github.com/ykrods/note/issues/new">CONTACT</a></li>
+    <li><a href="{{ pathto(feed_path, 1) }}/atom.xml">RSS</a></li>
+  </ul>
+</div>
+<hr>
+
+{%- endblock %}
