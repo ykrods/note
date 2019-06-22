@@ -110,7 +110,9 @@ blog_baseurl = 'https://www.ykrods.net/'
 blog_authors = {
     'ykrods': ('ykrods', None),
 }
+blog_default_author = 'ykrods'
 
+fontawesome_link_cdn = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
 # -- Blog Post Related --------------------------------------------------------
 
 post_date_format = '%Y-%m-%d'
@@ -124,13 +126,7 @@ post_date_format_short = '%Y-%m-%d'
 # a link to a archive pages generated for each tag, category, and year.
 # In addition, there are authors.html, languages.html, and locations.html
 # sidebars that link to author and location archive pages.
-html_sidebars = {
-    '**': [
-        'about.html',
-        'author_links.html',
-        'postcard.html', 'navigation.html',
-        'recentposts.html', 'tagcloud.html',
-        'categories.html',  'archives.html',
-        'searchbox.html',
-    ],
+html_sidebars = {}
+html_theme_options = {
+  'nosidebar': True,
 }
