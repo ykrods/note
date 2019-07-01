@@ -1,20 +1,33 @@
 /* custom.css */
-/* ???*/
-.header-menu li {
+div.body {
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+}
+.header--title {
+  font-size: 2.0em;
+  font-weight: bold;
+}
+.header--menu li {
   display: inline-block;
   font-size: 1.2em;
   margin-right: 0.8em;
 }
-.header-menu li a {
+.header--menu li a {
   text-decoration: none;
 }
-.header-menu li a:hover {
+.header--menu li a:hover {
   text-decoration: underline;
 }
 
 .post-meta {
   float: right;
   width: 160px;
-  margin: 0 0 0 30px;
+  margin: 0 0 20px 30px;
   list-style-type: none;
+}
+
+div.topic {
+  width: calc(100% - 200px);
 }
