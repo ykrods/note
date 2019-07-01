@@ -2,8 +2,9 @@
 
 {%- block header %}
 <div class="header">
-  <ul class="header-menu">
-    <li><a href="{{ pathto(master_doc) }}">[{{ docstitle }}]</a>
+  <div class="header--title">{{ docstitle }}</div>
+  <ul class="header--menu">
+    <li><a href="{{ pathto(master_doc) }}">HOME</a>
     <li><a href="{{ pathto('about', 1) }}">ABOUT</a>
     <li><a href="{{ pathto(ablog.archive.docname) }}">ARCHIVES</a>
     <li><a href="{{ pathto(ablog.category.path) }}">CATEGORIES</a>
