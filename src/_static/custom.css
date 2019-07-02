@@ -2,12 +2,19 @@
 div.body {
   margin: 0 auto;
 }
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 .header {
   text-align: center;
 }
 .header--title {
   font-size: 2.0em;
   font-weight: bold;
+}
+.header--menu {
+  margin-left: 0;
 }
 .header--menu li {
   display: inline-block;
@@ -30,4 +37,13 @@ div.body {
 
 div.topic {
   width: calc(100% - 200px);
+}
+
+/* override alabaster.css */
+@media screen and (max-width: 870px) {
+    ul { margin-left: 30px; }
+}
+/* override basic.css */
+@media screen and (max-width: 480px) {
+    div.body { min-width: unset }
 }
