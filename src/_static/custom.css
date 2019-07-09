@@ -6,6 +6,8 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+/* custom header */
 .header {
   text-align: center;
 }
@@ -28,6 +30,7 @@ pre {
   text-decoration: underline;
 }
 
+/* article */
 .post-meta {
   float: right;
   width: 160px;
@@ -41,9 +44,16 @@ div.topic {
 
 /* override alabaster.css */
 @media screen and (max-width: 870px) {
-    ul { margin-left: 30px; }
+  ul {
+     margin-left: 30px;
+  }
+  div.footer {
+    display: block;
+    width: 100%;
+  }
 }
+
 /* override basic.css */
 @media screen and (max-width: 480px) {
-    div.body { min-width: unset }
+  div.body { min-width: unset; }
 }
