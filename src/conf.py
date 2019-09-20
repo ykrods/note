@@ -113,6 +113,9 @@ blog_authors = {
 blog_default_author = 'ykrods'
 
 fontawesome_link_cdn = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+
+disqus_shortname = 'ykrods-note'
+
 # -- Blog Post Related --------------------------------------------------------
 
 post_date_format = '%Y-%m-%d'
