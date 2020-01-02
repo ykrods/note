@@ -1,59 +1,159 @@
-/* custom.css */
-div.body {
-  margin: 0 auto;
+body {
+    margin: 0px;
+    font-size: 17px;
+    font-family: "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "メイリオ", Meiryo, serif;
+    color: #222;
 }
+
+a {
+    color: #005B98;
+    text-decoration: none;
+    border-bottom: 1px dotted #005B98;
+}
+
+a:hover {
+    color: #4B0D43;
+    text-decoration: none;
+    border-bottom: 1px solid #4B0D43;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+}
+h1 { font-size: 1.6em; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+
 pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
+    font-family: Menlo, Consolas, sans-serif;
+    padding: 7px 30px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
-/* custom header */
-.header {
-  text-align: center;
-}
-.header--title {
-  font-size: 2.0em;
-  font-weight: bold;
-}
-.header--menu {
-  margin-left: 0;
-}
-.header--menu li {
-  display: inline-block;
-  font-size: 1.2em;
-  margin-right: 0.8em;
-}
-.header--menu li a {
-  text-decoration: none;
-}
-.header--menu li a:hover {
-  text-decoration: underline;
+/* 本文で ``foo`` と書いた時にcodeが使われる */
+code {
+    background-color: #f0f0f0;
+    color: #222;
 }
 
-/* article */
-.post-meta {
-  float: right;
-  width: 160px;
-  margin: 0 0 20px 30px;
-  list-style-type: none;
+header {
+    width: calc(100% - 340px);
+    margin: 0 auto;
+    text-align: center;
+    font-family: Georgia, serif;
+    border-bottom: 2px solid #005B98;
+}
+header .site-name {
+    font-size: 2em;
+    font-weight: bold;
+}
+header nav ul {
+    margin: 10px 0;
+    padding: 0;
+}
+header nav ul li {
+    display: inline-block;
+    font-size: 1.2em;
+    margin-right: 0.8em;
+}
+header nav ul li a {
+    border-bottom: none;
+}
+header nav ul li a:hover {
+    border-bottom: 1px solid #4B0D43;
 }
 
-div.topic {
-  width: calc(100% - 200px);
+div.document {
+    display: flex;
 }
 
-/* override alabaster.css */
-@media screen and (max-width: 870px) {
-  ul {
-     margin-left: 30px;
-  }
-  div.footer {
-    display: block;
-    width: 100%;
-  }
+div.documentwrapper {
+    margin: 0 0 0 170px;
+    width: calc(100% - 340px);
+    padding-bottom: 30px;
 }
 
-/* override basic.css */
-@media screen and (max-width: 480px) {
-  div.body { min-width: unset; }
+div.sphinxsidebar {
+    float: unset;
+    width: 160px;
+    margin: 0 0 0 10px;
+    line-height: 1.5em;
+}
+div.sphinxsidebar h2 {
+    margin: 20px 0 0 0;
+    padding: 0;
+    font-size: 1em;
+}
+div.sphinxsidebar ul {
+    padding: 0;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+div.sphinxsidebar a {
+    color: #666;
+    border-bottom: 1px dotted #666;
+}
+div.sphinxsidebar a:hover {
+    color: #4B0D43;
+    border-bottom: 1px solid #4B0D43;
+}
+
+footer {
+    width: calc(100% - 340px);
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: right;
+    font-size: 0.9em;
+    color: #666;
+    border-top: 2px solid #005B98;
+}
+
+footer a {
+    border-bottom: none;
+}
+footer a:hover {
+    border-bottom: 1px solid #4B0D43;
+}
+
+a.brackets, a.fn-backref, a.headerlink {
+    border: none;
+}
+a.brackets:hover, a.fn-backref:hover, a.headerlink:hover {
+    border-bottom: 1px solid #4B0D43;
+}
+
+div.note, div.tip {
+    background-color: #EEE;
+    border: 1px solid #CCC;
+}
+div.attention {
+    background-color: #FDD;
+    border: 1px solid #FCC;
+}
+
+/* align in table */
+.align-default {
+    text-align: left;
+}
+table.docutils {
+    border: 1px solid #666;
+}
+
+table.docutils th, table.docutils td {
+    border-bottom: 1px solid #666;
+    border-left: 1px solid #666;
+}
+
+/* mobile */
+@media screen and (max-width: 800px) {
+    header, footer, div.sphinxsidebar, div.documentwrapper {
+        margin: 0 auto;
+        width: 90%;
+    }
+    div.document {
+        display: block;
+    }
 }

@@ -5,9 +5,7 @@
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
-
 import ablog
-import alabaster
 
 # -- Path setup --------------------------------------------------------------
 
@@ -43,7 +41,6 @@ release = ''
 # ones.
 extensions = [
     'sphinx.ext.mathjax',
-    'alabaster',
     'ablog',
 ]
 
@@ -75,7 +72,7 @@ language = 'ja'
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'friendly'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -83,7 +80,7 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'basic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -92,7 +89,7 @@ html_theme = 'alabaster'
 # html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = [alabaster.get_path()]
+html_theme_path = []
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -116,20 +113,15 @@ fontawesome_link_cdn = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/cs
 
 disqus_shortname = 'ykrods-note'
 
-# -- Blog Post Related --------------------------------------------------------
-
+# -- Blog Post Related ----------------------------------------------
 post_date_format = '%Y-%m-%d'
 post_date_format_short = '%Y-%m-%d'
 
-# -- ABlog Sidebars -------------------------------------------------------
+# -- Sidebars -------------------------------------------------------
+html_sidebars = {
+    '**': ['postcard.html'],
+}
 
-# There are seven sidebars you can include in your HTML output.
-# postcard.html provides information regarding the current post.
-# recentposts.html lists most recent five posts. Others provide
-# a link to a archive pages generated for each tag, category, and year.
-# In addition, there are authors.html, languages.html, and locations.html
-# sidebars that link to author and location archive pages.
-html_sidebars = {}
-html_theme_options = {
-  'nosidebar': True,
+html_context = {
+    'ablog_version': ablog.__version__,
 }
