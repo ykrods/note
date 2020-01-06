@@ -11,7 +11,7 @@ pytest の Coverage の計算方法
 問題
 ======
 
-以下のサンプルでテストを実行し、 `pytest-cov <https://pypi.org/project/pytest-cov/>`_ でカバレッジを取得した場合、その値はいくつになるでしょう。なお ``branch`` オプションは無しです。
+以下のサンプルでテストを実行し、 `pytest-cov <https://pypi.org/project/pytest-cov/>`_ でカバレッジを取得した場合、その値はいくつになるでしょう。なお ``branch`` オプションは無効の状態で取得するものとします。
 
 .. code-block :: text
   :caption: directory layout
@@ -59,13 +59,13 @@ pytest の Coverage の計算方法
 この数値はどこから来たのか
 ===========================
 
-まず83%という数字自体については、表示されている Stmts=6, Miss=1 からカバーされている割合を出してるとみて良いでしょう。
+まず83%という数字自体については、表示されている Stmts=6, Miss=1 の値から算出しているとみて良いでしょう。
 
 .. math::
 
   (Stmts - Miss) / Stmts = 5 / 6 = 0.833...
 
-続いて Stmts, Miss の算出方法ですが、 pytest-cov は `Coverage.py <https://pypi.org/project/coverage/>`_ を pytest で使えるようにしたプラグインなので、 Coverage.py のドキュメントを読む必要があります。
+続いて Stmts, Miss の集計方法ですが、 pytest-cov は `Coverage.py <https://pypi.org/project/coverage/>`_ を pytest で使えるようにしたプラグインなので、 Coverage.py のドキュメントを読む必要があります。
 
 `How Coverage.py works <https://coverage.readthedocs.io/en/v4.5.x/howitworks.html>`_ によると
 
@@ -134,7 +134,7 @@ else についてはバイトコードの話になるのであまり掘り下げ
 
 まぁテストを考慮していない実装に対して新たにカバレッジ測定ツールを導入して100%まで持っていくのは当然辛いので、コストというのはそこから来ているんじゃ無いかという気もしますが。
 
-さいごに
+感想
 ==========
 
 branch オプションを有効にすれば分岐網羅の論理的な数値が出てくると思っていたが、行網羅に分岐のパターンが追加されるような実装になっていたので、ちょっと残念 [4]_ 。
@@ -144,4 +144,4 @@ branch オプションを有効にすれば分岐網羅の論理的な数値が�
 .. [1] 行網羅率はあまり馴染みがなかったので最初は命令網羅率(Statement Coverage)で計算してるものと勝手に思っていた。
 .. [2] `dis <https://docs.python.org/ja/3/library/dis.html>`_ で見てみるとそんな雰囲気がある
 .. [3] ``else`` 以外にも ``finally`` も除外される。把握していないが他にもきっとある。
-.. [4] フローチャートでの手計算した値と一致していれば網羅率の概念の説明からコードでの実演が綺麗に説明できる、という点で残念だったが、Coverage.py 自体は素晴らしい。
+.. [4] フローチャートで手計算した結果と分岐網羅率の出力結果が一致していれば 網羅率の概念の説明 > コードでの実演 という流れが綺麗にできるのでは？と期待したが... ともあれ、 Coverage.py 自体は素晴らしい。

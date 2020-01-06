@@ -6,12 +6,9 @@
 [覚書き] JavaScript で img 要素の画像データを取得する方法とCanvas汚染
 ===========================================================================
 
-ソース
-========
-
 MDNに解説があるので基本はそちらを参照されると良いと思う。
 
-- `Allowing cross-origin use of images and canvas - HTML: Hypertext Markup Language | MDN <https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image>`_
+`Allowing cross-origin use of images and canvas - HTML: Hypertext Markup Language | MDN <https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image>`_
 
 やりたいこと
 ==============================================
@@ -27,7 +24,7 @@ JavaScript で img 要素で読み込んだ画像のデータを取得する。
 方法
 ======
 
-canvas に一度画像を描写するとデータの取得ができる。
+canvas に一度画像を描写し、 ``toDataURL`` または ``toBlob`` を呼び出すことでデータの取得ができる。
 
 .. code-block:: javascript
 
@@ -47,18 +44,20 @@ canvas に一度画像を描写するとデータの取得ができる。
 汚染されたキャンバス( Tainted canvas )
 ==========================================
 
-キャンバスに対して CORS で許可されていない画像を ``drawImage()`` で描画した場合、そのキャンバスは「汚染された」状態になる。
+キャンバスに対して CORS で許可されていない画像を ``drawImage`` で描画した場合、そのキャンバスは「汚染された」状態になる。
 
-- 汚染されたキャンバスでも表示はできる
-- 汚染されたキャンバスで toDataURL や toBlob を使ってデータを取得しようとすると、 ``SecurityError`` が発生する。
+- 汚染されたキャンバスでもブラウザ上には表示される
+- 汚染されたキャンバスで ``toDataURL`` や ``toBlob`` を使ってデータを取得しようとすると、 ``SecurityError`` が発生する。
 
 img 要素の CORS 対応
 ======================
 
-認証を必要としない（一般に公開されている）画像の場合
+画像が別オリジンにある場合 img 要素の ``crossorigin`` 属性を指定し、CORSのアクセス許可をもらう必要がある。
+
+認証を必要としない画像の場合
 ------------------------------------------------------
 
-img 要素の ``crossorigin`` 属性を ``anonymous`` に設定する
+公開されている(誰でもアクセスできる＋CORS対応もされている)別オリジンの画像を対象にする場合、img 要素の ``crossorigin`` 属性を ``anonymous`` に設定する
 
 .. code-block:: html
 
@@ -85,15 +84,15 @@ cookieを使った認証、あるいは HTTP認証  [2]_ が必要な場合、 i
 
 - ただし cookie に ``SameSite`` 属性がついている場合は付与されない。
 
-リクエストする前に認証させるには別途仕組みを作る(別ウィンドウで別オリジンの認証ページを開くなど?)必要があるので、使い道は結構限定されると思われる。
-
 サーバ側は anonymous と異なる対応が必要。
 
 - ``Access-Control-Allow-Origin:`` ヘッダは呼び出し元のオリジンを明示的に示す必要がある
 
-  - credentials フラグ付きの場合は ``*`` だとブラウザ側で読み込みブロックされる [3]_
+  - credentials フラグ付きの場合は ``*`` だとブラウザ側で読み込みブロックされるため [3]_
 
 - ``Access-Control-Allow-Credentials: true`` ヘッダを返す [4]_
+
+use-credentials のユースケースとしては認証付きのCDNのコンテンツを表示するときなどに利用できそうだが、コンテンツのリクエストをする前に別オリジンの認証を行う（Cookieを受け取る）必要があり、使い道は限定されそうなイメージ。
 
 ちなみに
 ---------

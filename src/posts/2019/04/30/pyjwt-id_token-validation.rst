@@ -11,7 +11,7 @@ PyJWT を用いて、Google OAuth 2.0 API で取得した ID Token を検証す�
 .. note::
 
   - ID Token を取得する方法についてはここでは触れません。
-  - Pythonで簡単な検証アプリを作る場合は `tornado <https://www.tornadoweb.org/en/stable/auth.html>`_ の組み込みのmixinを使うと割合簡単にできます。
+  - Python で簡単な検証アプリを作る場合は `Tornado <https://www.tornadoweb.org/en/stable/auth.html>`_ の組み込みのmixinを使うと割合簡単にできます。
 
 ID Token とは
 ===========================
