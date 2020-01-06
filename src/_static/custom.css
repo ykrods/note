@@ -28,8 +28,7 @@ h3 { font-size: 1.2em; }
 pre {
     font-family: Menlo, Consolas, sans-serif;
     padding: 7px 30px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    overflow: scroll;
 }
 
 /* 本文で ``foo`` と書いた時にcodeが使われる */
