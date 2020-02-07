@@ -68,6 +68,7 @@ header nav ul li a:hover {
 
 div.document {
     display: flex;
+    flex-wrap: nowrap;
 }
 
 div.documentwrapper {
@@ -155,6 +156,12 @@ table.docutils th, table.docutils td {
         width: 90%;
     }
     div.document {
-        display: block;
+        flex-wrap: wrap;
+    }
+    div.documentwrapper {
+        order: 2; /* flex item */
+    }
+    div.sphinxsidebar {
+        order: 1; /* flex item */
     }
 }
