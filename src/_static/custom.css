@@ -3,6 +3,7 @@ body {
     font-size: 17px;
     font-family: "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "メイリオ", Meiryo, serif;
     color: #222;
+    overflow-wrap: break-word; /* anywhere is not support several browsers at 2020-02-07 */
 }
 
 a {
