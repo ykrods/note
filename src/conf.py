@@ -21,7 +21,7 @@ import ablog
 # -- Project information -----------------------------------------------------
 
 project = 'ykrods-note'
-copyright = '2019, ykrods'
+copyright = '2019-2020, ykrods'
 author = 'ykrods'
 
 # The short X.Y version
