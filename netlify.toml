@@ -1,4 +1,4 @@
 [build]
   base    = "."
   publish = "src/_website"
-  command = "cd src && ablog build"
+  command = "cd src && ablog build && cp -R ../.well-known _website/"

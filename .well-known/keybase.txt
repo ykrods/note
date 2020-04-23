@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/ykrods
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.ykrods.net
+  * I am ykrods (https://keybase.io/ykrods) on keybase.
+  * I have a public key ASBhMWHbx3cR221KXkekFRqPWQUFUM_Bt9mH9YG78Gjk4Ao
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120613161dbc77711db6d4a5e47a4151a8f59050550cfc1b7d987f581bbf068e4e00a",
+      "host": "keybase.io",
+      "kid": "0120613161dbc77711db6d4a5e47a4151a8f59050550cfc1b7d987f581bbf068e4e00a",
+      "uid": "1ebef9495819c8b74450cd9444204a19",
+      "username": "ykrods"
+    },
+    "merkle_root": {
+      "ctime": 1587609350,
+      "hash": "57536fa7b3ba99c83610d352c04099f67b5992b671c9fd15b62ab716c3a489c723113d43a48fc2f2069458809f6b73553e169a7c40ed2f8a8b88c9ae603c248e",
+      "hash_meta": "c85497456b14c5c5fd5531f2b7a79b6ff6e7fd62c7dafc8e818686f06de98a12",
+      "seqno": 16020622
+    },
+    "service": {
+      "entropy": "nCEpZKnoSlhDTetjhs0+cjpY",
+      "hostname": "www.ykrods.net",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.4.1"
+  },
+  "ctime": 1587609428,
+  "expire_in": 504576000,
+  "prev": "ba196bff468784cb5e1aa5eed5de7544bf468ffc4e8317f131c7304352439690",
+  "seqno": 12,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgYTFh28d3EdttSl5HpBUaj1kFBVDPwbfZh/WBu/Bo5OAKp3BheWxvYWTESpcCDMQguhlr/0aHhMteGqXu1d51RL9Gj/xOgxfxMccwQ1JDlpDEIC9T09oHmesCPfyqnSuPhVAFxop7QqXogQnAn1aBx7x8AgHCo3NpZ8RATyPx65vqia1PVaU5ZLk6f5Tu3ebSZ7GXURC2BYtR2oeIRFUBEkOlMc2ohmcSnScY9rBKIkfgrY+ImcQKcIdLBqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEINbUqzNML6CpDqTJgbWsCg9GWGMXPRvHbLMUZoK/iikLo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/ykrods
+
+==================================================================
