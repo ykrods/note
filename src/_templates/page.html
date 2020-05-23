@@ -1,0 +1,29 @@
+{#- forked from ablog/templates/page.html #}
+{%- extends "layout.html" %}
+{% set fa = ablog.fontawesome %}
+{%- block extrahead %}
+  {{ super() }}
+  {% if feed_path %}
+  <link rel="alternate" type="application/atom+xml"  href="{{ pathto(feed_path, 1) }}/atom.xml" title="{{ feed_title }}">
+  {% endif %}
+  {% if ablog.fontawesome_link_cdn%}
+  <link href="{{ ablog.fontawesome_link_cdn }}" rel="stylesheet">
+  {% elif ablog.fontawesome_css_file %}
+  <link rel="stylesheet" href="{{ pathto('_static/' + ablog.fontawesome_css_file, 1) }}" type="text/css" />
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {{ body }}
+  <div class="section">
+  {% if pagename in ablog %}
+    {% include "postnavy.html" %}
+  {% endif %}
+  {% if (pagename in ablog and ablog[pagename].published) %}
+    <div class="section">
+      <h2>Comments</h2>
+      {% include "utterances.html" %}
+    </div>
+  {% endif %}
+  </div>
+{% endblock %}
