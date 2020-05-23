@@ -31,6 +31,9 @@ Site Policy
   - - netlify
     - サイトのhtml生成とホスティング
     - https://www.netlify.com/privacy/
+  - - CloudFlare
+    - MathJax (数式表示のためのJavaScript)の配信、utterances
+    - https://www.cloudflare.com/privacypolicy/
   - - utterances (GitHub)
     - コメントの閲覧・投稿機能
     - - `utterances <https://github.com/utterance/utterances/blob/master/PRIVACY-POLICY.md>`_
