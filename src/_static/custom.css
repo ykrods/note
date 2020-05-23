@@ -4,6 +4,7 @@ body {
     font-family: "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "メイリオ", Meiryo, serif;
     color: #222;
     overflow-wrap: break-word; /* anywhere is not support several browsers at 2020-02-07 */
+    box-sizing: border-box;
 }
 
 a {
@@ -173,3 +174,12 @@ ul.postlist a {font-style: italic;}
 ul.postlist-style-disc {list-style-type: disc;}
 ul.postlist-style-none {list-style-type: none;}
 ul.postlist-style-circle {list-style-type: circle;}
+
+/* page.html */
+.page-share {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #EEE;
+  font-size: 0.8em;
+  color: #111;
+}
