@@ -46,8 +46,18 @@ Cookie とは、ウェブサーバからブラウザに向けて送信され、P
 
 このサイトのサーバとの直接の通信において Cookie は利用していませんが、サイト利用時に付随して発生する外部サイトへの通信の中には、Cookie を用いるものがあります。
 
-:utterances: コメント投稿のためのアクセストークンを保持する目的で Cookie が利用されます
-:Cloudflare: utterances は Cloudflare 上でホスティングされているようなので、Cloudfrare の規約に従う形で Cookie が利用されます。詳細は `こちら <https://support.cloudflare.com/hc/ja/articles/200170156-Cloudflare-Cookie%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B>`_
+.. list-table:: 利用サービス
+  :header-rows: 1
+  :widths: 30,70
+
+  - - サービス名
+    - 用途/参考リンク
+  - - utterances
+    - コメント投稿のためのアクセストークンを保持する目的で Cookie が利用されます
+  - - Cloudflare
+    - utterances は Cloudflare 上でホスティングされているようなので、Cloudfrare のポリシーに従う形でCookieが利用されます。
+
+      - `Cloudflare Cookieについて理解する <https://support.cloudflare.com/hc/ja/articles/200170156-Cloudflare-Cookie%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E7%90%86%E8%A7%A3%E3%81%99%E3%82%8B>`_
 
 コメントポリシー
 =================
