@@ -14,6 +14,7 @@ Table Of Contents
 
    about
    site-policy
+   contact
 
 Articles
 =========

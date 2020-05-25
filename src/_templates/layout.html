@@ -38,7 +38,7 @@
         <li><a href="{{ pathto(ablog.archive.docname) }}">ARCHIVES</a></li>
         <li><a href="{{ pathto(ablog.category.path) }}">CATEGORIES</a></li>
         <li><a href="{{ pathto(ablog.tags.path) }}">TAGS</a></li>
-        <li><a href="https://github.com/ykrods/note/issues/new">CONTACT</a></li>
+        <li><a href="{{ pathto('contact', 1) }}">CONTACT</a></li>
         <li><a href="{{ pathto(feed_path, 1) }}/atom.xml">RSS</a></li>
       </ul>
     </nav>
@@ -76,7 +76,9 @@
       {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
     {%- endif %}
   {%- endif %}
-  | Powered by <a href="https://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
-  | <a href="https://github.com/ykrods/note">Source</a>
+  | <a href="{{ pathto('site-policy', 1) }}">Site Policy</a>
+  <br>
+  Powered by <a href="https://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
+  | <a href="https://github.com/ykrods/note">Source
   </footer>
 {%- endblock %}

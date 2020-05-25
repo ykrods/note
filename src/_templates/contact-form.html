@@ -1,0 +1,31 @@
+<style>
+  .contact .row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .contact label {
+    flex: 20%;
+    text-align: right;
+    padding-right: 10px;
+  }
+  .contact input, textarea {
+    flex: 70%;
+  }
+</style>
+
+<form class="contact" name="contact" method="POST" data-netlify="true">
+  <p class="row">
+    <label for="contact-name">Name:</label>
+    <input id="contact-name" type="text" name="name" />
+  </p>
+  <p class="row">
+    <label for="contact-email">Email:</label>
+    <input id="contact-email" type="email" name="email" />
+  </p>
+  <p class="row">
+    <label for="contact-message">Message:</label>
+    <textarea id="contact-message" name="message" required rows="5"></textarea>
+  </p>
+  <p style="text-align:center"><button type="submit">Send</button></p>
+</form>
