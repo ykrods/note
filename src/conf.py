@@ -41,6 +41,7 @@ release = ''
 # ones.
 extensions = [
     'sphinx.ext.mathjax',
+    'sphinxcontrib.mermaid',
     'ablog',
 ]
 
