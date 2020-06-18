@@ -1,6 +1,6 @@
 .. post:: 2020-05-10
    :tags: Encryption, Emacs, EasyPG, GnuPG
-   :category: cryptography
+   :category: Cryptography
 
 .. meta::
   :description: Emacs で暗号化されたテキストを扱う方法と、利用にあたっての雑多なメモ

@@ -1,6 +1,6 @@
 .. post:: 2020-04-24
-   :tags: development process, review
-   :category: development process
+   :tags: レビュー
+   :category: Software Development Process
 
 .. meta::
   :description: レビューについて思うことのメモ

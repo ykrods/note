@@ -1,6 +1,6 @@
 .. post:: 2019-10-09
-  :tags: javascript, canvas, cors
-  :category: javascript
+  :tags: JavaScript, Canvas, CORS, 同一オリジンポリシー
+  :category: JavaScript
 
 ===========================================================================
 [覚書き] JavaScript で img 要素の画像データを取得する方法とCanvas汚染

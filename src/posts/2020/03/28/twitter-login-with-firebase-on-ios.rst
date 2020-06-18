@@ -1,6 +1,6 @@
 .. post:: 2020-03-28
-   :tags: iOS, Firebase, OAuth2
-   :category: iOS
+   :tags: iOS App, Firebase, OAuth2, Twitter Login
+   :category: iOS App
 
 .. meta::
   :description: TwitterKit (2018年10月末サポート終了)をつかったまま長いこと更新していなかったアプリを更新した時のメモ

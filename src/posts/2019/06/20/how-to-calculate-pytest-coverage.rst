@@ -1,6 +1,6 @@
 .. post:: 2019-06-20
   :tags: pytest, pytest-cov
-  :category: test
+  :category: Python
 
 ==============================
 pytest の Coverage の計算方法

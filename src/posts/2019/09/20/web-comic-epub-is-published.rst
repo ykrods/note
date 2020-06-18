@@ -1,6 +1,6 @@
 .. post:: 2019-09-20
   :tags: Chrome-extension
-  :category: 趣味開発
+  :category: Release
 
 ================================
 Chrome extension 作りました

@@ -1,6 +1,6 @@
 .. post:: 2020-01-29
-   :tags: Vue, javascript, documentation
-   :category: Vue
+   :tags: Vue.js, JavaScript, ドキュメンテーション
+   :category: JavaScript
 
 
 =============================================================

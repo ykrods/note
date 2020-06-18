@@ -1,6 +1,6 @@
 .. post:: 2020-04-21
-   :tags: RSA, digital signature, cryptography
-   :category: cryptography
+   :tags: RSA, Cryptography
+   :category: Cryptography
 
 .. meta::
   :description: 「RSAではメッセージを秘密鍵で暗号化して署名を生成する」は正しいのか

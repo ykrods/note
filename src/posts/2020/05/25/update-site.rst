@@ -1,6 +1,6 @@
 .. post:: 2020-05-25
    :tags: Netlify, Cookie, utteranc.es
-   :category: diary
+   :category: blog
 
 .. meta::
   :description: サイトの更新に当たっての雑多なメモ

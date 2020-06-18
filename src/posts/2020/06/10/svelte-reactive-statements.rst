@@ -1,6 +1,6 @@
 .. post:: 2020-06-10
-   :tags: Javascript, Svelte
-   :category: Javascript
+   :tags: JavaScript, Svelte
+   :category: JavaScript
 
 .. meta::
   :description: Svelte の Reactivite Statements について、実際の挙動を確認してみた。

@@ -1,6 +1,6 @@
 .. post:: 2019-07-01
-  :tags: 要件定義
-  :category: 受託開発
+  :tags: 要件定義, ドキュメンテーション
+  :category: Software Development Process
 
 ==============================
 開発の各工程における成果物
