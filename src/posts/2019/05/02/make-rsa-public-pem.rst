@@ -175,7 +175,18 @@ RSA の場合、以下のパラメータが定義されている [7]_
     - Exponent
     - Base64urlUInt-encoded された expornent。 よく使われる ``e=65537`` の場合、 ``AQAB`` という値になる
 
-なお、 Base64urlUInt-encoded は 符号なしの 0以上の整数を big-endian で Base64url エンコードしたもの。
+なお、 Base64urlUInt-encoded は 0以上の整数を符号なし big-endian でオクテット列として表現したものを Base64url エンコードしたもの。
+
+::
+
+  # e=65537 の例
+  65537
+  => 0x10001                      ; 16進数表現
+  => 00000001 00000000 00000001   ; 2進数表現 (unsigned big-endian octet sequence)
+  => 000000 010000 000000 000001  ; base64変換(1) 6ビットずつ分割
+  =>      A      Q      A      B  ; base64変換(2) 文字列変換
+  => AQAB
+
 
 実験
 ======
@@ -184,10 +195,14 @@ RSA の場合、以下のパラメータが定義されている [7]_
 
 (ここから実装タイムに入る予定だったがここまでまとめるので疲れたので別の機会に..
 
+.. update:: 2020-06-18
+
+  ASN.1 のパディングのルール等がややこしくバイナリレベルで実装するのが大変だったため `pyasn1 <https://pypi.org/project/pyasn1/>`_ の力を借りてつくったものが `こちら <https://github.com/ykrods/note/blob/master/src/posts/2019/05/02/rsa_key_pyasn1.py>`_
+
 結論
 =====
 
-「論理上」JWKからPEMに問題なく変換できる。
+JWK から PEM に問題なく変換できる。
 
 参考
 ======
