@@ -1,7 +1,7 @@
 body {
     margin: 0px;
     font-size: 17px;
-    font-family: "ヒラギノ明朝 Pro W3", "Hiragino Mincho Pro", "メイリオ", Meiryo, serif;
+    font-family: "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", Meiryo, "メイリオ", serif;
     color: #222;
     overflow-wrap: break-word; /* anywhere is not support several browsers at 2020-02-07 */
     box-sizing: border-box;
@@ -21,7 +21,7 @@ a:hover {
 
 h1, h2, h3, h4, h5, h6 {
     padding: 0;
-    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
+    font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Meiryo, "メイリオ", sans-serif;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
