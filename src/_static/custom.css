@@ -49,6 +49,20 @@ code {
     color: #222;
 }
 
+dl.field-list dt {
+    padding: 5px;
+    border: solid #CCC;
+    border-width: 1px 1px 0 1px;
+}
+dl.field-list dd {
+    padding: 5px;
+    border: solid #CCC;
+    border-width: 1px 1px 0 0;
+}
+dl.field-list dt:nth-last-child(2), dl.field-list dd:last-child {
+    border-bottom: 1px solid #CCC;
+}
+
 header {
     width: calc(100% - 340px);
     margin: 0 auto;

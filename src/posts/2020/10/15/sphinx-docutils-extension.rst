@@ -1,4 +1,4 @@
-.. post::
+.. post:: 2020-10-15
    :tags: Sphinx
    :category: Python
 
@@ -25,10 +25,10 @@ Sphinx (Docutils) の拡張を触って得た知識とTIPS
 reStructuredText, Docutils, Sphinx についてまず整理する。
 
 * reStructuredText は軽量マークアップ言語の一つであり、拡張可能な構文を有している。
-* Docutils は reStructuredText を html など別形式に変換するテキスト処理システムであり、  reStructuredText の拡張も対応している。
+* Docutils は reStructuredText をパースして html など別形式に変換するテキスト処理システムであり、  reStructuredText の拡張にも対応している。
 * Sphinx は Docutils を拡張し、ドキュメントを構成できるようにしたもの
 
-  * Docutils は基本的に rst ファイルを独立した文書として扱うが、Sphinx は別ファイルへの参照など、ファイル間の繋がりも扱うことができる
+  * Docutils は基本的に単体の rst ファイルを独立した文書として扱うが、Sphinx は別ファイルへの参照など、ファイル間の繋がりを扱うことができる
   * Sphinx の機能の多くが Docutils の拡張として定義されており、さらに Sphinx ユーザが拡張を行うための独自のイベントフックや、拡張を容易にするAPI群を提供している。
 
 用語
@@ -83,6 +83,8 @@ Translator (Visitor)
 
 * docutils で拡張されたノードを扱うには Translator に ``visit_{node_name}`` と ``depart_{node_name}`` 関数をねじ込む
 
+  * この方法は Sphinx の内部実装を参考にしたが、Docutils の拡張として公開する場合は NodeVisitor(Translator), Writer をそれぞれ継承した新しいクラスをつくった方が良いかもしれない（コードがわかりにくくなるので）
+
   .. code-block:: python
 
     from docutils import nodes
@@ -134,6 +136,8 @@ Translator (Visitor)
 
 
 * Translator は Visitor パターンで実装されており、変数名が visitor になっていることもある
+* 独自のノードを追加する場合、上記例のような html だけの対応では tex など他の出力でエラーになってしまい、汎用性が失われてしまう。とはいえ全ての形式に対応するのも結構な手間と知識が要求されるため、可能なら既存のノードを応用する方が望ましい。
+
 
 Environment と Domain
 ----------------------------------
@@ -172,9 +176,9 @@ TIPS
 
 * キャッシュが有効な場合、独自に定義したディレクティブの ``Directive.run`` が呼び出されない
 
-  * `チュートリアル` に書いてあるが、Sphinx は rstファイルをパースした結果を ``.doctrees`` ディレクトリ以下にキャッシュする。キャッシュが有効な場合、rstのパース処理をスキップするので、 ``Directive.run`` が呼び出されなくなる
+  * 上にも少し書いたが、Sphinx は rstファイルをパースした結果を ``.doctrees`` ディレクトリ以下にキャッシュする。キャッシュが有効な場合、rstのパース処理をスキップするので、 ``Directive.run`` が呼び出されなくなる
   * 対応としては ``sphinx-build`` コマンドに ``-E`` オプションを渡すか、単純に ``.doctrees`` ディレクトリを消す。
-  * 余談だが environment は拡張の実行時のバージョンも保持しており、その情報は再ビルド時のキャッシュの有効判定に利用される。このことから ``setup`` 関数で返す拡張のバージョン情報は適切に更新した方がよいと言える。
+  * 余談だが environment は拡張の実行時のバージョンも保持しており、その情報は再ビルド時のキャッシュの有効判定に利用される。このため ``setup`` 関数で返す ``env_version`` など、拡張のバージョン情報は適切に更新した方がよいだろう。
 
 * printデバッグする時は、 ``sphinx-build`` コマンドに ``-v`` オプションをつける
 
@@ -196,6 +200,8 @@ TIPS
 とりあえずTIPSを書いておこうと思って、ついでなので基本知識も整理しておこうと思ったら際限なく広がっていって困った。あとリファレンス周りを自分が触っていたのでそっちに内容が偏った印象があるが、まぁクロスリファレンスを持てるのが Sphinx の特徴なのでちょうど良いでしょう（きっと）。
 
 TIPSの方が少ないので何かしら知見を得たら追記していきたい。
+
+Sphinx のメンテナでいらっしゃる @tk0miya さんが `Inside Sphinx <https://booth.pm/ja/items/1576243>`_ という書籍を出版されているのでそちらも参考になると思います。凄まじい勢いでコントリビュートされている tk0miya さんを応援しよう！
 
 参考
 =====
