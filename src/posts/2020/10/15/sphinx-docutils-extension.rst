@@ -192,7 +192,7 @@ TIPS
 
 * Sphinx のイベントハンドラについて、コールバックは他の拡張や Sphinx 本体でも登録されている可能性があるので、その前提で実装を行う。可能なら「そのコールバックで扱うべきイベントかを判定する」ような実装をすると良さそう。
 
-  * 例えば、 ``missing-reference`` イベントはクロスリファレンスが解決できなかった際に発生するが、 ``missing-reference`` をイベントを拾ってコールバックで解決を試みるような実装は ``sphinx.ext.intersphinx`` でされている。 intersphinx のコールバックで解決される可能性があるので、自前のコールバックで参照が解決できなかったとしても例外を投げたりエラーログを残す必要はない。自前のコールバックで解決すべき未解決の参照なのかどうかを判定できるのであれば別。
+  * 例えば、 ``missing-reference`` イベントはクロスリファレンスが解決できなかった際に発生するが、 ``missing-reference`` をイベントを拾ってコールバックで解決を試みるような実装は ``sphinx.ext.intersphinx`` でされている。 intersphinx のコールバックで解決される可能性があるので、自前のコールバックで参照が解決できなかったとしても例外を投げたりエラーログを残す必要はない。ただし、自前のコールバックで解決すべき未解決の参照なのかどうかを判定できるのであれば別。
 
 さいごに
 =========
@@ -201,7 +201,10 @@ TIPS
 
 TIPSの方が少ないので何かしら知見を得たら追記していきたい。
 
-Sphinx のメンテナでいらっしゃる @tk0miya さんが `Inside Sphinx <https://booth.pm/ja/items/1576243>`_ という書籍を出版されているのでそちらも参考になると思います。凄まじい勢いでコントリビュートされている tk0miya さんを応援しよう！
+唐突なダイマ
+-------------
+
+Sphinx のメンテナでいらっしゃる @tk0miya さんが `Inside Sphinx <https://booth.pm/ja/items/1576243>`_ という書籍を出版されているのでそちらも参考になると思います [1]_ 。購入して凄まじい勢いでコントリビュートされている tk0miya さんを応援しよう！
 
 参考
 =====
@@ -212,3 +215,7 @@ Sphinx のメンテナでいらっしゃる @tk0miya さんが `Inside Sphinx <h
 * `用語集 — Sphinx 4.0.0+/e4e5ee333 ドキュメント <https://www.sphinx-doc.org/ja/master/glossary.html>`_
 * `ファイルを超えてリンクを貼る (domain#resolve_xref() のすゝめ) - Hack like a rolling stone <https://tk0miya.hatenablog.com/entry/2014/07/29/122535>`_
 * `Sphinx ではどのようにラベルとキャプションを結びつけているのか - Hack like a rolling stone <https://tk0miya.hatenablog.com/entry/2014/08/11/003957>`_
+
+.. rubric:: Footnotes
+
+.. [1] この記事を書いてから存在を知った..
