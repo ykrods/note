@@ -1,6 +1,10 @@
-package com.example.mysafapplication
+/**
+ * SDKバージョンを加味しつつ、 MediaStore でファイルを保存するサンプル
+ *
+ * Android Studio が自動生成した MainActivity を流用しているので一部無関係なコードがある
+ */
+package com.example.mymsapplication
 
-import android.app.Activity
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
@@ -12,7 +16,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,32 +25,7 @@ import java.io.FileOutputStream
 import java.io.FileWriter
 import java.util.*
 
-/**
- * SDKバージョンを加味しつつ、 MediaStore でファイルを保存するサンプル
- *
- * * getExternalStorageDirectory が非推奨 になった件の対応
- * * MainActivity は Android Studio の自動生成のものを流用
- *
- * 仕様上の注意
- *
- * * Android の Files アプリから参照・削除できるので確実にファイルが残るわけではない
- * * アプリ固有のデータはアプリ固有のディレクトリ（ただしアンインストール時に消える）に入れた方が良いと書いてある
- *   のであまり行儀の良い使い方ではないかもしれない
- *
- * 実装上のポイント
- *
- * * コレクションに追加するときは DISPLAY_NAME に拡張子を含まないのにクエリするときは拡張子必要なのが罠
- * * マニフェストに ``android:requestLegacyExternalStorage="true"`` を追加して、targetSdkVersion 29 でビルドする
- *
- * メモ
- *
- * * Device File Explorer で ``/storage/emulated`` 以下が ``ls: /storage/emulated: Permission denied``
- *   のようなエラーメッセージが表示される場合、ADV Manager で端末リセット(Wipe Data) を行うと解決する場合がある。
- *   また、 ``/sdcard`` や ``/storage/self/primary`` 等では表示できる場合がある
- *
- * * 作成したファイル or ディレクトリが表示されない場合、親ディレクトリを右クリック > Synchronize で表示される場合がある
- * * shouldShowRequestPermissionRationale がどういう条件で値が変わるのかよくわからん
- */
+
 class MainActivity : AppCompatActivity() {
     private val permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     private val activityRequestCode = 108
@@ -59,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
 
-            saveToPersistentStorage("${Date()}")
+            requestPermissionAndSaveFile("${Date()}")
         }
     }
 
@@ -95,23 +73,72 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveToPersistentStorage(content: String) {
+    /**
+     * アプリがアンインストールされても消えないファイルを保存したいもの
+     */
+    private fun requestPermissionAndSaveFile(content: String) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // パーミッション不要で書き込み可能
+            // SDK API 22 (Android 6.0 Marshmallow) より前はパーミッションが不要
             saveFile(content)
-        } else if (Build.VERSION.SDK_INT in Build.VERSION_CODES.M .. Build.VERSION_CODES.P) {
-            // SDK API 22 (Android 6.0 Marshmallow) 以降はパーミッションが必要
-            saveFileLegacyExternalStorage(this, content)
         } else {
-            // SDK API 29 以降
-            saveFileByMediaStore(content)
+            val context = this as Context
+
+            when {
+                context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED -> {
+                    saveFile(content)
+                }
+                shouldShowRequestPermissionRationale(permission) -> {
+                    AlertDialog.Builder(context)
+                            .setMessage(R.string.request_permission_rationale_message)
+                            .setPositiveButton(R.string.ok) { _, _ ->
+                                ActivityCompat.requestPermissions(
+                                        this,
+                                        arrayOf(permission),
+                                        activityRequestCode,
+                                )
+                            }
+                            .create()
+                            .show()
+                }
+                else -> {
+                    ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(permission),
+                            activityRequestCode,
+                    )
+                }
+            }
         }
     }
 
     /**
-     * 書き込み権限がある前提で外部ストレージにファイルを保存する
+     * 書き込み権限がある前提でファイルを保存する
      */
     private fun saveFile(content :String) {
+        // ファイルがあったら何かする
+        println(loadLegacyFile())
+
+        val uri = dataUri() ?: return
+        println(uri)
+
+        contentResolver.openFileDescriptor(uri, "w", null).use {
+            FileOutputStream(it!!.fileDescriptor).use { outputStream ->
+                outputStream.write(content.toByteArray())
+            }
+        }
+    }
+
+    private fun loadLegacyFile(): String? {
+        val dataDir = Environment.getExternalStorageDirectory().path + "/MyApp/data"
+
+        val f = File("$dataDir/info")
+        return if (f.exists()) { f.readText() } else null
+    }
+
+    /**
+     * (debug) レガシーのファイルを作る
+     */
+    private fun saveLegacyFile() {
         val dataDir = Environment.getExternalStorageDirectory().path + "/MyApp/data"
 
         if (!File(dataDir).exists()) {
@@ -119,46 +146,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         FileWriter("$dataDir/info", false).use {
-            it.write(content)
-        }
-
-        println(dataDir)
-    }
-
-    /**
-     *   SDK API 22 ~ 28 のパーミッションを取得して外部ストレージにファイルを保存する
-     */
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun saveFileLegacyExternalStorage(activity: Activity, content: String) {
-        val context = activity as Context
-
-        when {
-            context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED -> {
-                saveFile(content)
-            }
-            shouldShowRequestPermissionRationale(permission) -> {
-                AlertDialog.Builder(context)
-                    .setMessage(R.string.request_permission_rationale_message)
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        ActivityCompat.requestPermissions(
-                                activity,
-                                arrayOf(permission),
-                                activityRequestCode,
-                        )
-                    }
-                    .create()
-                    .show()
-            }
-            else -> {
-                ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(permission),
-                        activityRequestCode,
-                )
-            }
+            it.write("FOOOO")
         }
     }
-
 
     /**
      * MediaStore を利用してファイルを保存するための Uri を取得する
@@ -207,18 +197,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         return null
-    }
-
-    /**
-     * MediaStore を利用してファイルを保存する
-     */
-    private fun saveFileByMediaStore(content: String) {
-        val uri = dataUri() ?: return
-        println(uri)
-        contentResolver.openFileDescriptor(uri, "w", null).use {
-            FileOutputStream(it!!.fileDescriptor).use { outputStream ->
-                outputStream.write(content.toByteArray())
-            }
-        }
     }
 }
