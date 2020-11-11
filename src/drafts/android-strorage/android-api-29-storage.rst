@@ -1,10 +1,14 @@
-.. post:: 2020-11-10
+.. post::
   :tags: Android, Kotlin
   :category: Android
 
 =======================================================================
 [memo] Android の getExternalStorageDirectory が非推奨な件の対応例
 =======================================================================
+
+.. tip::
+
+  scoped storage をオプトアウトしてデータマイグレーションしてから本対応、というシナリオを想定して書いたが、無理くさい上にオプトインしてからもすんなり動いてくれそうにないので、一旦ボツに
 
 Android 10 Q (API level 29) 以降、getExternalStorageDirectory() が非推奨になったので、代替案を模索した
 
@@ -36,15 +40,13 @@ scoped storage
 
 具体的には scoped storage は以下のような挙動をする
 
-* ファイルの新規作成、およびアプリが所有するファイルの更新については特に権限を必要とせずに行うことができる。
-
-  * 別のアプリが所有する同名のファイルが存在する場合は「foo(1).mp3」のような別名で保存されるのでエラーにはならない
-
 * MediaStore で条件に一致するファイルをクエリする場合、権限のあるファイルのみが検索対象となる
 
-ただし、アプリのパーミッションで ``READ_EXTERNAL_STORAGE``, ``WRITE_EXTERNAL_STORAGE`` 権限が与えられている場合は所有していないファイルも扱うことができる。
+  * ただし、アプリのパーミッションで ``READ_EXTERNAL_STORAGE`` 権限が与えられている場合は所有していないファイルも対象に含めることができる。
 
-* ``XXX:`` Android 11 (API level 30) の場合は READ だけが書いてあるが、WRITE は不要になったのか？
+* ファイルの新規作成、およびアプリが所有するファイルの更新については特に権限を必要とせずに行うことができる。
+
+* 別のアプリのファイルを更新する場合は、バージョンによって必要な権限が異なるようなので、後述
 
 一点注意したいのは、アプリを再インストールした場合は所有権は別扱いになるため、アプリを削除する前に作成したファイルを読み取るには ``READ_EXTERNAL_STORAGE`` 権限が必要になる。
 
@@ -59,7 +61,14 @@ scoped storage
 
 * scoped storage が有効な場合
 
-  * 扱いたいファイルの性質に合わせて、 ``READ_EXTERNAL_STORAGE``, ``WRITE_EXTERNAL_STORAGE`` が必要
+  以下の例を見ると例外を拾って書き込み許可を得るインテントを表示させるような流れに見えるが
+
+  * https://developer.android.com/training/data-storage/shared/media#update-other-apps-files
+  * https://developer.android.com/training/data-storage#permissions
+
+  以下の記述によると Android 10 (API level 29) では WRITE_EXTERNAL_STORAGE があれば上書きできる風に見える
+
+  * https://developer.android.com/training/data-storage#scoped-storage
 
 今回の場合、getExternalStorageDirectory() で取得したディレクトリ以下のデータを取得してデータマイグレーションすることも視野に入れ、scoped storage をオプトアウトする。 (なので実は scoped storage の所有権とパーミッションについては現状知らなくてよかった)
 
