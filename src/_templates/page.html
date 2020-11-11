@@ -15,12 +15,13 @@
 
 {% block body %}
   {{ body }}
-  <div class="section">
-  {% if pagename in ablog %}
-    {% include "postnavy.html" %}
-    <div style="clear:both;"></div>
-  {% endif %}
+
   {% if (pagename in ablog and ablog[pagename].published) %}
+    <div class="section">
+      <h2>Comments</h2>
+      {% include "utterances.html" %}
+    </div>
+
     <div class="section">
       <div class="page-share">
         {% set share_title = title + " — " + ablog.blog_title %}
@@ -37,10 +38,12 @@
         </p>
       </div>
     </div>
-    <div class="section">
-      <h2>Comments</h2>
-      {% include "utterances.html" %}
+
+    {% include "postnavy.html" %}
+
+    <div class="section recommend">
+      <h2>Recommends</h2>
+      {% include "recommends.html" %}
     </div>
   {% endif %}
-  </div>
 {% endblock %}

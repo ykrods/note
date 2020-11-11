@@ -121,6 +121,14 @@ html_sidebars = {
     '**': ['postcard.html'],
 }
 
+# -- Customization
+recommendeds = {
+    'posts/2020/09/16/indie-tracker-0.1.0-released/': 'ポータブルなプロジェクト管理システム: Indie Tracker というのを作りました',
+    'posts/2020/04/25/review-on-web-system-development/': 'Webシステム開発でのレビュー範囲',
+    'posts/2020/04/22/produce-signature-from-message-and-private-key/': 'メッセージと秘密鍵から署名を生成する',
+}
+
 html_context = {
     'ablog_version': ablog.__version__,
+    'recommendeds': recommendeds,
 }

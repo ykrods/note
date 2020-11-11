@@ -1,0 +1,7 @@
+<ul>
+  {% for name,title in recommendeds.items() %}
+  {% if name != pagename + '/' %}
+    <li><a href="{{ pathto(name, 1) }}">{{ title }}</a></li>
+  {% endif %}
+  {% endfor %}
+</ul>

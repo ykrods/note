@@ -200,9 +200,26 @@ ul.postlist-style-circle {list-style-type: circle;}
 
 /* page.html */
 .page-share {
-  margin-top: 10px;
+  margin: 10px 0 20px 0;
   padding: 10px;
   background-color: #EEE;
   font-size: 0.8em;
   color: #111;
+}
+
+/* postnavy.html */
+.postnavy {
+  display: flex;
+  align-items: center;
+}
+.postnavy div {
+  flex: 1;
+  font-size: 0.9em;
+}
+.postnavy .nav-icon {
+  flex: 0 20px;
+  margin: 0 5px;
+}
+.recommends {
+  font-size: 0.9em;
 }
