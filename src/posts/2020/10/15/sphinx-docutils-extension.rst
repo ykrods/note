@@ -194,6 +194,36 @@ TIPS
 
   * 例えば、 ``missing-reference`` イベントはクロスリファレンスが解決できなかった際に発生するが、 ``missing-reference`` をイベントを拾ってコールバックで解決を試みるような実装は ``sphinx.ext.intersphinx`` でされている。 intersphinx のコールバックで解決される可能性があるので、自前のコールバックで参照が解決できなかったとしても例外を投げたりエラーログを残す必要はない。ただし、自前のコールバックで解決すべき未解決の参照なのかどうかを判定できるのであれば別。
 
+* doctree の構造を確認したい場合
+
+  * Sphinx で変換 => .doctrees 以下のファイルを見てみる
+
+    * 参考: `中間ファイル *.doctree の内容をみてSphinxがどのようにreSTをparseしているか知りたい — Python製ドキュメンテーションビルダー、Sphinxの日本ユーザ会 <https://sphinx-users.jp/reverse-dict/system/doctree.html>`_
+
+  * docutils で変換 => docutils に同梱の ``rst2pseudoxml.py`` を使う
+
+    例)
+
+    .. code-block:: restructuredtext
+      :caption: sample.rst
+
+      foo
+      =======
+
+      * bar
+
+    .. code-block:: shell
+
+      $ rst2pseudoxml.py sample.rst
+      <document ids="foo" names="foo" source="sample.rst" title="foo">
+          <title>
+              foo
+          <bullet_list bullet="*">
+              <list_item>
+                  <paragraph>
+                      bar
+
+
 さいごに
 =========
 
