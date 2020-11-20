@@ -43,6 +43,11 @@ pre {
     overflow-wrap: normal;
 }
 
+blockquote {
+  border-left: 3px solid #AAA;
+  padding-left: 10px;
+}
+
 /* 本文で ``foo`` と書いた時にcodeが使われる */
 code {
     background-color: #f0f0f0;
