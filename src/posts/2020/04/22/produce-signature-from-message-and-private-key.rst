@@ -11,7 +11,7 @@
 
 「RSAではメッセージを秘密鍵で暗号化して署名を生成する」は正しいのか
 
-状況説明
+背景
 =========
 
 デジタル署名についてインターネットを検索するとその仕組みを解説したページが複数ヒットしますが、同時にその説明は間違ってるよというブログ等での指摘も複数出てきます。
@@ -41,11 +41,10 @@ JIS X 0008 は 2017/12/20 に廃止された様で、閲覧できませんでし
 encryption という用語
 ======================
 
-`RFC 4949 - Internet Security Glossary, Version 2 <https://tools.ietf.org/html/rfc4949>`_ から引用すると
+`RFC 4949 - Internet Security Glossary, Version 2 <https://tools.ietf.org/html/rfc4949>`_ から引用します。
 
-::
 
-  $ encryption
+    $ encryption
 
       1. (I) Cryptographic transformation of data (called "plain text")
       into a different form (called "cipher text") that conceals the
@@ -54,6 +53,7 @@ encryption という用語
       transformation that restores encrypted data to its original form.
       (See: cryptography.)
 
+
 ::
 
   # 拙訳
@@ -61,53 +61,91 @@ encryption という用語
   データ（プレーンテキスト）から異なる形式（暗号文）への暗号変換。
   対応する逆の処理 (暗号化されたデータを元の形式に戻す変換) は "復号化(decryption)" 。
 
-他者に対する許可・不許可については直接的には書いていない様です。とはいえ、秘匿(conceal) という言葉にそのニュアンス（不許可）は含まれているとは思います。
+特定の相手のみが解読できる、という点については直接的な表現はありませんが、「秘匿(conceal)し、オリジナルの形式を利用されることを防ぐ」というフレーズにはそのニュアンスは含まれていると思えます。
 
-例えばこの定義で行くと、「RSAではメッセージを秘密鍵で秘匿されたデータに変換して署名を生成する」という言い換えができるハズですが、署名が秘匿情報かというとそうではないという気がします。
+例えばこの定義で行くと、「RSAではメッセージを秘密鍵で秘匿し、オリジナルの形式が利用されることを防ぐためのデータに変換して署名を生成する」という言い換えができるはずですが、署名は秘匿された情報でもなければ、オリジナルのデータと一緒に送信する以上オリジナルの形式が利用されることを防ぐものでもないので、定義に合致していないと言えます。 [1]_
 
-はっきりしないので別の文章も見ましょう。
+ここまでで「定義上は合ってないんじゃない？」と思えますが、明確に違うという記述も無いので別の文章も見ましょう（まぁ悪魔の証明的な感がありますが）。
 
 技術文書上の記載
 ==================
 
-他の技術文章でどういう使われ方をされているかという事で、RSA関連文書を時系列順に並べました。
+他の技術文章でどういう使われ方をされているかという事で、関連文書を時系列順に並べました。
 
-A Method for Obtaining DigitalSignatures and Public-Key Cryptosystems
+New Directions in Cryptography
+----------------------------------
+
+:著者: Diffie, Hellman
+:公開: 1976年
+:原文: `New Directions in Cryptography <https://ee.stanford.edu/~hellman/publications/24.pdf>`_
+
+この論文はRSAが世に出る前のものですが、流れを追う意味で触れておきます。
+
+この論文で初めて公開鍵暗号という新しいコンセプトが公表されました。それは既存の共通鍵暗号が持つ鍵配送問題を解決する大変に革新的なものでしたが、それを実現する鍵となる一方向関数はこの時点で見つかっていませんでした。 [2]_
+
+この論文が署名とどう関わってくるかですが、この論文中では公開鍵暗号の応用でデジタル署名も実現できることが示されており、手順として以下のように説明されています。
+
+    A public key cryptosystem can be used to produce a true one-way authentication system as follows. If user A wishes to send a message M to user B, he “deciphers” it in his secret deciphering key and sends :math:`D_A(M)`. When user B receives it, he can read it, and be assured of its authenticity by “enciphering” it with user A’s public enciphering key :math:`E_A`.
+
+    ( IV. One-Way AUTHENTICATION より引用
+
+ここで使われているのは “decipher”です。 cipher は電子化以前も含んだ「暗号」（有名な例としてはエニグマなど）を表すので、あえて表現するなら「メッセージを“解読”して署名を生成」となります。当然、平文を解読というのはよく話からない話ですが、引用符を使っていることからも分かる通り単語をそのままの意味では使っていないと見るのが妥当で、あくまで手段として decipher と同じ変換をすることで署名ができるということでしょう。
+
+
+A Method for Obtaining Digital Signatures and Public-Key Cryptosystems
 ------------------------------------------------------------------------
 
 :著者: Ron Rivest, Adi Shamir, Leonard Adleman
 :公開: 1977年
-:資料: `A Method for Obtaining DigitalSignatures and Public-Key Cryptosystems <https://people.csail.mit.edu/rivest/Rsapaper.pdf>`_
+:資料: `A Method for Obtaining Digital Signatures and Public-Key Cryptosystems <https://people.csail.mit.edu/rivest/Rsapaper.pdf>`_
 
-RSA はこの論文の著者三名の頭文字をとって命名されたもので、この論文内ではまだ RSA という単語自体でてきていません。時代背景について触れておくと、公開鍵を使った暗号化・署名という画期的なコンセプトが誕生したのが前年1976年の Diffie, Hellman らの `New Directions in Cryptography <https://ee.stanford.edu/~hellman/publications/24.pdf>`_ で、そのコンセプトを現実的なシステムに落とし込むための鍵となる一方向関数を発見したのが、リヴェスト・シャミア・アドルマンの３人ということになります [1]_ 。
+New Directions in Cryptography が公開された翌年、前述した一方向関数を発見したのが、リヴェスト・シャミア・アドルマンの３人になります [3]_ 。
 
-この論文内ではまだ private key という名称も使われていないのですが、encrypt/decrypt の応用で署名も実現できることが示されています。
+ちなみに RSA はこの論文の著者三名の頭文字をとって命名されたものですが、この論文内ではまだ RSA という単語自体でてきていません。
 
-つまり、「メッセージを秘密鍵で暗号化」と解釈はできるものの、その暗号化は目的でなく手段ということです。
+この論文では署名について以下のように記されています。
 
+
+    How can user Bob send Alice a “signed” message M in a public-key cryptosystem?
+    He first computes his “signature” S for the message M using :math:`D_B`:
+
+    .. math::
+
+       S = D_B(M) .
+
+    (Deciphering an unenciphered message “makes sense” by property (d) of a publickey cryptosystem: each message is the ciphertext for some other message.)
+
+    ( IV Signatures より引用
+
+文章としては 「Bob の復号鍵でメッセージに対する署名を計算する」で、何をしているかというと Deciphering です。カッコ書きで書かれていることから「（奇妙に思うだろうけど）平文を解読(復号)することには意味があります」というようなニュアンスになるかと思います。
+
+ちなみに、この論文内では encipher / decipher と encrypt / decrypt を区別なく利用しているように読めるので復号どちらを使っても問題ないと思われます。（decryption key という単語が出てくるので、復号で統一でもいいかもしれない）。
 
 RFC 2313 - PKCS #1: RSA Encryption Version 1.5
 -------------------------------------------------
 
 :公開: 1998年5月
 
-PKCS #1 は RSA Security LLC (上述した３人により設立された会社）により作成された標準であり、Version1.5以降はRFCとして発行されています。
+PKCS #1 は RSA Security LLC (上述した３人により設立された会社）により作成された標準です。Ver 1.0 - 1.3 は 1991年に非公開で発行され、Ver 1.4 は同年に NIST/OSI 実装者向けワークショップドキュメント SEC-SIG-91-18 として発行されています。RSA暗号の特許は1983年に取得され2000年まで有効だったので、その辺りの事情に合わせて Ver 1.5 になってからRFC化されたものと思われます。
 
-ちなみに Ver 1.0 - 1.3 は 1991年に作成されたらしいですが、社外秘的な文章だったようです。
+Ver1.5 での注目すべき文章を `10.1 Signature process <https://tools.ietf.org/html/rfc2313#section-10.1>`_ から引用します。
 
-Ver1.5 での注目すべき文章を `10.1.3 RSA encryption <https://tools.ietf.org/html/rfc2313#section-10.1.3>`_ から引用します。
 
-::
+    10.1 Signature process
 
-  10.1.3 RSA encryption
+    The signature process consists of four steps: message digesting, data
+    encoding, RSA encryption, and octet-string-to-bit-string conversion.
 
-  The data D shall be encrypted with the signer's RSA private key as
-  described in Section 7 to give an octet string ED, the encrypted
-  data. The block type shall be 01. (See Section 8.1.)
+    (中略)
+
+    10.1.3 RSA encryption
+
+    The data D shall be encrypted with the signer's RSA private key as
+    described in Section 7 to give an octet string ED, the encrypted
+    data. The block type shall be 01. (See Section 8.1.)
+
 
 ここで、明確に「秘密鍵で暗号化」と書いてあることがわかります。
-
-* （10.1 Signature process の中でのステップに 10.1.3 RSA Encryption が含まれています
 
 結論を急がず、次のバージョンも確認しましょう。
 
@@ -118,30 +156,62 @@ RFC 2437 - PKCS #1: RSA Cryptography Specifications Version 2.0
 
 v1.5 の5ヶ月後に公開された Version 2.0 では、説明が大きく変更されています。
 
-`8.1.1 Signature generation operation <https://tools.ietf.org/html/rfc2437#section-8.1.1>`_ の Step 3 を引用します
+`8. Signature schemes with appendix <https://tools.ietf.org/html/rfc2437#section-8>`_ より引用
 
-::
 
-   3. Apply the RSASP1 signature primitive (Section 5.2.1) to the
-   private key K and the message representative m to produce an integer
-   signature representative s: s = RSASP1 (K, m)
+   A signature scheme with appendix consists of a signature generation
+   operation and a signature verification operation, where the signature
+   generation operation produces a signature from a message with a
+   signer's private key, and the signature verification operation
+   verifies the signature on the message with the signer's corresponding
+   public key.
 
-::
 
-  # 拙訳
-  整数署名表現s を生成するため、RSASP1 署名プリミティブを RSA 秘密鍵K と
-  メッセージ表現m に対して適用する: s = RSASP1 (K, m)
+もはや encrypt / decrypt という表現はなくなり、「メッセージと署名者の秘密鍵から署名を生成する」という表現になっているのが分かります。
 
-プリミティブという新しい概念が導入されています。プリミティブは数学的な論理に基づく根本的な演算アルゴリズムを指します。
+- PKCS #1 はその後 Ver 2.1, 2.2 が発行されていますが、手順の記述に関しては変更がないため省略します
 
-RSAのプリミティブを以下にリストアップします。
+流れの整理
+---------------
+
+簡単にまとめると署名の生成手順の説明は以下のような変遷を辿ったと言えます。
+
+1. 初出の論文 => （公開鍵暗号の応用で）メッセージを復号すると署名になるよ
+2. PKCS #1 v1.5 => メッセージを秘密鍵で暗号化すると署名になるよ
+3. PKCS #1 v2 以降 => メッセージと秘密鍵から署名ができるよ
+
+エンジニア的な考えで言えば「最新のドキュメントが正」なので答えは出てるのですが、一応なんでこうなったのか考察してみましょう。
+
+PKCS #1 v1.5 での変更
+------------------------
+
+なんで encrypt と表記されたかというと、おそらくアルゴリズムが暗号化・復号と署名生成・署名検証で全く区別されていなかったからだと思います。
+
+実際にデータ通信する際のフォーマットの規定として、Object Identifier というどのアルゴリズムを使っているかを識別する項目があるのですが、 v1.5 の定義では以下の５種類が定義されています。
+
+* pkcs-1
+* rsaEncryption
+* md2WithRSAEncryption
+* md4WithRSAEncryption
+* md5WithRSAEncryption
+
+あれ署名は？と思いますが、RSAでは暗号化・復号・署名生成・署名検証で同じ式（アルゴリズム）が使えるので、署名でも上記のアルゴリズムを使うことになります。
+
+そうすると「rsaEncryption で署名を生成」という表現が成り立つので、そこから「暗号化して署名を生成」につながったのではないかと考えられます。
+
+PKCS #1 v2.0 の変更
+------------------------
+
+まず、v2.0ではプリミティブという新しい概念が導入されています。プリミティブは数学的な論理に基づく根本的な演算アルゴリズムを指します。
+
+v2.0では以下に示すように、暗号化・復号と署名生成・署名検証で区別されています。
 
 :RSAEP: RSA Encryption Primitive
 :RSADP: RSA Decryption Primitive
 :RSASP1: RSA Signature Primitive, version 1
 :RSAVP1: RSA Verification Primitive, version 1
 
-これらについての説明が `5.2 Signature and verification primitives <https://tools.ietf.org/html/rfc3447#section-5.2>`_ にあるのでそれも引用します。
+さらに、これらについての説明が `5.2 Signature and verification primitives <https://tools.ietf.org/html/rfc3447#section-5.2>`_ にあります。
 
 ::
 
@@ -159,27 +229,24 @@ RSAのプリミティブを以下にリストアップします。
    RSASP1 および RSAVP1 は RSADP および RSAEP と入力・出力の引数の名前を除いて同様だが、
    異なる目的を対象としているためこれらは区別される。
 
-Ver2.0 では encrypt と signature の手順についてアルゴリズムが同じでも区別して扱っていることがわかります。
-
-まず、なぜ新しい概念が必要になったのかというと RSA 以外の公開鍵暗号・署名が生み出され、それらを体系化する必要がでてきたのだと思われます [2]_ 。またその際に暗号化と署名で同じアルゴリズムを使えるということがRSAの持つ特殊な性質ということが他と比較することで明らかになった、ということも区別して扱う一因になったのではないかと思われます。
+推論ですが、なぜ新しい概念が必要になったのかというと RSA 以外の公開鍵暗号・デジタル署名が生み出され、それらを体系化する必要がでてきたのだと思われます [4]_ 。またそれらには暗号化と署名が表裏一体でなく、暗号化のみあるいは署名のみで使えるアルゴリズムも登場してきた、ということも区別して扱う一因になったのではないかと思われます。
 
 ただし「秘密鍵で暗号化って概念的におかしいから表現変えない？」という議論が実際にあったのかは不明です。
-
-- PKCS #1 はその後 Ver 2.1, 2.2 が発行されていますが、手順の記述に関しては変更がないため省略します
 
 結論
 =================
 
-「メッセージを秘密鍵で暗号化して署名を生成」は不適切と言えそう
+「メッセージを秘密鍵で暗号化して署名を生成」は不適切。
 
-根拠: 現行のPKCS #1 では同じアルゴリズムでも encrypt と signature を区別しており、署名の生成手順で（昔使っていた） encrypt という単語を使っていない。
+根拠:
 
-一応補足ですが、RSAは最初の公開鍵暗号であり、発表時点では間違いとは言えないと思います。発表時点で存在しない別の暗号方式がどういう性質を持っているか、あるいは自分たちの発明が今後どう標準化されていくかなど、知る由もないので。。
+1. エンジニア的な考えをするなら「最新の公式ドキュメントが正義」なので現行の PKCS#1 に従い「メッセージと秘密鍵から署名ができるよ」と言えば良い。
+2. 現行のPKCS #1 では同じアルゴリズムでも Encryption / Decryption / Signature Generation / Signature Verification を区別しており、署名の生成手順で昔使っていた encrypt という単語を使っていない。変更があったということは、それだけの理由があったと見るべき。
 
 感想
 =====
 
-* 調べてみるとちゃんとした？経緯があるのでそこまで躍起になるものでもなかったわけですが、まぁ気になってしまったのでした
+* 実際に調べてみると定義だけで正誤が判別できない話だった
 * デジタル署名の一般的な説明をするときは
 
   * メッセージと秘密鍵から署名を生成する
@@ -197,5 +264,7 @@ Ver2.0 では encrypt と signature の手順についてアルゴリズムが�
 
 .. rubric:: Footnotes
 
-.. [1] 暗号解読 (下) （サイモンシン）によるとイギリスの情報機関GCHQ の方が先に公開鍵暗号を発明していたが、情報機関なので公表していなかったらしい。本文と関係ないけどこの本面白いのでおすすめです。
-.. [2] 本当はこの暗号が出てきたのが〜年で、何がしで標準化されたのが〜年でという公開鍵暗号全体の流れも調べた方が背景がわかって良いのですが、今回は見送りで..
+.. [1] メッセージを暗号文にしたければ署名＋暗号化をする。JWK のように署名のみでデータをやりとりすることも普通にある
+.. [2] 厳密には彼らはこの論文で Diffie-Hellman (-Merkle) 鍵交換方式 と今日呼ばれる方式で、鍵配送問題の解決策を示していますが、暗号通信を送る相手ごとに交換手続きが必要であったり、認証機能を持たないため単独では使いにくいという問題がありました
+.. [3] 暗号解読 (下) （サイモンシン）によるとイギリスの情報機関GCHQ の方が先に公開鍵暗号を発明していたが、情報機関なので公表していなかったらしい。本文と関係ないけどこの本面白いのでおすすめです。
+.. [4] 本当はこの暗号が出てきたのが〜年で、何がしで標準化されたのが〜年でという公開鍵暗号全体の流れも調べた方が背景がわかって良いのですが、今回は見送りで..
