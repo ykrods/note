@@ -185,7 +185,7 @@ google の場合、上述したように JWK が二つ定義されています�
 
 PyJWT でRSA公開鍵を扱う場合、 ``jwt.algorithms.RSAAlgorithm`` を使います。
 
-また、PyJWT で公開鍵を扱う際は cryptography のインストールも必要になります。
+また、PyJWT で公開鍵を扱う際は pyca/cryptography のインストールも必要になります。
 
 ::
 

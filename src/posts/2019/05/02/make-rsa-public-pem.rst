@@ -197,7 +197,8 @@ RSA の場合、以下のパラメータが定義されている [7]_
 
 .. update:: 2020-06-18
 
-  ASN.1 のパディングのルール等がややこしくバイナリレベルで実装するのが大変だったため `pyasn1 <https://pypi.org/project/pyasn1/>`_ の力を借りてつくったものが `こちら <https://github.com/ykrods/note/blob/master/src/posts/2019/05/02/rsa_key_pyasn1.py>`_
+  ASN.1 のパディングのルール等がややこしくバイナリレベルで実装するのが大変だったため `pyasn1 <https://pypi.org/project/pyasn1/>`_ の力を借りてつくったものが `こちら <https://github.com/ykrods/note/blob/master/src/posts/2019/05/02/rsa_key_pyasn1.py>`_ [8]_
+
 
 結論
 =====
@@ -221,3 +222,4 @@ JWK から PEM に問題なく変換できる。
 .. [5] `RFC3279: 2.3.1  RSA Keys <https://tools.ietf.org/html/rfc3279#section-2.3.1>`_
 .. [6] `RFC3447: A.1.2 RSA private key syntax <https://tools.ietf.org/html/rfc3447#appendix-A.1.2>`_
 .. [7] `RFC7518: 6.3.  Parameters for RSA Keys <https://tools.ietf.org/html/rfc7518#section-6.3>`_
+.. [8] 既存の Python のライブラリでは `PyCryptodome <https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html>`_ や `pyca/cryptography <https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa.html>`_ があるので通常はこれらを使う
