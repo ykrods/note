@@ -3,7 +3,7 @@
   :category: Cryptography
 
 =================================
-RSA公開鍵のJWK をPEM形式にする
+RSA公開鍵のJWKをPEM形式にする
 =================================
 
 JWK を知って、これがどうやってPEMになるんだろうという疑問のもとに調べた記録です。
@@ -38,8 +38,9 @@ RSA暗号は、2つの素数の積n について、n のみから元の2つの�
 この時、各変数の定義は
 
 :e: 適当な大きさの整数 ( 65537 がよく使われる )
-:d: :math:`d = e^{-1} (mod (p - 1)(q - 1))`
-:p, q: ``n = p * q`` となる素数( p != q )
+:d: :math:`ed \equiv 1 (mod (p - 1)(q - 1))` を満たすd
+:n: ``n = p * q`` で :math:`0 \leq m,c \leq n - 1`
+:p, q: 素数( p != q )
 
 となる。
 
@@ -117,7 +118,7 @@ RSA公開鍵は RSAPublicKey という型で表現される
 
 RSAPublicKey は DERエンコードされ、subjectPublicKey の BIT STRING型の値となる。
 
-以上のことをまとめると、RSA公開鍵は以下の構造を持つ（表記は RFC の example に合わせているが、ASN.1 の文法として正しいかイメージ図のようなものなのかは未確認)
+以上のことをまとめると、RSA公開鍵は以下の構造を持つ（次の表記は RFC の example を参考にしているが、ASN.1 のヒューマンリーダブルな表記法として正確かは未確認)
 
 ::
 
@@ -135,9 +136,9 @@ RSAPublicKey は DERエンコードされ、subjectPublicKey の BIT STRING型�
     }
   }
 
-つまり、RSA公開鍵は暗号化に使用する ``{n, e}`` のパラメータが特定できれば作成することが可能と言える。
+つまり、暗号化に使用する ``{n, e}`` のパラメータが特定できればRSA公開鍵をPEM形式で表現できることがわかった。
 
-補足すると、RSAの秘密鍵は RSAPrivateKey として以下で表現され、復号に使用する ``{e, p, q}`` が含まれていることがわかる。 [6]_
+ちなみに、RSAの秘密鍵は RSAPrivateKey として以下で表現され、復号に使用する ``{e, p, q}`` が含まれていることがわかる。 [6]_
 
 ::
 
@@ -211,7 +212,9 @@ JWK から PEM に問題なく変換できる。
 - `RSA暗号とPEM/DERの構造 - sambaiz-net <https://www.sambaiz.net/article/135/>`_
 - `Where is the PEM file format specified? - stackoverflow <https://stackoverflow.com/questions/5355046/where-is-the-pem-file-format-specified>`_
 - `ASN.1 データ生成/解析の事始 - SOUM/misc <https://www.soum.co.jp/misc/individual/asn1/>`_
-- `整数論と代数の初歩 <http://fuee.u-fukui.ac.jp/~hirose/lectures/crypto_security/slides/01number_algebra.pdf>`_ この資料だと明らかにmodは書き方(合同と二項演算)で意味が異なるようだが、ネットの記述だと(htmlで数式が書きにくい都合もあり) ごっちゃになっているように思える。理論的な証明の部分は書籍などで確認したい。
+- `整数論と代数の初歩 <http://fuee.u-fukui.ac.jp/~hirose/lectures/crypto_security/slides/01number_algebra.pdf>`_ こちらの資料のように mod は書き方(合同とコンピュータ上での二項演算)で意味が異なるが、ネットの記述だと html で数式が書きにくい都合もあり、ごっちゃになっているように思える。理論的な証明の部分は書籍などで確認したい。
+
+  * (追記: 後で確認したら整数の合同は高校数学の範囲らしいが全く覚えていない...
 
 .. rubric:: Footnotes
 
