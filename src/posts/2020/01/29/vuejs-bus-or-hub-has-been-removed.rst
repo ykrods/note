@@ -2,16 +2,15 @@
    :tags: Vue.js, JavaScript, ドキュメンテーション
    :category: JavaScript
 
-
 =============================================================
 Vue.js の event bus (あるいは event hub) 、非推奨になっていた
 =============================================================
 
 気づいたらドキュメントからいなくなっていた。
 
-.. update:: 2020-08-06
+.. note::
 
-  Vue 2.x 時点での記事です。
+  Vue.js v2.x 時点での記事です。
 
 
 event bus (あるいは event hub) とは
@@ -123,14 +122,13 @@ Vue.js 自体が「プログレッシブフレームワーク（他の一枚板(
 
 というやり取りが多すぎたとか（フォーラム等確認していないので推測ですが）
 
-ちなみに ``$emit``, ``$on`` が使えなくなった訳ではないので、 event bus も使えなくなった訳ではありません。オススメできないだけです ( deprecated でなく、 not recommended )。
+ちなみに v2.x では ``$emit``, ``$on`` が使えなくなった訳ではないので、 event bus も使えなくなった訳ではありません。オススメできないだけです ( deprecated でなく、 not recommended )。
 
-.. update:: 2020-08-06
+.. update:: 2020-12-07
 
-  ちなみに、 2020年 Q3 中にリリース予定の Vue3 では ``$on`` は削除される予定です。詳細は下記。
+  v2.x では not recommended だったわけですが、 `2020年9月にリリースされた Vue.js v3.0.0 <https://news.vuejs.org/issues/186>`_ にて ``$on``, ``$off`` が削除されたため、 event bus は Vue 単体では使えなくなりました。詳細は下記。
 
   https://v3.vuejs.org/guide/migration/events-api.html#overview
-
 
 
 .. rubric:: Footnotes
