@@ -129,5 +129,8 @@ Code Complete の著者である Steve McConnell 氏の「ソフトウェア見�
 .. rubric:: Footnotes
 
 .. [1] 「ソフトウェア見積り 人月の暗黙知を解き明かす」 Steve McConnell 著 溝口 真理子、田沢 恵 (翻訳), 久手堅 憲之 (監修)  日経BP (2006年10月)
+
+       `Cone of Uncertainty <https://en.wikipedia.org/wiki/Cone_of_Uncertainty>`_ のWikipedia によるとソフトウェア分野に最初にこの概念が導入されたのは Boehm, B (1981). Software Engineering Economics, Prentice-Hall. だが、 "Cone of Uncertainty" と言う名前をつけたのは McConnell 氏ということなようです。
+
 .. [2] 以下を含むが，これらに限定されない
 .. [3] 同書では「製品定義の承認」と「要求の完了」と言うフェーズがあるが、違いがよくわかっていない。あと、努力でなんとかなるのは誤差20%まで、と書いてあるので結論として（画面）設計までやらないと正式な見積もりは出せないと言うことでは
