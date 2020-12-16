@@ -78,9 +78,10 @@ Reactive Statements の基本
   B: 1
   ...
 
-結論
+結果
 
-* Reactive Statement 内の更新も検知する
+Reactive Statement から別の Reactive Statements の監視対象を更新しても、正しく検知される。
+
 * `Reactive Decrelations <https://svelte.dev/tutorial/reactive-declarations>`_ とやっていることは同じと思われる ( ``$: doubled = count * 2`` < こういうやつ )
 
 3. Reactive Statements の中で監視対象を更新するとどうなるか
@@ -99,11 +100,11 @@ Reactive Statements の基本
   foo: 1
   foo: 11
 
-結論
+結果
 
-* ``foo++`` で監視対象の状態が変わっているが、ループにはならない
+Reactive Statements の中で自身の監視対象を更新してもループにはならない
 
-  * 同じDOM更新のタイミングで変更が解決されるため？
+* 同じDOM更新のタイミングで変更が解決されるため？
 
 4. Reactive Statements の中で非同期で監視対象を更新するとどうなるか
 -------------------------------------------------------------------------
@@ -118,7 +119,9 @@ Reactive Statements の基本
 
 結果
 
-* 1秒ごとにカウントが増え続ける（ループする）
+Reactive Statements の中で非同期で監視対象を更新するとループする
+
+* 1秒ごとにカウントが増え続ける
 * ``counter++`` は ``counter = counter + 1`` なので、counter が監視対象になり、非同期で counter が更新されるので Reactive Statements がループする
 * こういう使い方がある、というよりは Reactive Statements 内で非同期で変数参照すると予期せぬループが発生することがあるというので、注意が必要だと思う。
 
@@ -133,9 +136,7 @@ Reactive Statements の基本
 
 結果
 
-* ループしない
-
-  * => 呼び出す関数内の変数は監視対象にならない
+Reactive Statement 内で関数呼び出しした場合、関数の中で参照している変数は監視対象にならない
 
 6. if文の条件式で参照されている変数は監視対象になるのか
 ---------------------------------------------------------
@@ -148,16 +149,22 @@ Reactive Statements の基本
 
 結果
 
+if文の条件式で参照されている変数は監視対象になる
+
 * threshold の変更時にログ出力される
 
-  * => 監視対象になる
+検証のまとめ
+=============
 
-以上の検証を踏まえてのベスト(かどうかはわからない)プラクティス
+監視対象ごとに Reative Statements を定義すれば基本的には素直に動いてくれるが、以下の点に注意が必要と言える
+
+* 意図しない変数が監視対象に含まれること
+* Reactive Statement 内に非同期処理を含める場合
+
+検証を踏まえてのベスト(かどうかはわからない)プラクティス
 ================================================================
 
-Reactive Statements 内で、複数の変数を参照したり、非同期の処理をキックする場合、
-
-監視対象ごとにコールバック関数を定義して、監視対象を引数として渡す。
+監視対象を明確にするため、コールバック関数を定義し監視対象を引数として渡す。
 
 .. code-block:: javascript
 
@@ -167,7 +174,7 @@ Reactive Statements 内で、複数の変数を参照したり、非同期の処
   $: onFooChanged(foo);
   $: onBarChanged(bar);
 
-  function onFooChanged() {
+  async function onFooChanged() {
     // some statements
   }
 
@@ -175,7 +182,7 @@ Reactive Statements 内で、複数の変数を参照したり、非同期の処
     // some statements
   }
 
-こうしておくと、予期せぬタイミングで実行されたり、ループするのを防げる。かつ単純に読みやすい。
+こうしておくと、意図しない監視対象の変更により予期せぬタイミングで実行されたり、ループするのを防げる。かつ単純に読みやすい。
 
 対象が複数で、そのどれかが更新したタイミングで発火したい場合は一つの関数に対象の変数をまとめてわたせば良い
 
