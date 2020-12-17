@@ -21,12 +21,12 @@ Sphinx (Docutils) の拡張を触って得た知識とTIPS
 
 reStructuredText, Docutils, Sphinx についてまず整理する。
 
-* reStructuredText は軽量マークアップ言語の一つであり、拡張可能な構文を有している。
-* Docutils は reStructuredText をパースして html など別形式に変換するテキスト処理システムであり、  reStructuredText の拡張にも対応している。
-* Sphinx は Docutils を拡張し、ドキュメントを構成できるようにしたもの
+:reStructuredText: 軽量マークアップ言語の一つであり、拡張可能な構文を有している。
+:Docutils: reStructuredText をパースして html など別形式に変換するテキスト処理システムであり、  reStructuredText の拡張にも対応している。
+:Sphinx: Docutils を拡張し、ドキュメントを構成できるようにしたもの
 
-  * Docutils は基本的に単体の rst ファイルを独立した文書として扱うが、Sphinx は別ファイルへの参照など、ファイル間の繋がりを扱うことができる
-  * Sphinx の機能の多くが Docutils の拡張として定義されており、さらに Sphinx ユーザが拡張を行うための独自のイベントフックや、拡張を容易にするAPI群を提供している。
+         * Docutils は基本的に単体の rst ファイルを独立した文書として扱うが、Sphinx は別ファイルへの参照など、ファイル間の繋がりを扱うことができる
+         * Sphinx の機能の多くが Docutils の拡張として定義されており、さらに Sphinx ユーザが拡張を行うための独自のイベントフックや、拡張を容易にするAPI群を提供している。
 
 用語
 -----
@@ -42,15 +42,17 @@ Docutils 用語
 
 :Document Tree (doctree): 1つのrstファイルを解釈し木構造のデータに変換したもの
 :Node: doctree に存在する文書の構成要素。単純にxmlのノードと捉えてしまって良い。
+:Parser: rst等の文書ファイルをパースして doctree を生成するクラス
+:Reader: 入力元を読み込んで doctree をメモリ上に展開するクラス。Parserを利用する場合とパース済みのdoctreeファイルを読み込む場合があるので、Parserと別になっている。
 :Transform: doctree 内のノードの変換、追加、削除を行うクラス。（詳しくは後述）
+:Translator (Visitor): doctree 内のノードを出力形式ごとのデータに変換するクラス。Writer がそれぞれの Translator を持っている(詳しくは後述)。
 :Writer: doctree を入力として、ファイルの出力を行うクラス。 html や tex 、 manpage など、出力フォーマットごとに定義される
-:Translator (Visitor): doctree 内のノードを出力形式ごとのデータに変換するクラス。Writer がそれぞれの Translator を持っている。(詳しくは後述)
 
 Sphinx 用語
 
 :Application (app): Sphinx自体。ユーザが拡張を追加するインターフェイスを提供するクラス。
-:Domain: ディレクティブ・ロールのグループ（詳しくは後述）
-:Environment: ビルド環境。rst のパース時に得られたデータを保持するところ（詳しくは後述）。
+:Domain: ディレクティブ・ロールのグループであり、rst のパース時に得られたメタデータを保持するところ（詳しくは後述）。
+:Environment: ビルド環境。Domainを保持する（詳しくは後述）。
 :Builder: パースされたドキュメントを入力として、ファイルの出力やなんらかのデータ処理を行うクラス。docutils の Writer, Translator を利用したり拡張したりしている。
 
 
@@ -61,7 +63,7 @@ Transfrom は doctree 生成後に doctree 内のノードの変換、追加、�
 
 Transform の内容は多岐にわたる。デフォルトで適用される Transform が多数あり、役割がよくわからんものも割とあるが、例えば ``docutils.transforms.universal.StripComments`` は ``comment`` ノードを doctree から削除するのに使われる。
 
-また、Sphinx レイヤでの例としては、 ``sphinx.transforms.post_transforms.ReferencesResolver`` がある。前述したように、Sphinx では異なる rstファイルへの参照（クロスリファレンス）が可能だが、参照先が具体的にどこになるか（あるいは実在しているか）は一度全ての rstファイルをパースして見ないことにはわからない。そこで、Sphinx では次の手順をとっている。
+また、Sphinx レイヤでの例としては、 ``sphinx.transforms.post_transforms.ReferencesResolver`` がある。前述したように Sphinx は異なる rstファイルへの参照（クロスリファレンス）が可能だが、参照先が具体的にどこになるか（あるいは実在しているか）は一度全ての rstファイルをパースして見ないことにはわからない。そこで、Sphinx では次の手順をとっている。
 
 1. rstをパースする際に以下の処理を行う
 
@@ -70,7 +72,9 @@ Transform の内容は多岐にわたる。デフォルトで適用される Tra
 
 2. 全てのrstをパースしたのち、 ``ReferenceResolver`` で ``<pending_xref>`` の解決（変換）を行う。解決には 1. で取集した ``std domain`` のラベル情報を用いる。
 
-* (post_transformsについて) Transform は docutils の機能だが、Sphinx は ``add_post_transform`` というAPIを追加で提供している。transform が1つ1つのrstファイルをパースした後に実行されるのに対して、 post_transform は一度全ての rst をパースし終わった後に再度実行される、ということのようだ。
+* post_transforms について
+
+  Transform は docutils の機能だが、Sphinx は ``add_post_transform`` というAPIを追加で提供している。transform が1つ1つのrstファイルをパースした後に実行されるのに対して、 post_transform は全ての rst をパースし終わった後に実行される、ということのようだ。
 
 
 Translator (Visitor)
@@ -80,7 +84,7 @@ Translator (Visitor)
 
 * docutils で拡張されたノードを扱うには Translator に ``visit_{node_name}`` と ``depart_{node_name}`` 関数をねじ込む
 
-  * この方法は Sphinx の内部実装を参考にしたが、Docutils の拡張として公開する場合は NodeVisitor(Translator), Writer をそれぞれ継承した新しいクラスをつくった方が良いかもしれない（コードがわかりにくくなるので）
+  * この方法は Sphinx の内部実装を参考にしたが、場合によっては NodeVisitor(Translator), Writer をそれぞれ継承した新しいクラスをつくった方が良いかもしれない。
 
   .. code-block:: python
 
@@ -123,7 +127,7 @@ Translator (Visitor)
     setattr(HTMLTranslator, "visit_mynode", visit_mynode)
     setattr(HTMLTranslator, "depart_mynode", depart_mynode)
 
-* sphinx の場合は簡略化されたAPIが提供されており、 ``app.add_node()`` の引数に ``(visit_.., depart_..)`` のタプルを渡せば良い
+* Sphinx の場合は簡略化されたAPIが提供されており、 ``app.add_node()`` の引数に ``(visit_.., depart_..)`` のタプルを渡せば良い
 
   .. code-block:: python
 
@@ -141,7 +145,7 @@ Environment と Domain
 
 Environment は rst パース時に得たメタデータなどを保持する。
 
-Environment は(doctreeも同様だが)パース時に ``.doctrees`` ディレクトリ以下にファイルキャッシュされる。キャッシュは単純な Python の pickle データなので、以下のようなコードで内容を確認できる。
+Environment (および doctree )はパース時に ``.doctrees`` ディレクトリ以下にファイルキャッシュされる。キャッシュは単純な Python の pickle データなので、以下のようなコードで内容を確認できる。
 
 .. code-block:: python
 
@@ -155,9 +159,22 @@ Environment は(doctreeも同様だが)パース時に ``.doctrees`` ディレ�
           print("domain:", domain)
           pprint(data)
 
-Domain は Sphinx で Python 以外の言語のドキュメントを書けるようにするための機能だが、とりあえずはラベルの情報は ``env.domains["std"].data["labels"]`` に入っているというのを押さえておけば良いと思う。
+Domain は Sphinx で Python 以外の言語のドキュメントを書けるようにするための機能であり、次のようなものがある
 
-``#`` ビルド環境が複数のドメインを持っていて、それぞれが専用の Directive / Role を持っていて、ドメインごとに違うメタ情報を持つ。という感じっぽいがよくわかっていない。
+* std (言語依存のない汎用ドメイン)
+* python
+* cpp
+* javascript
+
+ビルド環境が複数のドメインを持ち、ドメインごとに固有の Directive / Role とメタ情報がある、という感じっぽいがこの辺は結構複雑でよくわかっていない。
+
+とりあえず
+
+* メタ情報は ``domain.data`` の辞書で管理されており、例えば前述のラベルの情報は ``env.domains["std"].data["labels"]`` に入っている。
+* 拡張で独自にメタ情報を保持する必要がある場合は data 内に格納する。
+
+というあたりを押さえておけば良いかと思う。
+
 
 Sphinx のイベントフック
 ----------------------------------------------
@@ -183,13 +200,21 @@ TIPS
 
 * ログ出力は、 ``sphinx.util.logging`` を使う
 
-  * docstring に拡張でも使って良いように書いてある
+  * 使用例(docstringから引用)
+
+    .. code-block:: python
+
+      >>> from sphinx.util import logging
+      >>> logger = logging.getLogger(__name__)
+      >>> logger.info('Hello, this is an extension!')
+
+  * sphinx.util.logging.getLogger の docstring に拡張でも使って良いように書いてある
   * Sphinx は root ロガーには何も手をつけず、 ``sphinx`` ロガーを定義している。わざわざ独自のロガーを設定するよりは乗っからせてもらうのが良いだろう
-  * debug ログは `-vv` 以降で出力されるが、 debug ログはかなり色々出る
+  * debug ログは `-vv` 以降で出力される(かなりの量がログ出力される)
 
 * Sphinx のイベントハンドラについて、コールバックは他の拡張や Sphinx 本体でも登録されている可能性があるので、その前提で実装を行う。可能なら「そのコールバックで扱うべきイベントかを判定する」ような実装をすると良さそう。
 
-  * 例えば、 ``missing-reference`` イベントはクロスリファレンスが解決できなかった際に発生するが、 ``missing-reference`` をイベントを拾ってコールバックで解決を試みるような実装は ``sphinx.ext.intersphinx`` でされている。 intersphinx のコールバックで解決される可能性があるので、自前のコールバックで参照が解決できなかったとしても例外を投げたりエラーログを残す必要はない。ただし、自前のコールバックで解決すべき未解決の参照なのかどうかを判定できるのであれば別。
+  * 例えば、 ``missing-reference`` イベントはクロスリファレンスが解決できなかった際に発生するが、 ``missing-reference`` をイベントを拾ってコールバックで解決を試みるような実装は ``sphinx.ext.intersphinx`` でされている。このように別の拡張のコールバックで解決される可能性があるので、自前のコールバックで参照が解決できなかったとしても例外を投げたりエラーログを残す必要はない。ただし、自前のコールバックで解決すべき未解決の参照なのかどうかを判定できるのであれば別。
 
 * doctree の構造を確認したい場合
 
