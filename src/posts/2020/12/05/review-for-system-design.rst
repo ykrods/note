@@ -1,5 +1,5 @@
 .. post:: 2020-12-05
-   :tags: 設計レビュー
+   :tags: 設計, レビュー
    :category: Software Development Process
 
 .. meta::

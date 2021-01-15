@@ -1,5 +1,5 @@
 .. post:: 2020-12-08
-   :tags: 見積りレビュー
+   :tags: 見積り, レビュー
    :category: Software Development Process
 
 .. meta::
