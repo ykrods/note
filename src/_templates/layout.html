@@ -1,8 +1,5 @@
 {% extends "basic/layout.html" %}
 
-{# prevent to load default javascripts (like jquery) #}
-{# {%- block scripts %}{%- endblock %} #}
-
 {# remove genindex and search #}
 {%- block linktags %}
     {%- if hasdoc('about') %}
@@ -19,9 +16,19 @@
     {%- endif %}
 {%- endblock %}
 
-{%- block extrahead %}
-    <link rel="stylesheet" href="{{ pathto('_static/custom.css', 1) }}" type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+{%- block css %}
+  {{ super() }}
+  {% if ablog.fontawesome_link_cdn %}
+    <link href="{{ ablog.fontawesome_link_cdn }}" rel="stylesheet" />
+  {% elif ablog.fontawesome_css_file %}
+    <link rel="stylesheet" href="{{ pathto('_static/' + ablog.fontawesome_css_file, 1) }}" type="text/css" />
+  {% endif %}
+{%- endblock %}
+
+{# Prevent to load default javascripts (like jquery), and render tag directly (for performance) #}
+{%- block scripts %}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js"></script>
 {%- endblock %}
 
 {# remove related top and bottom nav #}
@@ -29,56 +36,55 @@
 {%- block relbar2 %}{% endblock %}
 
 {%- block header %}
-  <header>
-    <div class="site-name">ykrods note</div>
-    <nav>
-      <ul>
-        <li><a href="{{ pathto(master_doc) }}">HOME</a></li>
-        <li><a href="{{ pathto('about', 1) }}">ABOUT</a></li>
-        <li><a href="{{ pathto(ablog.archive.docname) }}">ARCHIVES</a></li>
-        <li><a href="{{ pathto(ablog.category.path) }}">CATEGORIES</a></li>
-        <li><a href="{{ pathto(ablog.tags.path) }}">TAGS</a></li>
-        <li><a href="{{ pathto('contact', 1) }}">CONTACT</a></li>
-        <li><a href="{{ pathto(feed_path, 1) }}/atom.xml">RSS</a></li>
-      </ul>
-    </nav>
-  </header>
-{% endblock %}
+    <header>
+      <div class="site-name">ykrods note</div>
+      <nav>
+        <ul>
+          <li><a href="{{ pathto(master_doc) }}">HOME</a></li>
+          <li><a href="{{ pathto('about', 1) }}">ABOUT</a></li>
+          <li><a href="{{ pathto(ablog.archive.docname) }}">ARCHIVES</a></li>
+          <li><a href="{{ pathto(ablog.category.path) }}">CATEGORIES</a></li>
+          <li><a href="{{ pathto(ablog.tags.path) }}">TAGS</a></li>
+          <li><a href="{{ pathto('contact', 1) }}">CONTACT</a></li>
+          <li><a href="{{ pathto(feed_path, 1) }}/atom.xml">RSS</a></li>
+        </ul>
+      </nav>
+    </header>
+{%- endblock %}
 
+{# Remove div.clearer tag from content block #}
 {%- block content %}
-  {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
-
+    {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
     <div class="document">
-  {%- block document %}
+      {%- block document %}
       <div class="documentwrapper">
-      {%- if render_sidebar %}
+        {%- if render_sidebar %}
         <div class="bodywrapper">
-      {%- endif %}
+          {%- endif %}
           <main class="body">
-            {% block body %} {% endblock %}
+            {% block body %}{% endblock %}
           </main>
-      {%- if render_sidebar %}
+          {%- if render_sidebar %}
         </div>
-      {%- endif %}
+        {%- endif %}
       </div>
-  {%- endblock %}
-
-  {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
+      {%- endblock %}
+      {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
     </div>
 {%- endblock %}
 
 {%- block footer %}
-  <footer>
-  {%- if show_copyright %}
-    {%- if hasdoc('copyright') %}
-      {% trans path=pathto('copyright'), copyright=copyright|e %}&#169; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
-    {%- else %}
-      {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
+    <footer>
+    {%- if show_copyright %}
+      {%- if hasdoc('copyright') %}
+        {% trans path=pathto('copyright'), copyright=copyright|e %}&#169; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+      {%- else %}
+        {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
+      {%- endif %}
     {%- endif %}
-  {%- endif %}
-  | <a href="{{ pathto('site-policy', 1) }}">Site Policy</a>
-  <br>
-  Powered by <a href="https://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
-  | <a href="https://github.com/ykrods/note">Source</a>
-  </footer>
+    | <a href="{{ pathto('site-policy', 1) }}">Site Policy</a>
+    <br>
+    Powered by <a href="https://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
+    | <a href="https://github.com/ykrods/note">Source</a>
+    </footer>
 {%- endblock %}

@@ -69,7 +69,7 @@ dl.field-list dt:nth-last-child(2), dl.field-list dd:last-child {
 }
 
 header {
-    width: calc(100% - 340px);
+    width: calc(100% - 200px);
     margin: 0 auto;
     text-align: center;
     font-family: Georgia, serif;
@@ -101,38 +101,13 @@ div.document {
 }
 
 div.documentwrapper {
-    margin: 0 0 0 170px;
-    width: calc(100% - 340px);
+    width: calc(100% - 200px);
+    margin: 0 auto;
     padding-bottom: 30px;
 }
 
-div.sphinxsidebar {
-    float: unset;
-    width: 160px;
-    margin: 0 0 0 10px;
-    line-height: 1.5em;
-}
-div.sphinxsidebar h2 {
-    margin: 20px 0 0 0;
-    padding: 0;
-    font-size: 1em;
-}
-div.sphinxsidebar ul {
-    padding: 0;
-    margin: 5px 0;
-    font-size: 0.9em;
-}
-div.sphinxsidebar a {
-    color: #666;
-    border-bottom: 1px dotted #666;
-}
-div.sphinxsidebar a:hover {
-    color: #4B0D43;
-    border-bottom: 1px solid #4B0D43;
-}
-
 footer {
-    width: calc(100% - 340px);
+    width: calc(100% - 200px);
     margin: 0 auto;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -204,6 +179,18 @@ ul.postlist-style-none {list-style-type: none;}
 ul.postlist-style-circle {list-style-type: circle;}
 
 /* page.html */
+.page-docinfo-pre {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 10px;
+  font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Meiryo, "メイリオ", sans-serif;
+}
+.page-docinfo-post {
+  margin: 20px 0;
+}
+.page-docinfo-post a {
+  border-bottom: none;
+}
 .page-share {
   margin: 10px 0 20px 0;
   padding: 10px;
@@ -211,6 +198,7 @@ ul.postlist-style-circle {list-style-type: circle;}
   font-size: 0.8em;
   color: #111;
 }
+
 
 /* postnavy.html */
 .postnavy {

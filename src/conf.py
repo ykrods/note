@@ -87,7 +87,9 @@ html_theme = 'basic'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    "nosidebar": True,
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = []
@@ -110,21 +112,20 @@ blog_authors = {
 }
 blog_default_author = 'ykrods'
 
-fontawesome_link_cdn = '/_static/font-awesome-4.7.0/css/font-awesome.min.css'
+fontawesome_css_file = 'font-awesome-4.7.0/css/font-awesome.min.css'
 
 # -- Blog Post Related ----------------------------------------------
 post_date_format = '%Y-%m-%d'
 post_date_format_short = '%Y-%m-%d'
 
-# -- Sidebars -------------------------------------------------------
-html_sidebars = {
-    '**': ['postcard.html'],
-}
-
 # -- Customization
+def setup(app):
+    app.add_css_file("custom.css")
+
+
 recommendeds = {
     'posts/2020/09/16/indie-tracker-0.1.0-released/': 'ポータブルなプロジェクト管理システム: Indie Tracker というのを作りました',
-    'posts/2020/04/25/review-on-web-system-development/': 'Webシステム開発でのレビュー範囲',
+    'posts/2020/04/25/review-on-web-system-development/': 'Webシステム開発でのコードレビューより前のレビュー',
     'posts/2020/04/22/produce-signature-from-message-and-private-key/': 'メッセージと秘密鍵から署名を生成する',
 }
 

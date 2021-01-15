@@ -6,9 +6,6 @@
 ykrods note
 ============================================
 
-Table Of Contents
-==================
-
 .. toctree::
    :maxdepth: 1
 

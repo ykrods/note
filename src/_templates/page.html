@@ -1,49 +1,23 @@
 {#- forked from ablog/templates/page.html #}
 {%- extends "layout.html" %}
-{% set fa = ablog.fontawesome %}
+
 {%- block extrahead %}
   {{ super() }}
   {% if feed_path %}
-  <link rel="alternate" type="application/atom+xml"  href="{{ pathto(feed_path, 1) }}/atom.xml" title="{{ feed_title }}">
+    <link rel="alternate" type="application/atom+xml"  href="{{ pathto(feed_path, 1) }}/atom.xml" title="{{ feed_title }}">
   {% endif %}
-  {% if ablog.fontawesome_link_cdn%}
-  <link href="{{ ablog.fontawesome_link_cdn }}" rel="stylesheet">
-  {% elif ablog.fontawesome_css_file %}
-  <link rel="stylesheet" href="{{ pathto('_static/' + ablog.fontawesome_css_file, 1) }}" type="text/css" />
-  {% endif %}
-{% endblock %}
+{%- endblock %}
 
-{% block body %}
-  {{ body }}
-
-  {% if (pagename in ablog and ablog[pagename].published) %}
-    <div class="section">
-      <h2>Comments</h2>
-      {% include "utterances.html" %}
-    </div>
-
-    <div class="section">
-      <div class="page-share">
-        {% set share_title = title + " — " + ablog.blog_title %}
-        {% set share_url = ablog.page_url(pagename) + "/" %}
-        <a class="twitter-share-button"
-           href="https://twitter.com/intent/tweet?text={{ share_title|urlencode }}&url={{ share_url|urlencode }}"
-           target="_blank"
-           style="border-bottom: none;">
-          <i class="fa fa-twitter"></i>
-        </a>
-        <p>
-          {{ share_title }}<br/>
-          {{ share_url }}
-        </p>
+{%- block document %}
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        {%- if (pagename in ablog and ablog[pagename].published) %}
+          {%- include "_post-body.html" %}
+        {%- else %}
+        <main class="body">
+          {% block body %}{{ body }}{% endblock %}
+        </main>
+        {%- endif %}
       </div>
     </div>
-
-    {% include "postnavy.html" %}
-
-    <div class="section recommend">
-      <h2>Recommends</h2>
-      {% include "recommends.html" %}
-    </div>
-  {% endif %}
-{% endblock %}
+{%- endblock %}

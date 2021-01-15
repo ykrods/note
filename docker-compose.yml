@@ -4,6 +4,7 @@ services:
     build: .
     volumes:
       - .:/work
+      # - /work/src/_website
     working_dir: /work/src
     ports:
       - "8000:8000"
