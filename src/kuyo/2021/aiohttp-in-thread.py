@@ -51,7 +51,8 @@ async def stop_server(loop, runner):
 if __name__ == '__main__':
     runner = aiohttp_runner()
 
-    loop = asyncio.get_event_loop()
+    main_loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
 
     loop.run_until_complete(runner.setup())
     site = web.TCPSite(runner, 'localhost', 8080)
@@ -60,9 +61,8 @@ if __name__ == '__main__':
     t = threading.Thread(target=loop.run_forever)
     t.start()
 
-    # loop が既に実行中なので別のループを使う
-    # subloop = asyncio.new_event_loop()
-    # suploop.run_until_complete(asyncio.sleep(1))
+    # loop が実行中なので別のループを使う必要がある
+    # main_loop.run_until_complete(asyncio.sleep(1))
 
     # t.join() して KeyboardInterrupt をとってもいいが、
     # それだとスレッド使う意味がないので input() を使った例
