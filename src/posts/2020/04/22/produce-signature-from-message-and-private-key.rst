@@ -117,18 +117,23 @@ New Directions in Cryptography が公開された翌年、前述した一方向�
 
     ( IV Signatures より引用
 
-文章としては 「Bob の復号鍵でメッセージに対する署名を計算する」で、何をしているかというと Deciphering です。カッコ書きで書かれていることから「（奇妙に思うだろうけど）平文を解読(復号)することには意味があります」というようなニュアンスになるかと思います。
+文章としては 「Bob の復号鍵でメッセージに対する署名を計算する」で、何をしているかというと Deciphering です。カッコ書きで書かれていることから「（奇妙に思うだろうけど）平文を解読(復号)することには意味があります」というようなニュアンスになるかと思います。この論文時点では New Directions in Cryptography を踏襲しているとみて良いでしょう。
 
-ちなみに、この論文内では encipher / decipher と encrypt / decrypt を区別なく利用しているように読めるので解読・復号どちらを使っても問題ないと思われます。（decryption key という単語が出てくるし、復号で統一でもいいかもしれない）。
+ちなみに、この論文内では encipher / decipher と encrypt / decrypt を区別なく利用しているように読めるので訳としては解読・復号どちらを使っても問題ないと思われます。（decryption key という単語が出てくるし、復号で統一でもいいかもしれない）。
 
 RFC 2313 - PKCS #1: RSA Encryption Version 1.5
 -------------------------------------------------
 
-:公開: 1998年5月
+:公開: 1998年5月 (1993年11月?)
+:Status: Informational
+:Obsoleted by: RFC 2437
 
-PKCS #1 は RSA Security LLC (上述した３人により設立された会社）により作成された標準です。Ver 1.0 - 1.3 は 1991年に非公開で発行され、Ver 1.4 は同年に NIST/OSI 実装者向けワークショップドキュメント SEC-SIG-91-18 として発行されています。RSA暗号の特許は1983年に取得され2000年まで有効だったので、その辺りの事情に合わせて Ver 1.5 になってから RFC 化されたものと思われます。
+PKCS #1 は RSA Security LLC (上述した３人により設立された会社）により作成された標準です。RFC としては1998年5月に発行されています。RFCとして発行される以前に NIST / OSI実装者向けワークショップドキュメント (NIST = アメリカ国立標準技術研究所) として文章が公開されていたようなのですが、具体的にいつどのような形で公開されたかが確認できませんでした (英語版Wikipedia `PKCS 1 - Wikipedia <https://en.wikipedia.org/wiki/PKCS_1>`_ によると1993年11月に公開?)。一応補足ですが、RFC としては Informational な文章であり、RFC標準ではありません。
 
-Ver1.5 での注目すべき文章を `10.1 Signature process <https://tools.ietf.org/html/rfc2313#section-10.1>`_ から引用します。
+.. RSA の特許は1983年に取得され2000年まで有効だった
+.. 1991年にフィル・ジマーマンがPGPを公開
+
+v1.5 での注目すべき文章を `10.1 Signature process <https://tools.ietf.org/html/rfc2313#section-10.1>`_ から引用します。
 
 
     10.1 Signature process
@@ -147,14 +152,16 @@ Ver1.5 での注目すべき文章を `10.1 Signature process <https://tools.iet
 
 ここで、明確に「秘密鍵で暗号化」と書いてあることがわかります。
 
-結論を急がず、次のバージョンも確認しましょう。
+「なんだ標準文書内で使っているじゃないか」と言いたくなるところですが結論を急がず、次のバージョンも確認しましょう。
 
 RFC 2437 - PKCS #1: RSA Cryptography Specifications Version 2.0
 -----------------------------------------------------------------
 
 :公開: 1998年10月
+:Status: Informational
+:Obsoleted by: RFC 3447
 
-v1.5 の5ヶ月後に公開された Version 2.0 では、説明が大きく変更されています。
+RFC 2313 の5ヶ月後に公開された Version 2.0 では、説明が大きく変更されています。
 
 `8. Signature schemes with appendix <https://tools.ietf.org/html/rfc2437#section-8>`_ より引用
 
@@ -237,7 +244,7 @@ v2.0では以下に示すように、暗号化・復号と署名生成・署名�
 
 推論ですが、まずなぜ新しい概念が必要になったのかというと RSA 以外の公開鍵暗号・デジタル署名が生み出され、それらを体系化する必要がでてきたのだと思われます [4]_ 。そしてそれらは暗号化と署名が表裏一体でなく、暗号化のみあるいは署名のみで使えるアルゴリズムだった、ということも区別して扱う一因になったのではないかと思われます。
 
-実際に「暗号化して署名を生成って概念的におかしいから表現変えない？」という議論があったのかは不明ですが、 `13. Revision history <https://tools.ietf.org/html/rfc2437#section-13>`_ には
+まとめると、v2.0では用語の修正と定義の明確化が行われていると言えるでしょう。用語について、実際に「暗号化して署名を生成って概念的におかしいから表現変えない？」という議論があったのかは不明ですが、 `13. Revision history <https://tools.ietf.org/html/rfc2437#section-13>`_ には
 
     Version 2.0 incorporates major editorial changes in terms of the
     document structure, and introduces the RSAEP-OAEP encryption scheme.
@@ -251,8 +258,9 @@ v2.0では以下に示すように、暗号化・復号と署名生成・署名�
 
 根拠:
 
-1. エンジニア的な考えをするなら「最新の公式ドキュメントが正義」なので現行の PKCS#1 に従い「メッセージと秘密鍵から署名ができるよ」と言えば良い。 [5]_
-2. 現行のPKCS #1 では同じアルゴリズムでも Encryption / Decryption / Signature Generation / Signature Verification を区別しており、署名の生成手順で昔使っていた encrypt という単語を使っていない。変更があったということは、それだけの理由があったと見るのがよろしいのでは。
+1. そもそも用語の使い方として適切でない
+2. エンジニア的な考えをするなら「最新の公式ドキュメントが正義」なので現行の PKCS#1 に従い「メッセージと秘密鍵から署名ができるよ」と言えば良い。 [5]_
+3. 現行のPKCS #1 では同じアルゴリズムでも Encryption / Decryption / Signature Generation / Signature Verification を区別しており、署名の生成手順で昔使っていた encrypt という単語を使っていない。変更があったということは、それだけの理由があったと見るのがよろしいのでは。
 
 感想
 =====
