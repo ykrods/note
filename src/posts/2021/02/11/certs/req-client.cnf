@@ -1,0 +1,15 @@
+[ req ]
+distinguished_name = req_distinguished_name
+x509_extensions = usr_cert
+prompt = no
+
+[ req_distinguished_name ]
+CN = client.localhost
+
+[ usr_cert ]
+basicConstraints = critical, CA:FALSE
+
+# keyUsage = critical, digitalSignature, keyCertSign
+# extendedKeyUsage = critical, clientAuth
+# subjectKeyIdentifier = hash
+# authorityKeyIdentifier = keyid, issuer

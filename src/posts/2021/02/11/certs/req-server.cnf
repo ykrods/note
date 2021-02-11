@@ -1,0 +1,16 @@
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = usr_cert
+prompt = no
+
+[ req_distinguished_name ]
+CN = localhost
+
+[ usr_cert ]
+basicConstraints = critical, CA:FALSE
+subjectAltName = DNS:localhost
+
+# keyUsage = critical, digitalSignature
+# extendedKeyUsage = critical, serverAuth
+# subjectKeyIdentifier = hash
+# authorityKeyIdentifier = keyid, issuer

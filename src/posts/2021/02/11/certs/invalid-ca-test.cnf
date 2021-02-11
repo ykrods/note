@@ -1,0 +1,11 @@
+[ req ]
+x509_extensions    = ext # [ ext ] セクションを参照する
+prompt             = no  # DN を対話的に入力しない
+distinguished_name = dn  # [ dn ] セクションを参照する
+
+[ dn ]
+CN = myroot
+
+[ ext ]
+basicConstraints = critical, CA:TRUE
+keyUsage         = critical, digitalSignature

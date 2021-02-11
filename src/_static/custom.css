@@ -132,14 +132,17 @@ a.brackets:hover, a.fn-backref:hover, a.headerlink:hover {
 }
 
 div.note, div.tip {
-    background-color: #EEE;
-    border: 1px solid #CCC;
+    background-color: #F6F6F6;
+    border-left: 7px solid #3A4;
 }
 div.attention {
-    background-color: #FDD;
-    border: 1px solid #FCC;
+    background-color: #F6F6F6;
+    border-left: 7px solid #D56;
 }
-
+div.warning {
+    background-color: #F6F6F6;
+    border-left: 7px solid #F6E60C;
+}
 /* align in table */
 .align-default {
     text-align: left;
