@@ -9,7 +9,7 @@ CN = client.localhost
 [ usr_cert ]
 basicConstraints = critical, CA:FALSE
 
-# keyUsage = critical, digitalSignature, keyCertSign
+# keyUsage = critical, digitalSignature
 # extendedKeyUsage = critical, clientAuth
 # subjectKeyIdentifier = hash
 # authorityKeyIdentifier = keyid, issuer
