@@ -16,7 +16,7 @@ SSL/TLS サーバ・クライアント認証の基礎
 
 この文章は TLS のサーバ認証・クライアント認証をある程度ちゃんと学んだ上で https サーバを構築してみようという趣旨で書かれています。以下の内容を扱います。
 
-* TLS 関連の基礎知識
+* TLS の認証関連の基礎知識
 
   * サーバ認証 / クライアント認証
   * X.509証明書
@@ -27,7 +27,7 @@ SSL/TLS サーバ・クライアント認証の基礎
 * openssl を使った証明書生成と検証
 * nginx を使ったサーバの構成と Chrome, curl での疎通方法
 
-基本的には理解を深めることを目的としているため、実運用で使える構成例みたいなのは扱いません。
+基本的には理解を深めることを目的としているため、実運用で使える構成例みたいなのは扱いません。また、暗号化など TLS の認証以外の要素は扱いません。
 
 .. tip::
 
@@ -574,5 +574,5 @@ nginx でも内部で openssl を利用しているので、検証に失敗し�
 .. [1] サーバ・クライアント相互に認証することを Mutual-TLS (mTLS) 認証 あるいは 相互 TLS 認証 とも呼びます。これは `RFC8705 - OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_ で使われてるのが広まってるような感じです。
 .. [2] 表記が統一されてないのは望ましくないと思うのだが、こういうのも何かしら経緯があるものなのだろうか。あと intermediate CA certificates と intermadiate certificate で表記揺れしてる感があるのが気になる（使い分けがあるのか？）。一般的に 中間CA証明書 / ルート証明書と呼ばれるが、なんで中間の方だけCAが入るのか理屈がわからん責任者出てきて欲しい。
 .. [3] 信頼できるかどうかを OS やブラウザベンダが判断してくれているという言い方もできます。
-.. [4] RFC5280, RFC8446 に root certificate という単語はないのだが、 `RFC2828 <https://tools.ietf.org/html/rfc2828>`_ (Internet Security Glossary) には定義されている。
+.. [4] RFC5280, RFC8446 に root certificate という表記はないのだが、 `RFC2828 <https://tools.ietf.org/html/rfc2828>`_ (Internet Security Glossary) には定義されている。
 .. [5] Google Chrome では 2017年3月の Chrome 57 で `commonName でのマッチングがサポートされなくなりました <https://developers.google.com/web/updates/2017/03/chrome-58-deprecations>`_ 。
