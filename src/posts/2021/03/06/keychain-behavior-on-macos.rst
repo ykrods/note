@@ -203,7 +203,11 @@ Security.framework でキーチェーンを操作する方法を調べていた�
 .. rubric:: Footnotes
 
 .. [1] `Keychains | Apple Developer Documentation <https://developer.apple.com/documentation/security/keychain_services/keychains?language=objc>`_
-.. [2] キーチェーンアクセスのメニュー > ファイル > キーチェーンの追加 で作成したキーチェーンをキーチェーンアクセスに追加でき、設定を確認できる ( 正確には securityd の search list に追加していると思われるが )
+.. [2] キーチェーンアクセスに作成したキーチェーンを追加でき、GUIから設定を確認できる
+
+       * 追加方法: キーチェーンアクセスのメニュー > ファイル > キーチェーンの追加
+       *  ( 正確には securityd の search list に追加していると思われるが )
+
 .. [3] `Keychain data protection - Apple Support <https://support.apple.com/en-jo/guide/security/secb0694df1a/web>`_
 .. [4] ``man securityd`` にそれっぽいことが書いてある。
 .. [5] `Secure Enclave <https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_secure_enclave?language=objc>`_ に鍵を保存した場合は挙動変わる？（未検証）
