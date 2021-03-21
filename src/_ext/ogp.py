@@ -1,10 +1,11 @@
 import re
 
+from html import escape
 from urllib.parse import urljoin
 
 
 OGP_TEMPLATE = """
-    <meta property="og:site_name" content="ykrods note" />
+    <meta property="og:site_name" content="{}" />
     <meta property="og:title" content="{}" />
     <meta property="og:url" content="{}" />
     <meta property="og:description" content="{}" />
@@ -26,7 +27,14 @@ def append_ogp(app, pagename, templatename, ctx, doctree):
         m = re.match(r'<meta content="(.*?)" name="description" />', ctx["metatags"])
         description = m.groups()[0] if m else ""
 
-        ctx["metatags"] += OGP_TEMPLATE.format(ctx["title"], page_url, description)
+        site = ctx["docstitle"]
+        title = f'{ctx["title"]} — {site}'
+        ctx["metatags"] += OGP_TEMPLATE.format(
+            escape(site),
+            escape(title),
+            escape(page_url),
+            escape(description),
+        )
 
 
 def setup(app):
