@@ -14,7 +14,7 @@ TwitterKit (2018年10月末サポート終了)をつかったまま長いこと�
 やり方
 =========
 
-ログイン以外のTwitter 機能を利用しないのであれば、Firebase のSDKのみで実装が可能。
+ログイン以外のTwitter 機能を利用しないのであれば、Firebase のSDKのみで実装が可能。( Twitter認証をしたいだけであれば Firebase Authentication を使わなくても良いのだが、どのみち Sign in with Apple を求められるので使っておいたほうが楽ではないかと思われる）
 
 Firebase のドキュメントに従えば概ね良い。
 
@@ -41,9 +41,9 @@ provier は viewController などのプロパティとして定義する。
 再認証のための小技
 ====================
 
-現状の Firebase/Auth では、Twitter側で認証する際に SafariViewController を利用している。このため、ログイン済みの状態で再度認証を実行すると id/password の入力をスキップして credential が取得される。
+現状の Firebase/Auth では、Twitter側で認証する際に SafariViewController を利用している。このため、一度 Twitter 認証済みの状態で再度認証を実行すると id/password の入力をスキップして credential が取得される（SafariViewController内で Twitter にログインしている状態になるため) 。
 
-この時困るのは別のアカウントで認証し直したい場合で、セキュリティ上(プライバシー上?)の理由で SafariViewController のセッション(cookie) を外からどうこうできないし [3]_ 、iOS 11 以降では SafariViewController はアプリごとに独立したセッションを保持するため [4]_ 、ブラウザ側でログアウトしても意味がない。SafariViewController で Twitter を開いてユーザにログアウトしてもらうのはユーザも実装者も面倒。
+この時困るのは別の Twitter アカウントで認証し直したい場合で、セキュリティ上(プライバシー上?)の理由で SafariViewController のセッション(cookie) を外からどうこうできないし [3]_ 、iOS 11 以降では SafariViewController はアプリごとに独立したセッションを保持するため [4]_ 、ブラウザ側でログアウトしても意味がない。SafariViewController で Twitter を開いてユーザにログアウトしてもらうのはユーザも実装者も面倒。
 
 どうするかというと、Twitter の認証オプションの ``force_login`` 使う。これにより認証済みの状態でもid/passwordを入力画面が表示される。 [5]_
 
