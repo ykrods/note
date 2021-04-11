@@ -15,11 +15,11 @@ int main(){
 
     NSDictionary *query = @{
         (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+        (__bridge id)kSecReturnAttributes: @YES,
+        (__bridge id)kSecReturnData: @YES  // 秘匿データを結果に含める
         // https://developer.apple.com/forums/thread/95762
         (__bridge id)kSecMatchSearchList: @[ (__bridge id)keychain ],
-        (__bridge id)kSecReturnAttributes: @YES,
         (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
-        (__bridge id)kSecReturnData: @YES
     };
     CFTypeRef result = NULL;
     status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);

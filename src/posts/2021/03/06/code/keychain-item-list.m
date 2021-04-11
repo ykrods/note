@@ -15,9 +15,9 @@ int main(){
 
     NSDictionary *query = @{
         (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+        (__bridge id)kSecReturnAttributes: @YES,
         // https://developer.apple.com/forums/thread/95762
         (__bridge id)kSecMatchSearchList: @[ (__bridge id)keychain ],
-        (__bridge id)kSecReturnAttributes: @YES,
         (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
     };
     CFTypeRef result = NULL;
