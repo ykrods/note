@@ -8,9 +8,7 @@
   }
 
   function sleep(s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, s * 1000);
-    });
+    return new Promise(resolve => setTimeout(resolve, s * 1000));
   }
 
   function countUp() {

@@ -104,7 +104,7 @@ Reactive Statement から別の Reactive Statements の監視対象を更新し�
 
 Reactive Statements の中で自身の監視対象を更新してもループにはならない
 
-* 同じDOM更新のタイミングで変更が解決されるため？
+* 同じDOM更新のタイミング( `tick <https://svelte.dev/tutorial/tick>`_ ) で変更が解決されるため？
 
 4. Reactive Statements の中で非同期で監視対象を更新するとどうなるか
 -------------------------------------------------------------------------
@@ -122,8 +122,8 @@ Reactive Statements の中で自身の監視対象を更新してもループに
 Reactive Statements の中で非同期で監視対象を更新するとループする
 
 * 1秒ごとにカウントが増え続ける
-* ``counter++`` は ``counter = counter + 1`` なので、counter が監視対象になり、非同期で counter が更新されるので Reactive Statements がループする
-* こういう使い方がある、というよりは Reactive Statements 内で非同期で変数参照すると予期せぬループが発生することがあるというので、注意が必要だと思う。
+* ``counter++`` は ``counter = counter + 1`` なので counter を参照しており、 counter が監視対象になる。非同期で( tick が進んでから) counter が更新されるので Reactive Statements がループする
+* こういう使い方がある、というよりは Reactive Statements 内で非同期で変数参照すると予期せぬループが発生するので、注意が必要だと思う。
 
 5. Reactive Statement 内で関数呼び出しした場合、関数の中で参照している変数は監視対象になるのか
 ------------------------------------------------------------------------------------------------
@@ -211,12 +211,12 @@ if文を書ける場合(監視対象が null にならない場合)はif文を�
     // some statements
   }
 
-内部調査のメモ
+調査メモ
 ===============
 
 * Reactive Statements は内部的には DOM更新と同じ流れの中で処理されている模様。 [1]_
 
-  * チュートリアルには「DOM更新が発生するごとに(before|after)Update が呼ばれる」とあるが [2]_ 、Reactive Statements の監視対象に変更があった場合も(before|after)Update は呼ばれている [3]_
+  * チュートリアルには「DOM更新が発生するごとに(before|after)Update が呼ばれる」とあるが [2]_ 、(before|after)Update は Reactive Statements の監視対象に変更があった場合も呼ばれている [3]_
 
 .. mermaid::
 
