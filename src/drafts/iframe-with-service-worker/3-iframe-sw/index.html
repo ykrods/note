@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <title>iframe with service worker</title>
+    <meta charset="utf-8" />
+    <script>
+      navigator.serviceWorker.register('/sw.js');
+    </script>
+  </head>
+  <body>
+    <img src="/circle.svg"/>
+    <iframe width="100" height="100" src="sub.html"></iframe>
+    <iframe sandbox width="100" height="100" src="sub.html"></iframe>
+    <iframe sandbox="allow-scripts" width="100" height="100" src="sub.html"></iframe>
+    <iframe sandbox="allow-same-origin" width="100" height="100" src="sub.html"></iframe>
+  </body>
+</html>
