@@ -124,6 +124,7 @@ Service Worker
   * srcdoc + sandbox については、多分仕様が決まっていないしどのブラウザでも Service Worker が利用できない
 
     * cookie やら localStorage と同じ扱いだと sandbox 環境では使えないという整理になるが、Service Worker は保護するべき対象という感じではないので使える流れにならんかなぁ
+    * (追記) Service Worker から保護するべき localStorage などへのアクセスが可能だから、手放しで許可はできないよねって感じなのかな
 
 結論
 =======
