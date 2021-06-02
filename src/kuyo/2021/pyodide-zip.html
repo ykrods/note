@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.17.0/full/pyodide.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      async function main(){
+        await loadPyodide({
+          indexURL : "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/"
+        });
+
+        const image = await fetch("https://upload.wikimedia.org/wikipedia/en/f/ff/SuccessKid.jpg")
+          .then(res => res.blob())
+          .then(blob => blob.arrayBuffer());
+
+        pyodide.globals.set("archives", {
+          "hello.txt": "HELLO!!!",
+          "image.jpg": image,
+        });
+
+        const code = `
+import io
+from zipfile import ZipFile
+
+from pyodide import to_js
+
+with io.BytesIO() as f:
+    with ZipFile(f, "w") as myzip:
+        for name, content in archives.to_py().items():
+            myzip.writestr(name, content)
+
+    ret = f.getvalue()
+
+to_js(ret)
+`;
+        const result = pyodide.runPython(code);
+        const blob = new Blob([ result ], { type: "application/zip" });
+        const url = URL.createObjectURL(blob);
+        location.assign(url);
+      }
+      main();
+    </script>
+  </body>
+</html>
