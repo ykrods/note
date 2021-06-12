@@ -143,18 +143,27 @@ div.warning {
     background-color: #F6F6F6;
     border-left: 7px solid #F6E60C;
 }
-/* align in table */
-.align-default {
-    text-align: left;
-}
+/* table */
 table.docutils {
-    border: 1px solid #666;
+  border: 1px solid #CCC;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+table.docutils th, table.docutils td {
+  border-bottom: 1px solid #CCC;
+  border-left: 1px solid #CCC;
+  padding: 5px;
 }
 
-table.docutils th, table.docutils td {
-    border-bottom: 1px solid #666;
-    border-left: 1px solid #666;
+table.docutils th {
+  background-color: #EFEFEF;
 }
+
+/* align in table */
+table..align-default {
+    text-align: left;
+}
+
 
 /* mobile */
 @media screen and (max-width: 800px) {
