@@ -116,7 +116,7 @@ Ubuntu18.04 の設定ファイルがどの様になっているかを確認す�
 
 * 以下の記述によりノンインタラクティブな場合は何もしない様になっている
 
-  ::
+  .. code-block:: shell
 
      # If not running interactively, don't do anything
      case $- in
@@ -160,7 +160,7 @@ su, sudo, bash コマンドでの .bashrc, .profile の読み込みの挙動を�
 準備
 -----
 
-::
+.. code-block:: shell
 
    $ sudo useradd -m -s /bin/bash hogeo
    $ sudo su - hogeo
@@ -176,7 +176,7 @@ su, sudo, bash コマンドでの .bashrc, .profile の読み込みの挙動を�
 su -
 ---------------
 
-::
+.. code-block:: shell
 
    $ sudo su - hogeo
    .bashrc loaded
@@ -189,7 +189,7 @@ su -
 su
 ------------
 
-::
+.. code-block:: shell
 
    $ sudo su hogeo
    .bashrc loaded
@@ -201,7 +201,7 @@ su
 bash
 --------
 
-::
+.. code-block:: shell
 
    $ sudo su - hogeo
    .bashrc loaded
@@ -216,7 +216,7 @@ bash
 bash -l
 ------------
 
-::
+.. code-block:: shell
 
    $ sudo su - hogeo
    .bashrc loaded
@@ -235,7 +235,7 @@ bash -l
 bash -c
 -------------
 
-::
+.. code-block:: shell
 
    $ sudo su - hogeo
    .bashrc loaded
@@ -248,7 +248,7 @@ bash -c
 bash -lc
 ------------
 
-::
+.. code-block:: shell
 
    $ sudo su - hogeo
    .bashrc loaded
@@ -262,7 +262,7 @@ bash -lc
 sudo -u user
 ----------------
 
-::
+.. code-block:: shell
 
   $ sudo -u hogeo env | grep PATH
   PATH=/usr/local/sbin
@@ -272,7 +272,7 @@ sudo -u user
 sudo -i -u user
 -----------------
 
-::
+.. code-block:: shell
 
   $ sudo -i -u hogeo env | grep PATH
   # .profile loaded
@@ -283,7 +283,7 @@ sudo -i -u user
 sudo -u user bash -c
 ---------------------------
 
-::
+.. code-block:: shell
 
   $ sudo -u hogeo bash -c 'env | grep PATH'
   SUDO_COMMAND=/bin/bash -c env | grep PATH
@@ -293,7 +293,7 @@ sudo -u user bash -c
 sudo -u user bash -lc
 ------------------------
 
-::
+.. code-block:: shell
 
   sudo -u hogeo bash -lc 'env | grep PATH'
   SUDO_COMMAND=/bin/bash -lc env | grep PATH
@@ -308,7 +308,7 @@ sudo -u user bash -lc
 
 sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り替わった上でコマンドが実行される
 
-::
+.. code-block:: shell
 
   $ sudo -H -u hogeo bash -lc 'env | grep PATH'
   .profile loaded
@@ -335,21 +335,34 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 
   - - ログインシェル
     - * ログイン
-      * ``$ su - foo_user``
-      * ``$ bash -l``
-    - ``.profile``, ``.bashrc``
+
+      .. code-block:: shell
+
+        $ su - foo_user
+        $ bash -l
+
+    - .profile, .bashrc
   - - インタラクティブシェル
-    - * ``$ su foo_user``
-      * ``$ bash``
-    - ``.bashrc``
+    - .. code-block:: shell
+
+        $ su foo_user
+        $ bash
+
+    - .bashrc
   - - 非対話シェル
-    - ``$ bash -c foo_command``
+    - .. code-block:: shell
+
+        $ bash -c foo_command
+
     -
   - - 非対話シェル+ログインオプション
-    - * ``$ bash -lc foo_command``
-      * ``$ sudo -i -u foo_user foo_comannd``
-      * ``$ sudo -H -u foo_user bash -lc foo_command``
-    - ``.profile``
+    - .. code-block:: shell
+
+        $ bash -lc foo_command
+        $ sudo -i -u foo_user foo_comannd
+        $ sudo -H -u foo_user bash -lc foo_command
+
+    - .profile
 
 .bashrc と .profile の使い分けとしては(これもデフォルト設定に合わせるなら)以下
 
@@ -363,7 +376,7 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 注意点
 
 * .profile (または .bash_profile) に書いても複数回呼ばれるときは呼ばれる
-* sudo を使わず su してからコマンドを叩く様な運用方針の場合(あるいはデフォルトの挙動を変えて非対話シェルでも .bashrc を読み込ませる様に変更する場合)は全部 .bashrc に書く方針もアリかもしれない。またデフォルトで ``.bash_profile`` が存在する OS では当然そちらを使うことになるだろう。正直これが正解というものはないと思うので、結局のところちゃんと理解した上で自分にあったポリシーで管理しようという話になると思われる。
+* sudo を使わず su してからコマンドを叩く様な運用方針の場合(あるいはデフォルトの挙動を変えて非対話シェルでも .bashrc を読み込ませる様に変更する場合)は全部 .bashrc に書く方針もアリかもしれない。またデフォルトで ``.bash_profile`` が存在する OS では当然そちらを使うことになるだろう。正直これが正解というものはないと思うので、結局のところちゃんと理解した上でやりたいことに合ったポリシーで管理しようという話になると思われる。
 
 参考
 ======
