@@ -74,8 +74,9 @@ man bash
 起動方法
 
 * ログインする
-* ``$ su - foo_user`` ( - は -l, --login の省略)
+* ``$ su - [user]`` ( - は -l, --login の省略)
 * ``$ bash -l``
+* ``$ sudo -i [-u user]``
 
 インタラクティブシェル
 =======================
@@ -84,8 +85,9 @@ man bash
 
 起動方法
 
-* ``$ su foo_user`` ( - 無し)
+* ``$ su [user]`` ( - 無し)
 * ``$ bash``
+* ``$ sudo -s [-u user]``
 
 ノンインタラクティブシェル
 =============================
@@ -94,7 +96,8 @@ man bash
 
 起動方法
 
-* ``$ bash -c foo_command``
+* ``$ bash -c command_string``
+* ``$ sudo -s [-u user] command``
 
 ノンインタラクティブシェル + ログインオプション
 =================================================
@@ -103,8 +106,8 @@ man bash
 
 起動方法
 
-* ``$ bash -lc foo_command``
-* ``$ sudo -u foo_user -i foo_command``
+* ``$ bash -lc command_string``
+* ``$ sudo -i [-u user] command``
 
 初期設定
 ==============================
@@ -233,8 +236,8 @@ bash -l
 
 ( 上記の様なパス追加なら重複するだけだが、ログイン時に二重に実行されると困る様な処理を挟む場合は何かしら対応する必要がある。とはいえ、ログインシェルからインタラクティブシェルを起動するユースケースはあまりないようにも思える。
 
-bash -c
--------------
+bash -c command_string
+-------------------------
 
 .. code-block:: shell
 
@@ -246,8 +249,8 @@ bash -c
 
 非対話シェルなので何も読み込まない
 
-bash -lc
-------------
+bash -lc command_string
+-------------------------
 
 .. code-block:: shell
 
@@ -260,18 +263,20 @@ bash -lc
 
 ``-l`` オプションにより .profile が読み込まれるが、非対話シェルなので .bashrc が読み込まない（中断される）
 
-sudo -u user
-----------------
+sudo -s [-u user] command
+----------------------------
 
 .. code-block:: shell
 
-  $ sudo -u hogeo env | grep PATH
+  $ sudo -s -u hogeo env | grep PATH
   PATH=/usr/local/sbin
 
 非対話シェルなので何も読み込まれない
 
-sudo -i -u user
------------------
+* (オプションなしの ``sudo [-u user] command`` の場合はそもそもシェルを起動しない(ハズ))
+
+sudo -i [-u user] command
+---------------------------
 
 .. code-block:: shell
 
@@ -281,8 +286,8 @@ sudo -i -u user
 
 ``-i`` オプションにより .profile が読み込まれるが、非対話シェルなので .bashrc が読み込まない（中断される）
 
-sudo -u user bash -c
----------------------------
+sudo [-u user] bash -c command_string
+-----------------------------------------
 
 .. code-block:: shell
 
@@ -290,9 +295,10 @@ sudo -u user bash -c
   SUDO_COMMAND=/bin/bash -c env | grep PATH
   PATH=/usr/local/sbin: ..(略)
 
+非対話シェルなので何も読み込まれない
 
-sudo -u user bash -lc
-------------------------
+sudo [-u user] bash -lc command_string
+------------------------------------------
 
 .. code-block:: shell
 
@@ -339,7 +345,8 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 
       .. code-block:: shell
 
-        $ su - foo_user
+        $ su - [user]
+        $ sudo -i [-u user]
         $ bash -l
 
     - .profile, .bashrc
@@ -347,23 +354,26 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
   - - インタラクティブシェル
     - .. code-block:: shell
 
-        $ su foo_user
+        $ su [user]
+        $ sudo -s [-u user]
         $ bash
 
     - .bashrc
   - - 非対話シェル
     - .. code-block:: shell
 
-        $ bash -c foo_command
+        $ bash -c command_string
+        $ sudo -s [-u user] command
 
     - なし
 
   - - 非対話シェル+ログインオプション
     - .. code-block:: shell
 
-        $ bash -lc foo_command
-        $ sudo -i -u foo_user foo_comannd
-        $ sudo -H -u foo_user bash -lc foo_command
+        $ bash -lc command_string
+        $ sudo -i [-u user] command
+        $ sudo -H [-u user] \
+            bash -lc command_string
 
     - .profile
 
@@ -379,7 +389,23 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 注意点
 
 * .profile (または .bash_profile) に書いても複数回呼ばれるときは呼ばれる
-* sudo を使わず su してからコマンドを叩く様な運用方針の場合(あるいはデフォルトの挙動を変えて非対話シェルでも .bashrc を読み込ませる様に変更する場合)は全部 .bashrc に書く方針もアリかもしれない。またデフォルトで ``.bash_profile`` が存在する OS では当然そちらを使うことになるだろう。つまるところ、これが正解というものはないと思うので、結局のところちゃんと理解した上でやりたいことに合ったポリシーで管理しようという話になると思われる。
+
+他の方針
+============
+
+これが正解というものはないと思うので、結局のところちゃんと理解した上でやりたいことに合ったポリシーで管理しようという話になるのではないかと思う。ということで少し他の方針についても触れる。
+
+* 全部 .bashrc に書く
+
+  * 常に対話シェルを起動してからコマンドを叩く様な運用方針の場合
+  * デフォルトの挙動を変えて非対話シェル + ログインオプションでも .bashrc を読み込ませる様に変更する場合
+  * 個人的には、あえてデフォルトの挙動を変えてまでやるメリットは思い当たらないが、「常に対話シェルを起動する運用」は有り得なくもない？
+
+* .bash_profile を使う
+
+  * 不意に .bash_profile が置かれたことにより .profile が読み込まれなくなる可能性があるので、最初から .bash_profile を使った方が安心というのはあるかもしれない。
+  * 個人的な感覚では、正しく .profile の内容 ( 主に .bashrc の読み込み ) を反映させた上で .bash_profile を配置し、不要な .profile は消す、というところまでやればこれでも良いと思う。
+  * デフォルトで .bash_profile が存在する OS では当然 .bash_profile を使えば良いと思う
 
 参考
 ======
