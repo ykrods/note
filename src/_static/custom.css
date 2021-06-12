@@ -145,13 +145,13 @@ div.warning {
 }
 /* table */
 table.docutils {
-  border: 1px solid #CCC;
+  border: 1px solid #AAA;
   border-collapse: collapse;
   margin: 0 auto;
 }
 table.docutils th, table.docutils td {
-  border-bottom: 1px solid #CCC;
-  border-left: 1px solid #CCC;
+  border-bottom: 1px solid #AAA;
+  border-left: 1px solid #AAA;
   padding: 5px;
 }
 
@@ -160,7 +160,7 @@ table.docutils th {
 }
 
 /* align in table */
-table..align-default {
+table.align-default {
     text-align: left;
 }
 

@@ -44,6 +44,10 @@ man bash
 とりあえず上記を表にまとめるとこうなる。
 
 .. list-table::
+  :header-rows: 1
+
+  - - 種別
+    - 読み込むファイル
 
   - - インタラクティブログインシェル
     - * /etc/profile
