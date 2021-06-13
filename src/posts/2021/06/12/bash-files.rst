@@ -308,7 +308,7 @@ sudo [-u user] bash -lc command_string
 
 ``sudo -i -u`` と違い、 .profile が読み込まれない
 
-* これは sudo のデフォルトの挙動では ``$HOME`` がログインユーザのもののままなため
+* これは sudo のデフォルトの挙動では ``$HOME`` が sudo の実行ユーザのものから切り替わらないため
 
   * ( sudo の実行ユーザの ``$HOME/.profile`` が読み込まれる
   * ( ``sudo -u hogeo bash -lc 'echo $HOME'`` すると変わっていないのが確認できる
