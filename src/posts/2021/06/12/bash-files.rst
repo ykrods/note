@@ -64,7 +64,23 @@ man bash
   - - ノンインタラクティブシェル
     - 何も読み込まない?
 
-うむ、わからん。ということで各用語の整理。
+また ssh については別の段落にこう書かれている
+
+::
+
+   # man bash より引用, bash のバージョンは 4.4.20
+
+   Bash  attempts  to determine when it is being run with its standard input connected to a network
+   connection, as when executed by the remote shell daemon, usually rshd, or the secure shell  dae‐
+   mon  sshd.   If  bash determines it is being run in this fashion, it reads and executes commands
+   from ~/.bashrc and ~/.bashrc, if these files exist and are readable.
+
+   # (意訳)
+   # bash は(具体的には)通常 rshd あるいは リモートシェルデーモン sshd によって実行された場合の様な、
+   # 標準出力をネットワーク接続に接続した状態で実行しているかどうかの判断を試みる。
+   # bash がこのやり方で実行されていると判断した場合、 ~/.bashrc が存在すればそれを読み込む。
+
+うむ、わからん。ということで各用語の整理と動作確認を行う。
 
 インタラクティブログインシェル (あるいはログインシェル)
 ================================================================
@@ -82,6 +98,8 @@ man bash
 =======================
 
 対話シェル。ログインシェルと対比して使われる場合はインタラクティブ（ログインじゃない）シェルの意味で使われる。厳密な定義は ``man bash`` を参照。
+
+意識的に ``bash`` でインタラクティブシェルを起動することはあまりない様に思うが、例えば ``screen`` コマンドなどでは中でインタラクティブシェルが起動する。
 
 起動方法
 
@@ -234,7 +252,7 @@ bash -l
 
 この辺はまぁそもそも ``su -`` しているのだから ``bash -l`` する必要ないよね、ということでいいのだろうか？
 
-( 上記の様なパス追加なら重複するだけだが、ログイン時に二重に実行されると困る様な処理を挟む場合は何かしら対応する必要がある。とはいえ、ログインシェルからインタラクティブシェルを起動するユースケースはあまりないようにも思える。
+( 上記の様なパス追加なら重複するだけだが、ログイン時に二重に実行されると困る様な処理を挟む場合は何かしら対応する必要がある。
 
 bash -c command_string
 -------------------------
@@ -328,10 +346,45 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 
   * https://docs.ansible.com/ansible/2.9_ja/plugins/become/sudo.html
 
+ssh [user@]host
+--------------------
+
+.. code-block:: shell
+
+  # ( vagrant で検証
+  $ ssh -p 2222 hogeo@127.0.0.1
+  .bashrc loaded
+  .profile loaded
+  $ env | grep PATH
+  PATH=/home/hogeo/.bin2:/home/hogeo/.bin1:/usr/local/sbin: ...(略)
+
+ログインなので .profile が読み込まれる
+
+( ``man bash`` の説明通りならこれも .bashrc を読み込むはずでは...?
+
+ssh [user@]host command
+-------------------------
+
+.. code-block:: shell
+
+  $ ssh -p 2222 hogeo@127.0.0.1 env | grep PATH
+  PATH=/usr/local/sbin: ..(略)
+
+``man bash`` の通り .bashrc は読み込まれているが、非対話シェルなので中断される
+
+.. code-block:: shell
+
+  # bash -lc 利用
+  $ ssh -p 2222 hogeo@127.0.0.1 "bash -lc 'env | grep PATH'"
+  .profile loaded
+  PATH=/home/hogeo/.bin2:/usr/local/sbin: ..(略)
+
+コマンド指定の ssh で .profile が読み込みたい場合は ``bash -lc`` を使う。( 他にもやり方はあるが )
+
 まとめ
 ==================
 
-デフォルトの設定に合わせる場合、以下の様にまとめられる。
+デフォルトの設定に従う場合、以下の様にまとめられる。
 
 .. list-table::
   :header-rows: 1
@@ -348,6 +401,7 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
         $ su - [user]
         $ sudo -i [-u user]
         $ bash -l
+        $ ssh [user@]hostname
 
     - .profile, .bashrc
 
@@ -357,6 +411,7 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
         $ su [user]
         $ sudo -s [-u user]
         $ bash
+        $ screen
 
     - .bashrc
   - - 非対話シェル
@@ -364,6 +419,7 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
 
         $ bash -c command_string
         $ sudo -s [-u user] command
+        $ ssh [user@]hostname command
 
     - なし
 
@@ -374,6 +430,8 @@ sudo に ``-H (--set-home)`` オプションを加えると ``$HOME`` が切り�
         $ sudo -i [-u user] command
         $ sudo -H [-u user] \
             bash -lc command_string
+        $ ssh [user@]hostname \
+            "bash -lc 'command_string'"
 
     - .profile
 
