@@ -360,7 +360,7 @@ ssh [user@]host
 
 ログインなので .profile が読み込まれる
 
-( ``man bash`` の説明通りならこれも .bashrc を読み込むはずでは...?
+``#`` ``man bash`` の説明通りなら (英語を何かしら読み違えてない限り) この場合でも .bashrc を読み込むのではないかとも思えるが、ソースコードでは明確に非対話シェルで実行された場合に限定した上で ssh の場合に .bashrc を読み込む様になっているので、そういう仕様なのだろう ( shell.c:run_startup_files() )
 
 ssh [user@]host command
 -------------------------
@@ -434,6 +434,8 @@ ssh [user@]host command
             "bash -lc 'command_string'"
 
     - .profile
+
+``#`` (念のため注記) コマンド指定ありの ssh では仕様上 .bashrc は読み込まれるが、.bashrc のデフォルトの記述により読み込み中断されるため、 **実質的に** 読み込まれない扱いにしている。
 
 .bashrc と .profile の使い分けとしては(これもデフォルト設定に合わせるなら)以下
 
