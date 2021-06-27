@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>perspective ex1</title>
+  <meta charset="utf-8" />
+  <style>
+    /* 以下のスタイルは見た目の調整 */
+    body {
+      margin: 100px;
+      box-sizing: border-box;
+    }
+    .plane {
+      background-color: #E5E5E5;
+      position: relative;
+      width: 240px;
+      height: 200px;
+    }
+    .box {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      width: 50px;
+      height: 50px;
+      background-color: rgba(255, 0, 0, 0.2);
+      font-size: 9px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="plane" style="perspective: 100px; perspective-origin: left top;">
+    <div class="box" style="transform: translateZ(0px);">0px</div>
+    <div class="box" style="transform: translateZ(50px);">50px</div>
+    <div class="box" style="transform: translateZ(75px);">75px</div>
+  </div>
+</body>
+</html>
