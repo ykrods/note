@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>2 and 3 point perspective</title>
+  <meta charset="utf-8" />
+  <style>
+    body {
+      margin: 50px;
+    }
+
+    .pers {
+      width: 100px;
+      height: 100px;
+      margin: 50px;
+      transform-style: preserve-3d;
+    }
+
+    .two-point {
+      perspective: 160px;
+      perspective-origin: center 75%;
+    }
+
+    .three-point {
+      transform: perspective(160px) rotateX(15deg);
+    }
+
+    .face {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+    }
+
+    .left {
+      background-color: green;
+      transform: rotateY(-45deg) translate3d(0, 0, 50px);
+    }
+
+    .right {
+      background-color: limegreen;
+      transform: rotateY(45deg) translate3d(0, 0, 50px);
+    }
+  </style>
+</head>
+<body>
+  <h1>2 and 3 point perspective example</h1>
+
+  <h2>2-point</h2>
+  <div class="two-point pers">
+    <div class="face right"></div>
+    <div class="face left"></div>
+  </div>
+
+  <h2>3-point</h2>
+  <div class="three-point pers">
+    <div class="face right"></div>
+    <div class="face left"></div>
+  </div>
+</body>
+</html>

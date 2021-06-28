@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <title>perspective</title>
+  <meta charset="utf-8" />
+  <style>
+    body {
+      margin: 300px;
+      border: 1px solid #333;
+    }
+    .box {
+      background-color: red;
+      width: 150px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>css perspective</h1>
+  <h2>default</h2>
+  <div>
+    <div class="box">box</div>
+  </div>
+
+  <h3>1</h3>
+  <pre>
+  * parent perspective-origin: left top; perspective: 500px;
+  * translateZ(100px)
+  </pre>
+  <div style="perspective: 500px; perspective-origin: left top;">
+    <div class="box" style="transform: translateZ(100px);">box</div>
+  </div>
+
+  <h3>2</h3>
+  <pre>
+  * transform-origin: left top; perspective(500px) translateZ(100px)
+  </pre>
+  <div>
+    <div class="box" style="transform-origin: left top; transform: perspective(500px) translateZ(100px);">box</div>
+  </div>
+
+  <h3>3</h3>
+  <pre>
+  * parent perspective: 1000px
+  * transform-origin: left top; perspective(500px) translateZ(100px)
+  </pre>
+  <div style="perspective-origin: left top; perspective: 1000px;">
+    <div class="box" style="transform-origin: left top; transform: perspective(500px) translateZ(100px);">box</div>
+  </div>
+
+</body>
+</html>

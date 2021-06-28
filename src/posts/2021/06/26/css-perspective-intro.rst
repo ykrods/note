@@ -64,10 +64,26 @@ perspective プロパティの他、transform に与える perspective() 関数�
 
   style="transform: perspective(200px) translateZ(100px);"
 
+* perspective は親要素に指定するが、 perspective() は変換対象に指定する
 * perspective() は perspective-origin でなく transform-origin を消失点として変換処理を行う
-* perspective() はあくまで３次元座標の変換処理なので、最終的なスクリーンへの描画は perspective (および perspective-origin) の影響を受ける
+* perspective() はあくまで３次元座標の変換処理なので、最終的なスクリーンへの描画の際に親要素の perspective (および perspective-origin) の影響を受ける
 
-  * 計算がわけわからなくなるので少なくともどちらか一方を使うのが良いように思える。また transform-origin は他の回転などの変換にも影響するため、基本は perspective / perspective-origin を利用するのが良いのではないだろうか
+計算がわけわからなくなるので少なくともどちらか一方を使うのが良いように思える。
+
+perspective プロパティでは視点（カメラ）の傾きがないので、傾きを付けたい場合には親要素に ``transform: perspective() rotateX()`` を指定する、というような使い方だろうか（下の練習ではそのような使い方をしているが、一般的かは不明）。
+
+練習
+=====
+
+上の例では立体感がないので、2点パースと3点パースのよくある図を描いてみる
+
+.. literalinclude:: ex2.html
+  :language: html
+
+表示結果
+
+.. image:: ex2.png
+  :alt: 上の html の表示結果
 
 その他メモ
 ============
