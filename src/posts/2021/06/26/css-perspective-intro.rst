@@ -85,6 +85,19 @@ perspective プロパティでは視点（カメラ）の傾きがないので�
 .. image:: ex2.png
   :alt: 上の html の表示結果
 
+(追記)スクロール
+===================
+
+perspective を指定した要素に ``overflow: scroll`` を指定して３次元の描画領域をスクロール可能にした場合、スクロールに応じて子要素が再描画される。パララックススクロールのcssによる実装では、この仕組みが使われているようだ。
+
+.. literalinclude:: ex3.html
+  :language: html
+
+表示結果
+
+.. image:: ex3.gif
+  :alt: 上の html の表示結果(動く)
+
 その他メモ
 ============
 
