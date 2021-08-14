@@ -1,12 +1,12 @@
 /**
  * firebase realtime database のルールの検証コード
  *
- * - 普通にアプリをテストする際は firebase.json の中で指定した
- *   ルールファイルが適用されるため、 loadDatabaseRules を使う必要はない
+ * - 普通にアプリをテストする際は firebase.json の中で指定したルールファイルが
+ *   エミュレータに適用されるため、 loadDatabaseRules を使う必要はない
  *   ( テストデータを一時投入する場合に、 firebase-admin を使う代わりに
- *   一時的にルールを書き換えるのはまぁアリかもしれない？
+ *     一時的にルールを書き換えるのに使うのはまぁアリかもしれない？
  *
- * - emulator は事前に立ち上げておく
+ * - emulator は事前に立ち上げておく必要アリ
  */
 
 const { test } = require("uvu");
@@ -221,6 +221,36 @@ test("フィールドごとの書き込み制御", async (ctx) => {
   await assertPermissionDenied(() => {
     return ref.update({ name: "bar" });
   });
+});
+
+
+test(".write の分割", async (ctx) => {
+  await applyRules({
+    "comments": {
+      "$comment": {
+        "name": { ".write": "!data.exists()" },
+        "body": { ".write": "!data.exists()" },
+        "fav": { ".write": "(!data.exists() && newData.val() === 0) || newData.val() === data.val() + 1" }
+      }
+    }
+  });
+  const db = ctx.app.database();
+
+  // const ref = await db.ref("comments").push({ name: "foo", body: "xxxx" });
+  const ref = await db.ref("comments").push()
+  await ref.update({ name: "foo", body: "xxxx" });
+
+  await assertPermissionDenied(() => {
+    return ref.update({ name: "bar" });
+  });
+
+  await ref.update({ fav: 0 });
+
+  await assertPermissionDenied(() => {
+    return ref.update({ fav: 100 });
+  });
+
+  assert.ok(true);
 });
 
 test.run();
