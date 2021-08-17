@@ -165,6 +165,15 @@ test("バリデーション", async (ctx) => {
     return db.ref("items").push({ name: "foo" });
   });
 
+  // $other のテスト
+  await assertPermissionDenied(() => {
+    return db.ref("items").push({ foo: "bar" });
+  });
+
+  await assertPermissionDenied(() => {
+    return db.ref("items").push({ name: "n", num: 1, foo: "bar" });
+  });
+
   assert.ok(true);
 });
 
