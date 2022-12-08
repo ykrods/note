@@ -2,7 +2,7 @@ ablog==0.10.19
 alabaster==0.7.12
 argh==0.26.2
 Babel==2.9.1
-certifi==2021.05.30
+certifi==2022.12.7
 chardet==4.0.0
 docutils==0.17.1
 feedgen==0.9.0
