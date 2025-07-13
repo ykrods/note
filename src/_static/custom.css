@@ -51,7 +51,7 @@ blockquote {
 
 /* 本文で ``foo`` と書いた時にcodeが使われる */
 code {
-    padding: 2px 6px;
+    padding: 0 6px;
     border-radius: 3px;
     background-color: #f0f0f0;
     color: #222;
