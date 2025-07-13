@@ -1,3 +1,7 @@
+:root {
+  --code-bg-color: #f3f3f9;
+}
+
 body {
     margin: 0px;
     font-size: 17px;
@@ -53,13 +57,14 @@ blockquote {
 code {
     padding: 0 6px;
     border-radius: 3px;
-    background-color: #f0f0f0;
+    background-color: var(--code-bg-color);
     color: #222;
 }
 
 .highlight {
   padding: 1em 0;
   border-radius: 0.5em;
+  background-color: var(--code-bg-color);
 }
 
 dl.field-list dt {
