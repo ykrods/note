@@ -20,7 +20,8 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    padding: 0;
+    margin: 0.5em 0;
+    padding: 2px 0;
     font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Meiryo, "メイリオ", sans-serif;
 }
 
@@ -33,7 +34,7 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
 }
 
 h1 { font-size: 1.7em; }
-h2 { font-size: 1.5em; }
+h2 { font-size: 1.5em; border-bottom: 1px solid #5c8199; }
 h3 { font-size: 1.2em; }
 
 pre {
@@ -50,8 +51,15 @@ blockquote {
 
 /* 本文で ``foo`` と書いた時にcodeが使われる */
 code {
+    padding: 2px 6px;
+    border-radius: 3px;
     background-color: #f0f0f0;
     color: #222;
+}
+
+.highlight {
+  padding: 1em 0;
+  border-radius: 0.5em;
 }
 
 dl.field-list dt {
