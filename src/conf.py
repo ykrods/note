@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('_ext'))
 # -- Project information -----------------------------------------------------
 
 project = 'ykrods-note'
-copyright = '2019-2020, ykrods'
+copyright = '2019-2025, ykrods'
 author = 'ykrods'
 
 # The short X.Y version
