@@ -179,26 +179,23 @@ aptアーカイブの記述方法として、コマンド2行目で出てきた�
 管理者の運用方法として鍵を定期的に変えるというものもパターンとしてはあり得ると思うが、そのあたりは各々のアーカイブ管理者に判断が委ねられていて、
 特にリファレンスがないのでどうした方がいいというのは一概に言えない気がしている。
 
-とりあえず、先ほどダウンロードした redis-archive-keyring の fingerprint を記載しておくが、これが確実に正しいかはわからない。
+とりあえず、先ほどダウンロードした redis-archive-keyring の fingerprint を記載しておく、fingerprint で検索して一致するページが *数件* 出てきたので、多分正しい。
+
+* `Install latest version of Redis on Ubuntu 22.04. - Pieter Bakker <https://pieterbakker.com/install-latest-version-of-redis-on-ubuntu-22-04/>`_
 
 .. code-block:: shell
 
-  $ gpg --show-keys --with-fingerprint /etc/apt/keyrings/redis-archive-keyring.asc
-  gpg: keybox '/home/ubuntu/.gnupg/pubring.kbx' created
+  $ gpg --dry-run --quiet --import --import-options import-show /etc/apt/keyrings/redis-archive-keyring.asc
   pub   rsa4096 2021-07-21 [SC]
-        5431 8FA4 052D 1E61 A6B6  F7BB 5F43 49D6 BF53 AA0C
+        54318FA4052D1E61A6B6F7BB5F4349D6BF53AA0C
   uid                      Redis (Package Signing) <redis-packages@redis.io>
   sub   rsa4096 2021-07-21 [E]
 
-  # こっちのコマンドだと keybox を作らないようなのでこっちの方が良いのだが、.gpg しか対応していない?
-  $ gpg --no-default-keyring --keyring redis.gpg --list-keys --with-fingerprint --quiet
-  ./redis.gpg
-  -----------
-  pub   rsa4096 2021-07-21 [SC]
-        5431 8FA4 052D 1E61 A6B6  F7BB 5F43 49D6 BF53 AA0C
-  uid           [ unknown] Redis (Package Signing) <redis-packages@redis.io>
-  sub   rsa4096 2021-07-21 [E]
+  # やり方が複数あって謎なのだが、以下のコマンドでも fingerprint は確認できる
+  $ gpg --show-keys --with-fingerprint /etc/apt/keyrings/redis-archive-keyring.asc
 
+  # このコマンドの場合は .gpg である必要があるらしい(ややこしい)
+  $ gpg --no-default-keyring --keyring redis.gpg --list-keys --with-fingerprint --quiet
 
 参考
 ========
