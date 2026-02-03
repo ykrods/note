@@ -8,3 +8,12 @@ services:
     ports:
       - "8000:8000"
     command: ["serve", "-n", "-r"]
+  genreq:
+    image: python:3.13
+    volumes:
+      - .:/work
+    working_dir: /work
+    command: sh gen-requirements.sh
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
