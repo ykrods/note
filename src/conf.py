@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('_ext'))
 # -- Project information -----------------------------------------------------
 
 project = 'ykrods-note'
-copyright = '2019-2025, ykrods'
+copyright = '2019-2026, ykrods'
 author = 'ykrods'
 
 # The short X.Y version
@@ -48,10 +48,7 @@ templates_path = [
 ]
 
 # The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {'.rst': 'restructuredtext'}
 
 # The master toctree document.
 master_doc = 'index'
