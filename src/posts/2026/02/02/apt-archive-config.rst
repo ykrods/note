@@ -42,6 +42,7 @@ ASCII armor とは
     However, in many use cases it is customary to use OpenPGP data in a non-binary encoding called “ASCII armor.” For example, ASCII armored OpenPGP data is often used in email, for encrypted messages or for signatures.
 
     # 拙訳
+
     OpenPGP データのネイティブな形式はバイナリである。
 
     しかし、多くのユースケースで OpenPGP データを ASCII armor と呼ばれる非バイナリエンコーディングで使用することが通例となっている。例えば ASCII armored な OpenPGP データは暗号化されたメッセージや署名のためにメールの中でよく使用される。
@@ -55,6 +56,7 @@ ASCII armor とは
     OpenPGP's underlying representation for encrypted messages, signatures, keys, and certificates is a stream of arbitrary octets. Some systems only permit the use of blocks consisting of 7-bit, printable text. For transporting OpenPGP's raw binary octets through channels that are not safe to transport raw binary data, a printable encoding of these binary octets is defined. The raw 8-bit binary octet stream can be converted to a stream of printable ASCII characters using base64 encoding in a format called "ASCII Armor" (see Section 6).
 
     # 拙訳
+
     OpenPGP の暗号化されたメッセージ、署名、鍵、証明書の基礎となる表現は任意のオクテットのストリームである。いくつかのシステムでは 7-bit, 表示可能なテキストで構成されるブロックのみ使用することを許している。生のバイナリデータを転送する上で安全でないチャンネルを通じて OpenPGP の生のバイナリオクテットを転送するため、それらのバイナリオクテットの表示可能なエンコーディングが定義された。生の 8-bit バイナリオクテットのストリームは "ASCII Armor" と呼ばれるフォーマットで base64 エンコーディングを使った表示可能な ASCII 文字列のストリームに変換できる (Section 6 を参照)。
 
 この文章から ASCII armor は 7-bit (ASCII) データしか扱えない転送経路で鍵などの OpenPGP のバイナリデータを送るために利用されるという事がわかる。先ほどのメールで使用されるという記述も踏まえると、具体的な転送経路というのは、 SMTP のことを指していると考えられる。
@@ -95,6 +97,7 @@ SMTP の初期は 7-bit の ASCII 文字列のみを扱う設計で、オクテ�
 `man 8 apt-key <https://manpages.ubuntu.com/manpages/jammy/en/man8/apt-key.8.html>`_ でも同じような記載があり
 
     Recommended: (...略...)
+
     Since APT 2.4, /etc/apt/keyrings is provided as the recommended
     location for keys not managed by packages. When using a deb822-style sources.list, and with apt version >= 2.4, the Signed-By option can also be used to include
     the full ASCII armored keyring directly in the sources.list without an additional file.
@@ -162,24 +165,22 @@ aptアーカイブの記述方法として、コマンド2行目で出てきた�
 
 * Signed-By の中の `.` は空行を表すために必要とのこと
 
-例だけ見ると１ファイルにできて便利なのではと思ったりもするが、実際に redis-archive.asc などを見てみると 52行あるので個人的にはファイルは分けたほうが見通しが良さそうに思う。
+例だけ見ると１ファイルにできて便利なのではと思ったりもするが、実際に redis-archive-keyring.asc などを見てみると 52行あるので個人的にはファイルは分けたほうが見通しが良さそうに思う。
 
 (おまけ2) fingerprint と構成管理の雑感
 ========================================
 
 ここまで触れてこなかった観点で、アーカイブ鍵によりパッケージの真正性が検証できるとして、では鍵の真正性はどうやって検証するのかという問題がある。
-鍵の fingerprint がガイドやリリースノートなどに記載されている場合はダウンロードした鍵ファイルの fingerprint を取得して一致するか確認することはできるが、redis など大体のアーカイブでは fingerprint の記載は特にない。これが「HTTPS(tls) だからヨシ！」というスタンスなのかはわからないが、完璧に安全な fingerprint の提供方法というのも考えると結構難しかったり運用負荷になったりするので、その辺は割り切りなのだと思われる。 [3]_
 
-この面を踏まえると Debian/Ubuntu の archive key であれば最初から OS 配布物として埋め込まれており、パッケージ管理されているので鍵の更新も apt update で可能となっており、より安全性は高いように思う。
+鍵の fingerprint がガイドやリリースノートなどに記載されている場合はダウンロードした鍵ファイルの fingerprint を取得して一致するか確認することはできるが、redis など大体のアーカイブでは fingerprint の記載は特にない。これが「HTTPS(tls) だからヨシ！」というスタンスなのかはわからないが、完璧に安全な fingerprint の提供方法というのも考えると結構難しかったり運用負荷になったりするので、そのあたりは割り切りなのだと思われる。 [3]_
 
-また、鍵自体の安全性を人間が確認する必要があるのであれば、ansible などで構成管理する場合は鍵を確認した後 asc ファイルを設定ファイルとして
-リポジトリに追加してしまった方が都度実行時にダウンロードするより安全だと思うがどうなんだろうか。
+このあたりを踏まえると Debian/Ubuntu の archive key であれば最初から OS 配布物として埋め込まれており、パッケージ管理されているので鍵の更新も apt update で可能となっており、より安全性は高いように思う。
 
-アーカイブ管理者が持つ秘密鍵が何らかの理由で漏洩した場合、ユーザ側の鍵は破棄した方が良いということになりそうだし、アーカイブ
-管理者の運用方法として鍵を定期的に変えるというものもパターンとしてはあり得ると思うが、そのあたりは各々のアーカイブ管理者に判断が委ねられていて、
-特にリファレンスがないのでどうした方がいいというのは一概に言えない気がしている。
+また、鍵自体の安全性を人間が確認する必要があるのであれば、ansible などで構成管理する場合は、鍵を確認した後 asc ファイルを設定ファイルとしてリポジトリ管理してしまった方が、実行時に都度ダウンロードするより安全だと思うがどうなんだろうか。
 
-とりあえず、先ほどダウンロードした redis-archive-keyring の fingerprint を記載しておく、fingerprint で検索して一致するページが *数件* 出てきたので、多分正しい。
+アーカイブ管理者が持つ秘密鍵が何らかの理由で漏洩した場合、ユーザ側の鍵は破棄した方が良いということになりそうだし、アーカイブ管理者の運用方法として鍵を定期的に変えるというものもパターンとしてはあり得ると思うが、そのあたりは各々のアーカイブ管理者に判断が委ねられていて、特にリファレンスがないのでどうした方がいいというのは一概に言えない気がしている。
+
+そういうわけで、とりあえず、先ほどダウンロードした redis-archive-keyring の fingerprint を記載しておく。fingerprint で検索して一致するページが **数件** 出てきたので、多分正しい。
 
 * `Install latest version of Redis on Ubuntu 22.04. - Pieter Bakker <https://pieterbakker.com/install-latest-version-of-redis-on-ubuntu-22-04/>`_
 
