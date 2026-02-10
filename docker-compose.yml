@@ -9,7 +9,7 @@ services:
       - "8000:8000"
     command: ["serve", "-n", "-r"]
   genreq:
-    image: python:3.13
+    image: python:3.13-slim
     volumes:
       - .:/work
     working_dir: /work
