@@ -1,6 +1,6 @@
-{% extends "basic/layout.html" %}
+{%- extends "basic/layout.html"%}
 
-{# remove genindex and search #}
+{#- remove genindex and search from basic linktags #}
 {%- block linktags %}
     {%- if hasdoc('about') %}
     <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
@@ -16,24 +16,11 @@
     {%- endif %}
 {%- endblock %}
 
-{%- block css %}
-  {{ super() }}
-  {% if ablog.fontawesome_link_cdn %}
-    <link href="{{ ablog.fontawesome_link_cdn }}" rel="stylesheet" />
-  {% elif ablog.fontawesome_css_file %}
-    <link rel="stylesheet" href="{{ pathto('_static/' + ablog.fontawesome_css_file, 1) }}" type="text/css" />
-  {% endif %}
-{%- endblock %}
-
 {# Prevent to load default javascripts (like jquery), and render tag directly (for performance) #}
 {%- block scripts %}
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="https://unpkg.com/mermaid@8.4.8/dist/mermaid.min.js"></script>
 {%- endblock %}
-
-{# remove related top and bottom nav #}
-{%- block relbar1 %}{% endblock %}
-{%- block relbar2 %}{% endblock %}
 
 {%- block header %}
     <header>
@@ -52,39 +39,35 @@
     </header>
 {%- endblock %}
 
-{# Remove div.clearer tag from content block #}
-{%- block content %}
-    {%- block sidebar1 %} {# possible location for sidebar #} {% endblock %}
-    <div class="document">
-      {%- block document %}
-      <div class="documentwrapper">
-        {%- if render_sidebar %}
-        <div class="bodywrapper">
-          {%- endif %}
-          <main class="body">
-            {% block body %}{% endblock %}
-          </main>
-          {%- if render_sidebar %}
-        </div>
-        {%- endif %}
-      </div>
-      {%- endblock %}
+{#- Remove related navigation #}
+{%- block relbar1 %}{% endblock %}
+
+{#- Simplify content block #}
+{% block content %}
+    <div class="flex-container">
+      {%- block sidebar1 %}{% endblock %}
+      <div class="body" role="main">
+        {%- block body %}{{ body }}{% endblock %}
+      </div><!-- end of body -->
       {%- block sidebar2 %}{{ sidebar() }}{% endblock %}
-    </div>
-{%- endblock %}
+    </div><!-- end of flex-container-->
+{% endblock %}
+
+{#- Remove related navigation #}
+{%- block relbar2 %}{% endblock %}
 
 {%- block footer %}
     <footer>
-    {%- if show_copyright %}
-      {%- if hasdoc('copyright') %}
-        {% trans path=pathto('copyright'), copyright=copyright|e %}&#169; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
-      {%- else %}
-        {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
+      {%- if show_copyright %}
+        {%- if hasdoc('copyright') %}
+          {% trans path=pathto('copyright'), copyright=copyright|e %}&#169; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
+        {%- else %}
+          {% trans copyright=copyright|e %}&#169; Copyright {{ copyright }}.{% endtrans %}
+        {%- endif %}
       {%- endif %}
-    {%- endif %}
-    | <a href="{{ pathto('site-policy', 1) }}">Site Policy</a>
-    <br>
-    Powered by <a href="https://www.sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
-    | <a href="https://github.com/ykrods/note">Source</a>
+      | <a href="{{ pathto('site-policy', 1) }}">Site Policy</a>
+      <br>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx</a> {{ sphinx_version }} &amp; <a href="https://ablog.readthedocs.io/">ABlog</a> {{ ablog_version }}
+      | <a href="https://github.com/ykrods/note">Source</a>
     </footer>
 {%- endblock %}

@@ -74,7 +74,16 @@ pygments_style = 'friendly'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'basic'
+html_theme = 'note'
+
+html_sidebars = {
+    '**': [
+        # "ablog/postcard.html",
+        # "ablog/recentposts.html",
+        # "ablog/categories.html",
+        # "ablog/archives.html",
+    ],
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -85,7 +94,7 @@ html_theme_options = {
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = []
+html_theme_path = ["_themes"]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -94,6 +103,8 @@ html_static_path = ['_static']
 
 html_title = 'ykrods note'
 html_baseurl = 'https://www.ykrods.net/'
+
+html_permalinks_icon = "#"
 
 # -- General ABlog Options ----------------------------------------------------
 
@@ -113,7 +124,7 @@ post_date_format_short = '%Y-%m-%d'
 
 # -- Customization
 def setup(app):
-    app.add_css_file("custom.css")
+    pass
 
 
 recommendeds = {

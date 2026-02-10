@@ -1,7 +1,5 @@
         {%- set post = ablog[pagename] %}
         <main class="body" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-          {%- block body %}
-
           <div class="section page-docinfo-pre">
             <time itemprop="datePublished" datetime="{{ post.date.date().isoformat() }}">{{ post.date.strftime(ablog.post_date_format) }}</time>
             {%- if post.published and post.date != post.update %}
@@ -83,5 +81,4 @@
               {%- endfor %}
             </ul>
           </div>
-          {%- endblock %}
         </main>
