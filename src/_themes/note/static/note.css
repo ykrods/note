@@ -292,3 +292,8 @@ ul.postlist-style-circle {list-style-type: circle;}
 .recommends {
   font-size: 0.9em;
 }
+
+/* mermaid */
+pre.mermaid {
+  text-align: center;
+}
