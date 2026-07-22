@@ -343,6 +343,8 @@ devices の下に以下のような filesystem のノードがある
     </filesystem>
   </devices>
 
+以下のような idmap ノードを追加する。
+
 .. code-block:: diff
 
   <devices>
@@ -351,14 +353,14 @@ devices の下に以下のような filesystem のノードがある
       <source dir='/path/to/host/shared'/>
       <target dir='shared'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'>
-  +    <idmap>
-  +      <uid start='1002' target='1000' count='1'/>
-  +      <gid start='1002' target='1000' count='1'/>
-  +    </idmap>
+  +   <idmap>
+  +     <uid start='1002' target='1000' count='1'/>
+  +     <gid start='1002' target='1000' count='1'/>
+  +   </idmap>
     </filesystem>
   </devices>
 
-ここで、target がホストOS の実行ユーザの uid、start はゲストOS の作業ユーザの uid を指定する。設定がうまくいけば、再起動、マウントした際のオーナーが root から変更されているはずである。
+ここで、target はホストOS の実行ユーザの uid、start はゲストOS の作業ユーザの uid を指定する。設定がうまくいけば、再起動、マウントした際のオーナーが root から変更されているはずである。
 
 .. tip::
 

@@ -19,7 +19,7 @@
 環境
 =================
 
-- ホストは Manjaro Linux OS
+- ホストは Manjaro Linux
 - ゲストは Ubuntu 22.04
 - VM は libvirt (QEMU/KVM) で管理し、セッション接続(つまり rootless )で起動
 - 共有フォルダは以下のように設定されている
@@ -50,7 +50,7 @@ systemd でマウントを管理するためのユニットタイプ。
 
 ::
 
-  # 例) マウント先
+  # 例) マウント先(ゲストの uid:1002 のホームディレクトリ以下にマウント)
   /home/ykrods/myproj
   # ユニットファイル名
   /etc/systemd/system/home-ykrods-myproj.mount
@@ -64,7 +64,7 @@ systemd でマウントを管理するためのユニットタイプ。
   Description=Libvirt virtiofs shared folder mount
 
   [Mount]
-  # マウントするリソースの識別子(9p の場合マウントタグ名)
+  # マウントするリソースの識別子(マウントタグ名)
   What=myproj
   # マウント先
   Where=/home/ykrods/myproj
