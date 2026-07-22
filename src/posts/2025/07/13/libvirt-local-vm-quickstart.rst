@@ -84,7 +84,7 @@ VM の作成(1): イメージ
 
   - https://cloud-images.ubuntu.com/
 
-- VM 内の変更はクラウドイメージに直接書き込まれる形になる
+- クラウドイメージを直接起動した場合、VM 内の変更はイメージファイルに直接書き込まれる
 - cloud-init は二重に実行されないための仕組みがあり、cloud-init が実行済み状態のディスクイメージに対して設定の変更が反映されない場合がある
 
 上記の都合により cloud-init の検証時は毎回新しいイメージを作成する必要があり、都度コピーをとったりダウンロードしなおすのは面倒なので、差分イメージを利用する
@@ -94,10 +94,7 @@ VM の作成(1): イメージ
 
 qemu の機能でその名前のとおり対象のイメージからの差分情報のみを含んだイメージを作成できる
 
-- ベースイメージへは絶対パスで参照するのでベースイメージの配置を変えてはいけない
-
-  - 変える必要がある場合は ``$ qemu-img rebase`` でパスを書き換える
-
+- ベースイメージへは絶対パスで参照するのでベースイメージの配置を変えてはいけない [5]_
 - ベースイメージは上書きするのも NG なので日付などで管理し、書き込みも禁止しておく
 
 .. code-block:: bash
@@ -140,7 +137,7 @@ user-data.yaml
 
 - Ubuntu のクラウドイメージでは、default ユーザは "ubuntu" という名前で作成される
 - 明示的に users で指定しないと ubuntu ユーザは作成されない
-- デフォルトで ``ubuntu`` ユーザのパスワードは設定されていないため、 ``chpasswd`` でパスワード( ``ubuntu`` ) を設定する [5]_
+- デフォルトで ``ubuntu`` ユーザのパスワードは設定されていないため、 ``chpasswd`` でパスワード( ``ubuntu`` ) を設定する [6]_
 - ssh 接続(公開鍵)を設定した場合はパスワードは不要となるが、最初のうちは console で接続できるようにパスワードを設定した方が良いと思われる
 
 .. tip::
@@ -167,7 +164,7 @@ meta-data.yaml
   instance-id: myvm1
   local-hostname: myvm1
 
-* instance-id はなんでもよいため上記では myvm1 としているが、 ``$ uuidgen`` で uuid を生成するのが無難か
+* instance-id はなんでもよいため上記では myvm1 としているが、 ``$ uuidgen -t`` で uuid を生成するのが無難か
 
 
 user-data.yaml と meta-data.yaml を作成後、以下のコマンドで VM を作成する。
@@ -222,18 +219,14 @@ VM の操作
   $ virsh dumpxml myvm1  # VM の設定を出力(xml)
   $ virsh edit myvm1  # VM の設定を編集
 
-``virt-manager`` では xml を直接編集せずに GUI で設定の変更が可能 ( すべての設定に対応しているわけではない )
+``virt-manager`` では GUI である程度の設定の変更が可能だが、すべての設定に対応しているわけではないので場合により xml を編集する必要がでてくる
 
 ネットワーク
 ================
 
 セッション接続でネットワークを利用する場合、 ``passt`` が利用できる。 ``passt`` ではホストから VM へのアクセスはポートフォワーディングを用いる。
 
-先ほどの VM を削除し、 ``virt-install`` にネットワークオプションを追加する。また、 ``user-data.yaml`` を編集し、ssh 接続用のユーザを追加する。
-
-.. tip::
-
-  VM を削除しなくても設定の変更でネットワーク設定を追加することもできるが、virt-manager の GUI が passt に対応していない(バージョンによる?)場合は作り直した方が楽かと思われる。
+先ほどの VM を削除し、 ``virt-install`` にネットワークオプションを追加する。また、 ``user-data.yaml`` を編集し、ssh 接続用のユーザを追加する。 [7]_
 
 .. code-block:: yaml
 
@@ -244,10 +237,10 @@ VM の操作
     - name: yourname
       lock_passwd: true
       sudo: ALL=(ALL) NOPASSWD:ALL
-      uid: 1000
+      uid: 1002
       shell: /bin/bash
       ssh_authorized_keys:
-      - ssh-rsa AAAAB3Nz...(略, .ssh/id_ed25519.pub 等の内容をコピペ)
+      - ssh-rsa AAAAB3Nz...(略,公開鍵の内容をコピペ)
   chpasswd:
     list: |
       ubuntu:ubuntu
@@ -256,6 +249,7 @@ VM の操作
 .. code-block:: bash
 
   $ virsh shutdown myvm1
+  $ # vm の削除およびディスクイメージの削除
   $ virsh undefine myvm1 --remove-all-storage
   $ # イメージ再作成
   $ qemu-img create -f qcow2 -b $HOME/libvirt/base/ubuntu-22.04-20250702.qcow2 -F qcow2 vms/myvm1.qcow2 16G
@@ -276,7 +270,7 @@ VM の操作
 
 .. code-block:: bash
 
-  $ ssh -i .ssh/id_ed25519 -p 20222 yourname@localhost
+  $ ssh -i .ssh/your-private-key -p 20222 yourname@localhost
 
 .. tip::
 
@@ -300,46 +294,71 @@ VM の操作
 フォルダ共有
 ===================
 
-ファイルシステムのドライバーとして ``virtio-9p`` (デフォルト) と ``virtiofs`` が選択できる
+ファイルシステムのドライバーとして ``virtio-9p`` と ``virtiofs`` が選択できる。
 
-- パフォーマンスは ``virtiofs`` の方がよいらしいが、 ``virtiofs`` をセッション接続で用いる場合、ゲストOSの共有対象のディレクトリのユーザがホストOSの root にマッピングされるため [6]_ 、ゲストOS側のログインユーザでは Permisson Error が起きる可能性があり、使い勝手が若干よくない。
-- 共有フォルダに書き込みを行う場合は 9p の方が楽なので、ここでは virtio-9p を使う。ただし、ホストOS とゲストOS で UID/GID を揃える必要がある。
+``virtiofs`` の方が新しくパフォーマンスもよいらしいが、 ``virtiofs`` をセッション接続で用いる場合、ゲストOSの共有対象のディレクトリのオーナーがホストOSの root にマッピングされるため [8]_ 、ゲストOS側のログインユーザで作業する際に Permisson Error が起きる可能性があり、使い勝手が若干よくない。
 
-共有フォルダを利用する場合、 ``virt-install`` に以下のような ``--filesystem`` オプションを追加する
+この問題は id のマッピングを設定することで解決できるが、 ``virt-install`` のオプションで渡せるかが不明(できても記述が長くなりそう)なので、マッピングの指定に関しては xml を編集する必要がある。
 
-::
-
-  --filesystem $HOME/path/to/shared,shared,type=mount,accessmode=passthrough \
-
-VM にログインして以下のコマンドでマウントする
+まず、以下のコマンドで virtiofs が利用できるか確認する(Linux Kernel 5.4, 2019 なのでまず大丈夫だと思われるが)
 
 .. code-block:: bash
 
-  $ mkdir shared
-  $ sudo mount -t 9p -o trans=virtio shared shared
-
-virtiofs の場合
--------------------
-
-``virtiofs`` を利用する場合は ``--memorybacking`` の設定が追加で必要になる。
-
-.. code-block:: bash
-
-  # virtiofs が利用できるか確認
   $ modinfo virtiofs
 
+上記問題ない場合、 ``virt-install`` に以下の ``--filesystem`` オプションを追加する。
+
 .. code-block:: bash
 
-  # virt-install のオプションに以下を追加
   --memorybacking source.type=memfd,access.mode=shared \
   --filesystem $HOME/path/to/host/shared,shared,type=mount,driver.type=virtiofs \
 
-``virtiofs`` の場合の ``mount`` コマンドは以下
+- ``--filesystem`` の2つめの値(shared) はマウントタグと呼ばれ、ゲストOSでマウント対象を識別するのに使う
+- (memorybacking は virtiofs の利用時に必要になるオプション
+
+ゲストOS で、以下のコマンドでマウントする
 
 .. code-block:: bash
 
   $ mkdir shared
   $ sudo mount -t virtiofs shared shared
+
+この状態では、idmap を設定してないので ``ls -l`` するとオーナーは root になっている。VM を一度停止し、 ``virsh edit`` コマンド(または virt-manager )で xml を編集し、マッピングを指定する。
+
+.. code-block:: bash
+
+  $ virsh shutdown myvm1
+  $ virsh edit myvm1
+
+devices の下に以下のような filesystem のノードがある
+
+.. code-block:: xml
+
+  <devices>
+    <filesystem type='mount' accessmode='passthrough'>
+      <driver type='virtiofs'/>
+      <source dir='/path/to/host/shared'/>
+      <target dir='shared'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'>
+    </filesystem>
+  </devices>
+
+.. code-block:: diff
+
+  <devices>
+    <filesystem type='mount' accessmode='passthrough'>
+      <driver type='virtiofs'/>
+      <source dir='/path/to/host/shared'/>
+      <target dir='shared'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'>
+  +    <idmap>
+  +      <uid start='1002' target='1000' count='1'/>
+  +      <gid start='1002' target='1000' count='1'/>
+  +    </idmap>
+    </filesystem>
+  </devices>
+
+ここで、target がホストOS の実行ユーザの uid、start はゲストOS の作業ユーザの uid を指定する。設定がうまくいけば、再起動、マウントした際のオーナーが root から変更されているはずである。
 
 .. tip::
 
@@ -404,6 +423,12 @@ VM 側でのネットワークインターフェイスの確認・有効化
   $ ip -br addr show
   $ sudo ip link set virbr0 up
 
+(2026.07.22 追記) VirtFS (virtio-9p) について
+=================================================
+
+初稿では 9p の passthrough を使った共有方法を記載しており、それに合わせてゲストOS 側の uid をホストの VM 実行ユーザの uid と揃えていた。が、そもそも 9p の passthrough は qemu を root ユーザで実行して使うものらしく、libvirt のセッション接続(=非root) で使うことが想定外と思われたため、 virtiofs を使うように修正した。
+
+なお 9p の passthrough は root で qemu を動かす事自体がリスクであるため非推奨とされており、基本的に virtiofs を使った方が良さそうである。
 
 参考
 ============
@@ -418,10 +443,17 @@ VM 側でのネットワークインターフェイスの確認・有効化
   pacman -Qk libvirt  # パッケージ管理されたファイルのチェック
   sudo pacman -S libvirt  # パッケージの再インストール
 
+.. update:: 2026-07-22
+
+  ファイル共有方式を 9p から virtiofs に変更
+
+.. rubric:: Footnotes
 
 .. [1] 筆者は Manjaro Linux を使っているが、Ubuntu ホストで動作させた方が安定するらしい?
 .. [2] ログインユーザを ``libvirt`` グループに参加させるのでもよいが、せっかくユーザ向けに動く環境が用意されているのだからそれを使おうという判断。共有の開発サーバを立ち上げるような場合ではシステム接続が適する。
 .. [3] passt は podman の依存パッケージでもあるので知らずに使っている事も
 .. [4] パブリッククラウド上で実行するためにカスタマイズされたイメージ
-.. [5] ちなみにパスワードの設定有無は ``$ sudo cat /etc/shadow`` でわかる
-.. [6] このマッピングには Linux のユーザ名前空間 (user namespace) が利用されている
+.. [5] ``$ qemu-img rebase`` で後からパスを変更することはできる
+.. [6] パスワードの設定有無は ``$ sudo cat /etc/shadow`` でわかる
+.. [7] VM を削除しなくても設定の変更でネットワーク設定を追加することもできるが、検証時点で virt-manager の GUI が passt に対応しておらず、xml編集よりはコマンドラインオプションの方が楽かと思われたため作り直すことにした。
+.. [8] このマッピングには Linux のユーザ名前空間 (user namespace) が利用されている

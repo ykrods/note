@@ -21,15 +21,23 @@
 
 - ホストは Manjaro Linux OS
 - ゲストは Ubuntu 22.04
-- VM は libvirt (QEMU/KVM) で管理
-- 共有フォルダは以下の ``virt-install`` 実行時のオプションで設定している
+- VM は libvirt (QEMU/KVM) で管理し、セッション接続(つまり rootless )で起動
+- 共有フォルダは以下のように設定されている
 
-  ::
+  .. code-block:: xml
 
-    --filesystem path/to/myproj,myproj,type=mount,accessmode=passthrough
+    <filesystem type='mount' accessmode='passthrough'>
+      <driver type='virtiofs'/>
+      <source dir='/path/to/myproj'/>
+      <target dir='myproj'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'>
+      <idmap>
+        <uid start='1002' target='1000' count='1'/>
+        <gid start='1002' target='1000' count='1'/>
+      </idmap>
+    </filesystem>
 
-  - この設定では QEMU/KVM の ``VirtFS（virtio-9p）`` が使用され、マウントタグ名は ``myproj`` となる
-  - また ``accessmode=passthrough`` によりVM からはホスト側の UID/GID がそのまま見えるため、ホスト側の作業ユーザも uid, gid をともに ``1000`` に揃え、共有フォルダ内で読み書きを可能にする
+  - idmap の設定により、ゲスト側の作業ユーザ(uid:1002) がホストの共有ディレクトリの所有者(かつvmの実行ユーザ)(uid:1000) にマッピングされ、共有ディレクトリに対して読み書きができるようにしてある。
 
 systemd.mount
 ================
@@ -53,15 +61,14 @@ systemd でマウントを管理するためのユニットタイプ。
   :caption: /etc/systemd/system/home-ykrods-myproj.mount
 
   [Unit]
-  Description=Libvirt 9p shared folder mount
+  Description=Libvirt virtiofs shared folder mount
 
   [Mount]
   # マウントするリソースの識別子(9p の場合マウントタグ名)
   What=myproj
   # マウント先
   Where=/home/ykrods/myproj
-  Type=9p
-  Options=trans=virtio
+  Type=virtiofs
 
   # [Install]
   # WantedBy=multi-user.target
@@ -73,7 +80,7 @@ systemd でマウントを管理するためのユニットタイプ。
 
 ::
 
-  $ sudo mount -t 9p -o trans=virtio myproj /home/ykrods/myproj
+  $ sudo mount -t virtiofs myproj /home/ykrods/myproj
 
 正しく設定されていれば、 ``sudo systemctl daemon-reload`` 実行後
 以下のコマンドでマウントとアンマウントを制御できる。
@@ -104,7 +111,7 @@ automount
   :caption: /etc/systemd/system/home-ykrods-myproj.automount
 
   [Unit]
-  Description=Automount Libvirt 9p Shared Folder
+  Description=Automount Libvirt virtiofs Shared Folder
   ConditionPathExists=/home/ykrods/myproj
 
   [Automount]
@@ -170,6 +177,10 @@ reader#0 とは何か調査したところ、検証環境で動作していた `
 
 - `systemd.mount(5) <https://www.freedesktop.org/software/systemd/man/latest/systemd.mount.html>`_
 - `Documentation/9psetup - QEMU <https://wiki.qemu.org/Documentation/9psetup>`_
+
+.. update:: 2026-07-22
+
+  ファイル共有方式を 9p から virtiofs に変更
 
 .. rubric:: Footnotes
 
